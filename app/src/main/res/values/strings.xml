@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">TripPlanner</string>
+    <string name="facebook_application_id" translatable="false">475337183137722</string>
+    <string name="facebook_login_protocol_scheme" translatable="false">fb475337183137722</string>
 </resources>
