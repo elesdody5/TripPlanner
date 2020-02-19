@@ -11,11 +11,16 @@ import com.tripplanner.data_layer.local_data.Entity.Trip;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 @Dao
 public interface TripDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertTrip(Trip trip);
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertTrip(List<Trip> listTrips);
+
 
     @Update
     void updateTrip(Trip trip);
