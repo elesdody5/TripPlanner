@@ -54,5 +54,9 @@ dependencies {
     /*Omnia */
     /*Omnia */
     /*Elesdody*/
+    implementation "com.google.dagger:dagger:$dagger_version"
+    annotationProcessor "com.google.dagger:dagger-compiler:$dagger_version"
+    implementation 'com.google.firebase:firebase-firestore:21.4.0'
+
     /*Elesdody*/
 }

@@ -8,7 +8,7 @@ import androidx.room.TypeConverters;
 
 import com.tripplanner.data_layer.local_data.DateTimeConverter;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,10 +32,13 @@ public class Trip {
     private  int tripStatus;
     @TypeConverters({DateTimeConverter.class})
     private Date tripDate;
+    @Ignore
     private List<Note> notes;
+    private boolean online;
 
 
-    public Trip(int id,String userId, String name, double startPoint, double endPoint, boolean tripType, int tripStatus, Date tripDate) {
+
+    public Trip(int id, String userId, String name, double startPoint, double endPoint, boolean tripType, int tripStatus, Date tripDate,boolean online) {
         this.id = id;
         this.name = name;
         this.startPoint = startPoint;
@@ -44,10 +47,10 @@ public class Trip {
         this.tripStatus = tripStatus;
         this.tripDate = tripDate;
         this.userId=userId;
-        notes=new ArrayList<>();
+        this.online = online;
     }
     @Ignore
-    public Trip(String name,String userId, double startPoint, double endPoint, boolean tripType, int tripStatus, Date tripDate) {
+    public Trip(String userId,String name, double startPoint, double endPoint, boolean tripType, int tripStatus, Date tripDate,boolean online) {
         this.name = name;
         this.startPoint = startPoint;
         this.endPoint = endPoint;
@@ -56,6 +59,7 @@ public class Trip {
         this.tripDate = tripDate;
         this.userId=userId;
         notes=new ArrayList<>();
+        this.online = online;
     }
 
     public int getId() {
@@ -124,5 +128,15 @@ public class Trip {
 
     public String getUserId() {
         return userId;
+    }
+    public boolean isOnline() {
+        return online;
+    }
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void setOnline(boolean online) {
+        this.online = online;
     }
 }
