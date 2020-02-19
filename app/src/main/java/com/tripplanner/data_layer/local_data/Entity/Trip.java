@@ -30,11 +30,12 @@ public class Trip {
     private double endPoint;
     private boolean tripType;
     private  int tripStatus;
-    @TypeConverters({DateTimeConverter.class})
-    private Date tripDate;
     @Ignore
     private List<Note> notes;
-    private boolean online;
+
+    @TypeConverters({DateTimeConverter.class})
+    private Date tripDate;
+
 
 
 
