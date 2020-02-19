@@ -1,4 +1,4 @@
-package com.tripplanner.home;
+package com.tripplanner;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
@@ -11,41 +11,35 @@ import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.tripplanner.R;
+import com.tripplanner.home.LoginViewModel;
+
 import android.content.Intent;
 import android.util.Log;
 
 import java.util.Arrays;
 import java.util.List;
+
 /*sara*/
 /*omnia*/
 /*omnia*/
-public class HomeActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
     /*sara*/
     private static final int RC_SIGN_IN = 123;
     LoginViewModel loginViewModel;
-    FirebaseUser user=null;
-    /*sara*/
-    /*omnia*/
-    /*omnia*/
+    FirebaseUser user = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*omnia*/
-        // TODO create view model
-        // TODO create recyclerview
-        // TODO create home layout
-        /*omnia*/
+
         /*sara*/
         user = FirebaseAuth.getInstance().getCurrentUser();
-        loginViewModel= ViewModelProviders.of(this).get(LoginViewModel.class);
-        if(user==null)
-        {
+        loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
+        if (user == null) {
             createSignInIntent();
-        //    setContentView(R.layout.activity_main);
+            //    setContentView(R.layout.activity_main);
 
-        }
-        else
-        {
+        } else {
             setContentView(R.layout.activity_main);
 
         }
@@ -72,6 +66,7 @@ public class HomeActivity extends AppCompatActivity {
                         .build(),
                 RC_SIGN_IN);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -82,11 +77,11 @@ public class HomeActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
 
                 user = loginViewModel.getCurrentUser();
-                Log.i("hh", "onActivityResult: "+user);
+                Log.i("hh", "onActivityResult: " + user);
                 setContentView(R.layout.activity_main);
             } else {
 
-finish();
+                finish();
             }
         }
     }
