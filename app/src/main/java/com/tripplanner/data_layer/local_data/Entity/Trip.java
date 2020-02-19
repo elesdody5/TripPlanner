@@ -8,7 +8,7 @@ import androidx.room.TypeConverters;
 
 import com.tripplanner.data_layer.local_data.DateTimeConverter;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,9 +30,11 @@ public class Trip {
     private double endPoint;
     private boolean tripType;
     private  int tripStatus;
+    @Ignore
+    private List<Note> notes;
+
     @TypeConverters({DateTimeConverter.class})
     private Date tripDate;
-    private List<Note> notes;
 
 
     public Trip(int id,String userId, String name, double startPoint, double endPoint, boolean tripType, int tripStatus, Date tripDate) {

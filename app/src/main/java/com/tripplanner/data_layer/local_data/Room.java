@@ -6,9 +6,9 @@ import androidx.room.Database;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
+
 import com.tripplanner.data_layer.local_data.Entity.Note;
 import com.tripplanner.data_layer.local_data.Entity.Trip;
-
 @Database(entities = {Trip.class, Note.class}, version = 1, exportSchema = false)
 @TypeConverters(DateTimeConverter.class)
 public abstract class Room extends RoomDatabase {
