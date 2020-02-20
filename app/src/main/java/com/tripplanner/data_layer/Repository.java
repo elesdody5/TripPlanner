@@ -34,6 +34,10 @@ public class Repository {
         this.firebase = firebase;
     }
 
+    public Repository() {
+
+    }
+
     public LiveData<List<Trip>> getUpComingTrips() throws Exception {
         throw new Exception("Not finished yet");
 
@@ -82,5 +86,8 @@ public class Repository {
 
     }
 
+    public void setCurrentUser(User user) {
+        this.user = user;
+    }
 
 }

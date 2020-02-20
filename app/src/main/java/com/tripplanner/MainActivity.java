@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
         } else {
             setContentView(R.layout.activity_main);
-
+            loginViewModel.setCurrentUser(user);
         }
 
         /*sara*/
@@ -76,7 +76,9 @@ public class MainActivity extends AppCompatActivity {
 
             if (resultCode == RESULT_OK) {
 
-                user = loginViewModel.getCurrentUser();
+                //  user = loginViewModel.getCurrentUser();
+                user = FirebaseAuth.getInstance().getCurrentUser();
+                loginViewModel.savetUser(user);
                 Log.i("hh", "onActivityResult: " + user);
                 setContentView(R.layout.activity_main);
             } else {
