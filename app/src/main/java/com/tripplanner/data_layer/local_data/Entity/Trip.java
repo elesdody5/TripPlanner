@@ -1,11 +1,13 @@
 package com.tripplanner.data_layer.local_data.Entity;
 
 import androidx.annotation.NonNull;
+import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
+import com.google.firebase.firestore.ServerTimestamp;
 import com.tripplanner.data_layer.local_data.DateTimeConverter;
 
 import java.util.Date;
@@ -26,20 +28,22 @@ public class Trip {
     private int id;
     private String userId;
     private String name;
-    private double startPoint;
-    private double endPoint;
+    @Embedded(prefix = "start")
+    private Place startPoint;
+    @Embedded(prefix = "end")
+    private Place endPoint;
     private boolean tripType;
-    private  int tripStatus;
+    private  long tripStatus;
+    @TypeConverters({DateTimeConverter.class})
+    @ServerTimestamp
+    private Date tripDate;
     @Ignore
     private List<Note> notes;
-
-    @TypeConverters({DateTimeConverter.class})
-    private Date tripDate;
+    private boolean online;
 
 
 
-
-    public Trip(int id, String userId, String name, double startPoint, double endPoint, boolean tripType, int tripStatus, Date tripDate,boolean online) {
+    public Trip(int id, String userId, String name, Place startPoint, Place endPoint, boolean tripType, long tripStatus, Date tripDate,boolean online) {
         this.id = id;
         this.name = name;
         this.startPoint = startPoint;
@@ -51,7 +55,7 @@ public class Trip {
         this.online = online;
     }
     @Ignore
-    public Trip(String userId,String name, double startPoint, double endPoint, boolean tripType, int tripStatus, Date tripDate,boolean online) {
+    public Trip(String userId,String name, Place startPoint, Place endPoint, boolean tripType, int tripStatus, Date tripDate,boolean online) {
         this.name = name;
         this.startPoint = startPoint;
         this.endPoint = endPoint;
@@ -79,19 +83,19 @@ public class Trip {
         this.name = name;
     }
 
-    public double getStartPoint() {
+    public Place getStartPoint() {
         return startPoint;
     }
 
-    public void setStartPoint(double startPoint) {
+    public void setStartPoint(Place startPoint) {
         this.startPoint = startPoint;
     }
 
-    public double getEndPoint() {
+    public Place getEndPoint() {
         return endPoint;
     }
 
-    public void setEndPoint(double endPoint) {
+    public void setEndPoint(Place endPoint) {
         this.endPoint = endPoint;
     }
 
@@ -103,7 +107,7 @@ public class Trip {
         this.tripType = tripType;
     }
 
-    public int getTripStatus() {
+    public long getTripStatus() {
         return tripStatus;
     }
 
