@@ -25,7 +25,7 @@ public class Trip {
 
     @PrimaryKey(autoGenerate = true)
     @NonNull
-    private int id;
+    private long id;
     private String userId;
     private String name;
     @Embedded(prefix = "start")
@@ -43,7 +43,7 @@ public class Trip {
 
 
 
-    public Trip(int id, String userId, String name, Place startPoint, Place endPoint, boolean tripType, long tripStatus, Date tripDate,boolean online) {
+    public Trip(long id, String userId, String name, Place startPoint, Place endPoint, boolean tripType, long tripStatus, Date tripDate,boolean online) {
         this.id = id;
         this.name = name;
         this.startPoint = startPoint;
@@ -67,11 +67,11 @@ public class Trip {
         this.online = online;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

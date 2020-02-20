@@ -175,13 +175,16 @@ public class Repository {
     }
 
 
-    public void insertNote(final List<Note> note) {
+    public void insertNote(final List<Note> notes) {
         Room.databaseWriteExecutor.execute(
                 new Runnable() {
                     @Override
                     public void run() {
-                        tripDao.insertNote(note);
-                        uploadNotes(note);
+                         long [] ids = tripDao.insertNote(notes);
+                        for (int i =0;i<notes.size();i++) {
+                            notes.get(i).setId(ids[i]);
+                        }
+                        uploadNotes(notes);
                     }
                 }
         );
@@ -191,26 +194,18 @@ public class Repository {
         int tripId = notes.get(0).getTripId();
         WriteBatch writeBatch = firebase.getBatch();
         for (Note note : notes) {
-            DocumentReference noteDocumentReference = firebase.getNotesCollection(user.getId(), String.valueOf(tripId)).document();
+            DocumentReference noteDocumentReference = firebase.getNotesCollection(user.getId(), String.valueOf(tripId)).document(String.valueOf(note.getId()));
             writeBatch.set(noteDocumentReference, note);
         }
-        writeBatch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                Log.i(TAG, "onComplete: uploadNotes");
-            }
-        });
+        writeBatch.commit().addOnCompleteListener(task -> Log.i(TAG, "onComplete: uploadNotes"));
     }
 
     public void insertTrip(final Trip trip) {
-        Room.databaseWriteExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                long id = tripDao.insertTrip(trip);
-                if (id != -1) {
-                    firebase.getTripDocument(user.getId(), String.valueOf(id))
-                            .set(trip);
-                }
+        Room.databaseWriteExecutor.execute(() -> {
+            long id = tripDao.insertTrip(trip);
+            if (id != -1) {
+                firebase.getTripDocument(user.getId(), String.valueOf(id))
+                        .set(trip);
             }
         });
 

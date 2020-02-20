@@ -9,12 +9,12 @@ import androidx.room.PrimaryKey;
 public class Note {
     @PrimaryKey(autoGenerate = true)
     @NonNull
-    private int id;
+    private long id;
     private String noteName;
     private int tripId;
     private boolean checked;
 
-    public Note(int id, String noteName, int tripId,boolean checked) {
+    public Note(long id, String noteName, int tripId,boolean checked) {
         this.id = id;
         this.noteName = noteName;
         this.tripId = tripId;
@@ -35,11 +35,11 @@ public class Note {
         this.checked = checked;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
