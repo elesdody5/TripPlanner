@@ -1,6 +1,5 @@
 package com.tripplanner.data_layer.local_data.Entity;
 
-
 import androidx.room.Entity;
 
 @Entity(tableName = "place")
@@ -14,6 +13,7 @@ public class Place {
         this.latitude = latitude;
         this.longitude = longitude;
     }
+
 
 
 
