@@ -160,18 +160,16 @@ public class Repository {
 
         firebase.getNotesCollection(user.getId(), String.valueOf(tripId))
                 .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        ArrayList<Note> documentNotes = new ArrayList<>();
-                        for (DocumentSnapshot documentReference : queryDocumentSnapshots.getDocuments()) {
-                            documentNotes.add(new Note(Integer.parseInt(documentReference.getId()),
-                                    documentReference.getString(NAME),
-                                    tripId,
-                                    documentReference.getBoolean("checked")));
-                        }
-                        notes.postValue(documentNotes);
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    ArrayList<Note> documentNotes = new ArrayList<>();
+                    for (DocumentSnapshot documentReference : queryDocumentSnapshots.getDocuments()) {
+                        documentNotes.add(new Note(Integer.parseInt(documentReference.getId()),
+                                documentReference.getString(NAME),
+                                tripId,
+                                documentReference.getBoolean("checked")));
                     }
+                    notes.postValue(documentNotes);
+                    tripDao.insertNote(documentNotes);
                 });
         return notes;
     }
