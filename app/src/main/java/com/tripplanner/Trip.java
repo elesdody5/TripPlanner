@@ -1,23 +1,29 @@
-package com.tripplanner.data_layer.local_data.Entity;
+package com.tripplanner;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
+;
+import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 
-import com.tripplanner.BR;
+
+import com.google.firebase.firestore.ServerTimestamp;
+
 import com.tripplanner.data_layer.local_data.DateTimeConverter;
+import com.tripplanner.data_layer.local_data.Entity.Note;
+import com.tripplanner.data_layer.local_data.Entity.Place;
 
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity(tableName = "trip_table")
-public class Trip extends BaseObservable {
+public class Trip  extends BaseObservable{
     public  static final int STATUS_CANCELED=0;
     public  static final int STATUS_DONE=1;
     public  static final int STATUS_UPCOMING=2;
@@ -27,15 +33,19 @@ public class Trip extends BaseObservable {
 
     @PrimaryKey(autoGenerate = true)
     @NonNull
-    private int id;
+    private long id;
     private String userId;
-    private String name;
-    private double startPoint;
-    private double endPoint;
+    public String name;
+    @Embedded(prefix = "start")
+    public Place startPoint;
+    @Embedded(prefix = "end")
+    public Place endPoint;
     private boolean tripType;
-    private  int tripStatus;
+
+    private  long tripStatus;
 
     @TypeConverters({DateTimeConverter.class})
+    @ServerTimestamp
     private Date tripDate;
     @Ignore
     private List<Note> notes;
@@ -43,7 +53,7 @@ public class Trip extends BaseObservable {
 
 
 
-    public Trip(int id, String userId, String name, double startPoint, double endPoint, boolean tripType, int tripStatus, Date tripDate,boolean online) {
+    public Trip(long id, String userId, String name, Place startPoint, Place endPoint, boolean tripType, long tripStatus, Date tripDate,boolean online) {
         this.id = id;
         this.name = name;
         this.startPoint = startPoint;
@@ -55,7 +65,7 @@ public class Trip extends BaseObservable {
         this.online = online;
     }
     @Ignore
-    public Trip(String userId,String name, double startPoint, double endPoint, boolean tripType, int tripStatus, Date tripDate,boolean online) {
+    public Trip(String userId,String name, Place startPoint, Place endPoint, boolean tripType, int tripStatus, Date tripDate,boolean online) {
         this.name = name;
         this.startPoint = startPoint;
         this.endPoint = endPoint;
@@ -67,41 +77,47 @@ public class Trip extends BaseObservable {
         this.online = online;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    @Bindable
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
-        this.name = name;
-        notifyPropertyChanged(BR.trip);
+        if(this.name!=name)
+        { this.name = name;}
+
+
     }
-    @Bindable
-    public double getStartPoint() {
+
+
+    public Place getStartPoint() {
+
         return startPoint;
     }
 
-    public void setStartPoint(double startPoint) {
+    public void setStartPoint(Place startPoint) {
         this.startPoint = startPoint;
-        notifyPropertyChanged(BR.trip);
+
+
     }
-    @Bindable
-    public double getEndPoint() {
+
+    public Place getEndPoint() {
+
         return endPoint;
 
     }
 
-    public void setEndPoint(double endPoint) {
+    public void setEndPoint(Place endPoint) {
         this.endPoint = endPoint;
-        notifyPropertyChanged(BR.trip);
+
     }
 
     public boolean isTripType() {
@@ -112,21 +128,21 @@ public class Trip extends BaseObservable {
         this.tripType = tripType;
     }
 
-    public int getTripStatus() {
+    public long getTripStatus() {
         return tripStatus;
     }
 
     public void setTripStatus(int tripStatus) {
         this.tripStatus = tripStatus;
     }
-    @Bindable
+
     public Date getTripDate() {
         return tripDate;
     }
 
     public void setTripDate(Date tripDate) {
         this.tripDate = tripDate;
-        notifyPropertyChanged(BR.trip);
+
     }
 
     public List<Note> getNotes() {

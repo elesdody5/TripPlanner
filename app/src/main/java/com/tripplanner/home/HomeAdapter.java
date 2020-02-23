@@ -4,14 +4,11 @@ package com.tripplanner.home;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import com.tripplanner.R;
-import com.tripplanner.data_layer.local_data.Entity.Trip;
+import com.tripplanner.Trip;
 import com.tripplanner.databinding.TripCardBinding;
 
 import java.util.List;
@@ -19,12 +16,12 @@ import java.util.List;
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> {
         private List<Trip> trips;
 
-        // Provide a reference to the views for each data item
-        // Complex data items may need more than one view per item, and
-        // you provide access to all the views for a data item in a view holder
-        public class MyViewHolder extends RecyclerView.ViewHolder {
-            // each data item is just a string in this case
-            private final TripCardBinding binding;
+
+ public class MyViewHolder extends RecyclerView.ViewHolder {
+
+     public CardView viewBackground, viewForeground;
+
+     private final TripCardBinding binding;
 
             public MyViewHolder(TripCardBinding binding) {
                 super(binding.getRoot());
@@ -32,22 +29,33 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
             }
             public void bind(Object obj) {
                 binding.setVariable(com.tripplanner.BR.obj,obj);
+                viewBackground=binding.background;
+                viewForeground=binding.foreground;
                 binding.executePendingBindings();
             }
         }
 
         // Provide a suitable constructor (depends on the kind of dataset)
-        public HomeAdapter(List<Trip> myDataset) {
-            trips = myDataset;
+        public HomeAdapter() {
+
         }
 
+
+        public void setTripList(List<Trip> myDataset) {
+            trips = myDataset;
+            notifyDataSetChanged();
+         }
+
+
+
         // Create new views (invoked by the layout manager)
+
+
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            // create a new view
-            LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-           TripCardBinding binding = DataBindingUtil.inflate(layoutInflater, R.layout.trip_card, parent, false);
-            // set the view's size, margins, paddings and layout parameters
+
+          LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+           TripCardBinding binding = TripCardBinding.inflate(layoutInflater, parent, false);
             return new MyViewHolder(binding);
         }
 
@@ -66,6 +74,26 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
         public int getItemCount() {
             return trips.size();
         }
+
+
+        public void removeItem(int position) {
+
+
+       }
+
+    public void DeleteTrip(int position) {
+        trips.remove(position);
+        // notify the item removed by position
+        // to perform recycler view delete animations
+        notifyItemRemoved(position);
+
+
+    }
+        public void restoreItem(Trip trip, int position) {
+        trips.add(position, trip);
+        // notify item added by position
+        notifyItemInserted(position);
+       }
 
 
 }

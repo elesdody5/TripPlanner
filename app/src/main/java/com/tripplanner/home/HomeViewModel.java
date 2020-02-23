@@ -1,25 +1,30 @@
 package com.tripplanner.home;
 
-import android.graphics.Movie;
+import android.app.Application;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.tripplanner.data_layer.Repository;
 import com.tripplanner.data_layer.local_data.Entity.Note;
-import com.tripplanner.data_layer.local_data.Entity.Trip;
+import com.tripplanner.Trip;
 import com.tripplanner.data_layer.local_data.TripDao;
-import com.tripplanner.data_layer.remote.Firebase;
 
 import java.util.List;
 
-public class HomeViewModel extends ViewModel {
+public class HomeViewModel extends AndroidViewModel {
     Repository repo;
     LiveData<List<Trip>> data;
+    LiveData<List<Note>> notes;
     TripDao tripDao;
-    public HomeViewModel(Firebase fireBase) {
-        repo=new Repository(tripDao,fireBase);
+
+    public HomeViewModel(@NonNull Application application) {
+        super(application);
+        repo=new Repository(application);
     }
+
 
     public LiveData<List<Trip>> getTrips(){
         try {
@@ -30,15 +35,23 @@ public class HomeViewModel extends ViewModel {
          return null;}
 
     public void getTripNotes(Trip trip) throws Exception {
-        repo.getTodoNotes(trip.getUserId());
+        repo.getTodoNotes((int)trip.getId());
+
     }
 
     public void addTrip(){
-      //  repo.
+     // repo.
+    }
+/////why??!!!!
+    public void addNote(List<Note> notes){
+        repo.insertNote(notes);
     }
 
-    public void addNote(Note note){
-        repo.insertNote(note);
-    }
+    public  void editTrip(){}
+    public void deleteTrip(){}
+    public void deleteNote(){}
+    public  void EditTip(){}
+
+
 
 }

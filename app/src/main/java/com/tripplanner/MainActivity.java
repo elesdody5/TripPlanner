@@ -39,11 +39,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.homeFragment)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.home_nav);
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        NavController navController = Navigation.findNavController(this,R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(navView, navController);
         /*sara*/
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -54,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
         } else {
             setContentView(R.layout.activity_main);
-
+            loginViewModel.setCurrentUser(user);
         }
 
         /*sara*/
@@ -89,7 +85,9 @@ public class MainActivity extends AppCompatActivity {
 
             if (resultCode == RESULT_OK) {
 
-                user = loginViewModel.getCurrentUser();
+                //  user = loginViewModel.getCurrentUser();
+                user = FirebaseAuth.getInstance().getCurrentUser();
+                loginViewModel.savetUser(user);
                 Log.i("hh", "onActivityResult: " + user);
                 setContentView(R.layout.activity_main);
             } else {

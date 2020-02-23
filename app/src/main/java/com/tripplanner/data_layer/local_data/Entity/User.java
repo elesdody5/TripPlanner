@@ -1,6 +1,8 @@
 package com.tripplanner.data_layer.local_data.Entity;
 
 
+import com.tripplanner.Trip;
+
 import java.util.ArrayList;
 import java.util.List;
 

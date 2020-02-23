@@ -2,38 +2,49 @@ package com.tripplanner.data_layer.local_data;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.tripplanner.data_layer.local_data.Entity.Trip;
+import com.tripplanner.data_layer.local_data.Entity.Note;
+import com.tripplanner.Trip;
 
 import java.util.List;
-
-import javax.inject.Inject;
 
 @Dao
 public interface TripDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertTrip(Trip trip);
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertTrip(List<Trip> listTrips);
+    long insertTrip(Trip trip);
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    long[] insertTrip(List<Trip> listTrips);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    long[] insertNote(List<Note> listNote);
 
     @Update
-    void updateTrip(Trip trip);
+    int updateTrip(Trip trip);
+
+    @Update
+    int updateNote(Note note);
 
     @Query("DELETE FROM trip_table WHERE id = :id")
-    void deleteTrip(String id);
+    void deleteTrip(int id);
 
-    @Query("Select * From trip_table where userId=:userid ")
-    LiveData<List<Trip>> getAllTrips(String userid);
+    @Query("DELETE FROM note_table WHERE tripId = :tripid")
+    void deleteTripNote(int tripid);
 
-    @Query("Select * From trip_table where tripStatus=:status")
-    LiveData<List<Trip>> getTrips(int status);
+    @Delete
+    int deleteTripNote(Note note);
 
+    @Query("Select * From trip_table where  userId=:userid AND tripStatus=:status")
+    LiveData<List<Trip>> getTrips(String userid, int status);
+
+    @Query("Select * From note_table where tripId=:tripId")
+    LiveData<List<Note>> getNotes(int tripId);
 
 
 }

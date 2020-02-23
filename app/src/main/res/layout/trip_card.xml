@@ -7,11 +7,7 @@
     <data>
         <variable
             name="obj"
-            type="com.tripplanner.data_layer.local_data.Entity.Trip" />
-        <variable
-            name="model"
-            type="com.tripplanner.home.HomeViewModel" />
-
+            type="com.tripplanner.Trip" />
 
     </data>
 
@@ -21,6 +17,54 @@
         android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/background"
+            android:layout_width="350dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bottom_menu_shape"
+            android:elevation="2dp"
+            android:outlineProvider="bounds"
+            app:cardBackgroundColor="#F85973"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="2dp"
+            app:cardForegroundColor="#fefefe">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="60dp"
+                    android:layout_marginBottom="16dp"
+                    android:text="@string/DELETE"
+                    android:textColor="#FEFEFE"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.49" />
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView2"
+                    app:layout_constraintTop_toTopOf="@+id/textView2"
+                    app:srcCompat="@drawable/delete" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/foreground"
             android:layout_width="350dp"
             android:layout_height="match_parent"
             android:background="@drawable/bottom_menu_shape"
@@ -40,7 +84,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:text="@={obj.tripDate}"
+                    android:text="@{obj.tripDate.toString()}"
                     android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="@+id/textView4"
                     app:layout_constraintStart_toEndOf="@+id/textView4" />
@@ -59,7 +103,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:text="@={obj.startPoint}"
+                    android:text="@{obj.startPoint.name}"
                     android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="@+id/textView6"
                     app:layout_constraintStart_toEndOf="@+id/textView6" />
@@ -138,7 +182,7 @@
                     android:id="@+id/To"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{obj.endPoint}"
+                    android:text="@{obj.endPoint.name}"
                     android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="@+id/textView7"
                     app:layout_constraintStart_toStartOf="@+id/From" />

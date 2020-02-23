@@ -4,10 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/home_nav"
     app:startDestination="@id/homeFragment">
-
+<!--omnia-->
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.tripplanner.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
+<!--omnia-->
+    <!--sara-->
+    <!--sara-->
+    <!--elesdody-->
+    <!--elesdody-->
 </navigation>

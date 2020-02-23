@@ -2,19 +2,26 @@ package com.tripplanner.data_layer.local_data.Entity;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "note_table")
 public class Note {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @NonNull
-    private int id;
+    private long id;
     private String noteName;
     private int tripId;
     private boolean checked;
 
-    public Note(int id, String noteName, int tripId,boolean checked) {
+    public Note(long id, String noteName, int tripId,boolean checked) {
         this.id = id;
+        this.noteName = noteName;
+        this.tripId = tripId;
+        this.checked=checked;
+    }
+    @Ignore
+    public Note( String noteName, int tripId,boolean checked) {
         this.noteName = noteName;
         this.tripId = tripId;
         this.checked=checked;
@@ -28,11 +35,11 @@ public class Note {
         this.checked = checked;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
