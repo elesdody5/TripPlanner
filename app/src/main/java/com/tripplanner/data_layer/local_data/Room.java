@@ -12,6 +12,9 @@ import com.tripplanner.Trip;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 @Database(entities = {Trip.class, Note.class}, version = 1, exportSchema = false)
 @TypeConverters(DateTimeConverter.class)
 public abstract class Room extends RoomDatabase {

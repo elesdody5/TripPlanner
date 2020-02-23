@@ -9,9 +9,11 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.tripplanner.data_layer.local_data.Entity.Note;
-import com.tripplanner.Trip;
+import com.tripplanner.data_layer.local_data.Entity.Trip;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 @Dao
 public interface TripDao {

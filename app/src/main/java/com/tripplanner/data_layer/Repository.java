@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -16,7 +17,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
 import com.tripplanner.data_layer.local_data.Entity.Note;
 import com.tripplanner.data_layer.local_data.Entity.Place;
-import com.tripplanner.Trip;
+import com.tripplanner.data_layer.local_data.Entity.Trip;
 import com.tripplanner.data_layer.local_data.Entity.User;
 import com.tripplanner.data_layer.local_data.Room;
 import com.tripplanner.data_layer.local_data.TripDao;

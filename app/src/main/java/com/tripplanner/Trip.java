@@ -1,29 +1,21 @@
-package com.tripplanner;
+package com.tripplanner.data_layer.local_data.Entity;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.BaseObservable;
-import androidx.databinding.Bindable;
-;
 import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
-
-
 import com.google.firebase.firestore.ServerTimestamp;
-
 import com.tripplanner.data_layer.local_data.DateTimeConverter;
-import com.tripplanner.data_layer.local_data.Entity.Note;
-import com.tripplanner.data_layer.local_data.Entity.Place;
 
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity(tableName = "trip_table")
-public class Trip  extends BaseObservable{
+public class Trip {
     public  static final int STATUS_CANCELED=0;
     public  static final int STATUS_DONE=1;
     public  static final int STATUS_UPCOMING=2;
@@ -35,15 +27,13 @@ public class Trip  extends BaseObservable{
     @NonNull
     private long id;
     private String userId;
-    public String name;
+    private String name;
     @Embedded(prefix = "start")
-    public Place startPoint;
+    private Place startPoint;
     @Embedded(prefix = "end")
-    public Place endPoint;
+    private Place endPoint;
     private boolean tripType;
-
     private  long tripStatus;
-
     @TypeConverters({DateTimeConverter.class})
     @ServerTimestamp
     private Date tripDate;
@@ -85,39 +75,28 @@ public class Trip  extends BaseObservable{
         this.id = id;
     }
 
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
-        if(this.name!=name)
-        { this.name = name;}
-
-
+        this.name = name;
     }
 
-
     public Place getStartPoint() {
-
         return startPoint;
     }
 
     public void setStartPoint(Place startPoint) {
         this.startPoint = startPoint;
-
-
     }
 
     public Place getEndPoint() {
-
         return endPoint;
-
     }
 
     public void setEndPoint(Place endPoint) {
         this.endPoint = endPoint;
-
     }
 
     public boolean isTripType() {
@@ -142,7 +121,6 @@ public class Trip  extends BaseObservable{
 
     public void setTripDate(Date tripDate) {
         this.tripDate = tripDate;
-
     }
 
     public List<Note> getNotes() {
