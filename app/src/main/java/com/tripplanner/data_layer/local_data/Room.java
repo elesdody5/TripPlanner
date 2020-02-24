@@ -25,6 +25,7 @@ public abstract class Room extends RoomDatabase {
         if (Room.INSTANCE == null) {
             INSTANCE =
                     androidx.room.Room.databaseBuilder(application, Room.class, DB_NAME)
+                            .allowMainThreadQueries()
                             .build();
         }
 

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.tripplanner">
     <permission android:name="android.permission.INTERNET"/>
+    <permission android:name="appengine.applications.create"/>
     <meta-data
         android:name="com.facebook.sdk.ApplicationId"
         tools:replace="android:value"

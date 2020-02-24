@@ -121,7 +121,7 @@ public class Repository {
                     }
                     tripDao.insertTrip(pastTrips);
                 } else {
-                    Log.w(TAG, "Error getting documents.", task.getException());
+                    Log.e(TAG,  task.getException().getMessage());
                 }
             }
         });
@@ -140,7 +140,7 @@ public class Repository {
                         }
                         tripDao.insertTrip(pastTrips);
                     } else {
-                        Log.w(TAG, "Error getting documents.", task.getException());
+                        Log.e(TAG,  task.getException().getMessage());
                     }
                 });
 
