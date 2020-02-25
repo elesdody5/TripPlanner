@@ -1,9 +1,13 @@
 package com.tripplanner;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
@@ -20,6 +24,7 @@ import com.tripplanner.home.LoginViewModel;
 
 import android.content.Intent;
 import android.util.Log;
+import android.view.View;
 
 import java.util.Arrays;
 import java.util.List;
@@ -31,30 +36,46 @@ public class MainActivity extends AppCompatActivity {
     /*sara*/
     private static final int RC_SIGN_IN = 123;
     LoginViewModel loginViewModel;
-    FirebaseUser user = null;
+    FirebaseUser user;
+    // to set a Listener when uer log in or log out
+    private FirebaseAuth.AuthStateListener mFirebaseAuthStateListener;
+    // to set Authentication for write or read in database
+    private FirebaseAuth mFirebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        BottomNavigationView navView = findViewById(R.id.nav_view);
 
-        NavController navController = Navigation.findNavController(this,R.id.nav_host_fragment);
-        NavigationUI.setupWithNavController(navView, navController);
-        /*sara*/
-        /*
-        user = FirebaseAuth.getInstance().getCurrentUser();
+        setupNavigation();
+
         loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
-        if (user == null) {
-            createSignInIntent();
-            //    setContentView(R.layout.activity_main);
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseAuthStateListener = firebaseAuth -> {
+            user = firebaseAuth.getCurrentUser();
+            if (user == null) {
+                createSignInIntent();
+            } else {
+                loginViewModel.savetUser(user);
+            }
 
-        } else {
-            setContentView(R.layout.activity_main);
-            loginViewModel.setCurrentUser(user);
-        }*/
+        };
+    }
 
-        /*sara*/
+    private void setupNavigation() {
+        BottomNavigationView navView = findViewById(R.id.nav_view);
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.nav_host_fragment);
+
+        NavigationUI.setupWithNavController(navView, navHostFragment.getNavController());
+
+        navHostFragment.getNavController().addOnDestinationChangedListener((controller, destination, arguments) -> {
+            if (destination.getId() == R.id.addTripFragment) {
+                navView.setVisibility(View.GONE);
+            } else {
+                navView.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     /*omnia*/
@@ -77,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                 RC_SIGN_IN);
     }
 
-   /* @Override
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -90,12 +111,24 @@ public class MainActivity extends AppCompatActivity {
                 user = FirebaseAuth.getInstance().getCurrentUser();
                 loginViewModel.savetUser(user);
                 Log.i("hh", "onActivityResult: " + user);
-                setContentView(R.layout.activity_main);
-            } else {
-
-                finish();
             }
         }
-    }*/
+    }
+
+    @Override
+    protected void onPause() {
+
+        mFirebaseAuth.removeAuthStateListener(mFirebaseAuthStateListener);
+        super.onPause();
+
+    }
+
+    @Override
+    protected void onResume() {
+
+        mFirebaseAuth.addAuthStateListener(mFirebaseAuthStateListener);
+        super.onResume();
+
+    }
     /*sara*/
 }

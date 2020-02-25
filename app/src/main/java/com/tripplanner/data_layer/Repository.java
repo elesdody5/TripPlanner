@@ -9,11 +9,10 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.WriteBatch;
+import com.tripplanner.Constants;
 import com.tripplanner.data_layer.local_data.entity.Note;
 import com.tripplanner.data_layer.local_data.entity.Place;
 import com.tripplanner.data_layer.local_data.entity.Trip;
@@ -36,6 +35,9 @@ import static com.tripplanner.Constants.END_POINT;
 import static com.tripplanner.Constants.NAME;
 import static com.tripplanner.Constants.ONLINE;
 import static com.tripplanner.Constants.START_POINT;
+import static com.tripplanner.Constants.STATUS_CANCELED;
+import static com.tripplanner.Constants.STATUS_DONE;
+import static com.tripplanner.Constants.STATUS_UPCOMING;
 import static com.tripplanner.Constants.TRIPS;
 import static com.tripplanner.Constants.TRIP_STATUS;
 import static com.tripplanner.Constants.TRIP_TYPE;
@@ -62,14 +64,14 @@ public class Repository {
 
         getRemoteUpComingTrips();
         // return local data until load updated trips from server
-        return tripDao.getTrips(user.getId(), Trip.STATUS_UPCOMING);
+        return tripDao.getTrips(user.getId(), STATUS_UPCOMING);
 
     }
 
     public LiveData<List<Trip>> getDoneTrips() {
         getRemoteDoneTrips();
         // return local data until load updated trips from server
-        return tripDao.getTrips(user.getId(), Trip.STATUS_DONE);
+        return tripDao.getTrips(user.getId(), STATUS_DONE);
 
     }
 
@@ -78,15 +80,14 @@ public class Repository {
 
         getRemoteCanceledTrips();
         // return local data until load updated trips from server
-        return tripDao.getTrips(user.getId(), Trip.STATUS_CANCELED);
+        return tripDao.getTrips(user.getId(), STATUS_CANCELED);
 
     }
 
     private void getRemoteUpComingTrips() {
 
-        Date currentTime = Calendar.getInstance().getTime();
         firebase.getUserDocument(user.getId()).collection(TRIPS)
-                .whereGreaterThanOrEqualTo("date", currentTime)
+                .whereEqualTo(TRIP_STATUS, STATUS_UPCOMING)
                 .get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 ArrayList<Trip> upComingTrips = new ArrayList<>();
@@ -105,32 +106,27 @@ public class Repository {
     }
 
 
-    public void getRemoteDoneTrips() {
-        Date currentTime = Calendar.getInstance().getTime();
+    private void getRemoteDoneTrips() {
         firebase.getUserDocument(user.getId()).collection(TRIPS)
-                .whereLessThanOrEqualTo("date", currentTime)
-                .whereEqualTo(TRIP_STATUS, Trip.STATUS_DONE)
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    ArrayList<Trip> pastTrips = new ArrayList<>();
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        pastTrips.add(getTrip(document));
+                .whereEqualTo(TRIP_STATUS, STATUS_DONE)
+                .get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        ArrayList<Trip> pastTrips = new ArrayList<>();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            pastTrips.add(getTrip(document));
+                        }
+                        tripDao.insertTrip(pastTrips);
+                    } else {
+                        Log.e(TAG,  task.getException().getMessage());
                     }
-                    tripDao.insertTrip(pastTrips);
-                } else {
-                    Log.e(TAG,  task.getException().getMessage());
-                }
-            }
-        });
+                });
 
 
     }
 
-    public void getRemoteCanceledTrips() {
+    private void getRemoteCanceledTrips() {
         firebase.getUserDocument(user.getId()).collection(TRIPS)
-                .whereEqualTo(TRIP_STATUS, Trip.STATUS_CANCELED)
+                .whereEqualTo(TRIP_STATUS, STATUS_CANCELED)
                 .get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 ArrayList<Trip> pastTrips = new ArrayList<>();
@@ -152,6 +148,7 @@ public class Repository {
         userData.put(NAME, user.getName());
         userData.put("imageUrl", user.getProfileUrl());
         firebase.getUserDocument(user.getId()).set(userData);
+        setCurrentUser(user);
     }
 
     public LiveData<List<Note>> getTodoNotes(final int tripId) {
@@ -179,6 +176,8 @@ public class Repository {
             long id = tripDao.insertTrip(trip);
 
             if (id != -1) {
+                trip.setId(id);
+                trip.setTripStatus(STATUS_UPCOMING);
                 // insert notes if it has
                 if (!notes.isEmpty())
                     for (Note note : notes) {
@@ -187,7 +186,6 @@ public class Repository {
                 long[] ids = tripDao.insertNote(notes);
 
                 // update the server
-                if (!trip.isOnline()) {
                     firebase.getTripDocument(user.getId(), String.valueOf(id))
                             .set(trip).addOnSuccessListener(aVoid ->
                     {
@@ -198,7 +196,6 @@ public class Repository {
                         inserted.postValue(true);
                     });
                 }
-            }
         });
         return inserted;
     }
@@ -206,6 +203,8 @@ public class Repository {
     private Trip getTrip(QueryDocumentSnapshot document) {
         Map<String, Object> startPlace = (Map<String, Object>) document.get(START_POINT);
         Map<String, Object> endPlace = (Map<String, Object>) document.get(END_POINT);
+        Log.d(TAG, "lat: "+startPlace.get("lat"));
+        Log.d(TAG, "long"+startPlace.get("long"));
         return new Trip(
                 Integer.parseInt(document.getId()),
                 document.getString(USER_ID),

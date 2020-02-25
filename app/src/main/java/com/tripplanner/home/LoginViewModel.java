@@ -25,17 +25,12 @@ public class LoginViewModel extends AndroidViewModel {
     }
 
     //map FirebaseUser Into User entity
-    public User mapFirebaseUserIntoUser(FirebaseUser firebaseUser) {
-        User currentUser = new User(firebaseUser.getUid(), firebaseUser.getDisplayName(), firebaseUser.getPhotoUrl().toString());
-        return currentUser;
+    private User mapFirebaseUserIntoUser(FirebaseUser firebaseUser) {
+        return new User(firebaseUser.getUid(), firebaseUser.getDisplayName(), firebaseUser.getPhotoUrl().toString());
     }
 
-    public void insertUser(User user) {
+    private void insertUser(User user) {
         repository.insertUser(user);
     }
 
-    public void setCurrentUser(FirebaseUser firebaseUser) {
-        User currentUser = new User(firebaseUser.getUid(), firebaseUser.getDisplayName(), firebaseUser.getPhotoUrl().toString());
-        repository.setCurrentUser(currentUser);
-    }
 }

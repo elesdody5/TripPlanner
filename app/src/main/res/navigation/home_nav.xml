@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/home_nav"
-    app:startDestination="@id/addTripFragment">
+    app:startDestination="@id/homeFragment">
 <!--omnia-->
     <fragment
         android:id="@+id/homeFragment"
@@ -13,9 +13,18 @@
         <action
             android:id="@+id/action_homeFragment_to_addTripFragment"
             app:destination="@id/addTripFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_previousTripFragment"
+            app:destination="@id/previousTripFragment" />
     </fragment>
     <!--omnia-->
     <!--sara-->
+    <fragment
+    android:id="@+id/previousTripFragment"
+    android:name="com.tripplanner.previous_trip.PreviousTripFragment"
+    android:label="previous_trip_fragment"
+    tools:layout="@layout/previous_trip_fragment" />
+
     <!--sara-->
     <!--elesdody-->
     <fragment

@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -71,10 +72,10 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
 
 
 
-    void setViewModel(){
+    private void setViewModel(){
         model= ViewModelProviders.of(requireActivity()).get(HomeViewModel.class);
-
         binding.setModel(model);
+        binding.setHomeFragment(this);
 //        model.getTrips().observe(this, new Observer<List<Trip>>() {
 //            @Override
 //            public void onChanged(List<Trip> Trips) {
@@ -88,8 +89,7 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
    }
 
     public void addTrip(View view){
-     model.addTrip();
-
+        Navigation.findNavController(view).navigate(R.id.addTripFragment);
    }
 
    void deleteTrip(Trip trip){

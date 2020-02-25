@@ -15,14 +15,15 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.tripplanner.R;
-import com.tripplanner.data_layer.local_data.Entity.Place;
-import com.tripplanner.data_layer.local_data.Entity.Trip;
+import com.tripplanner.data_layer.local_data.entity.Place;
+import com.tripplanner.data_layer.local_data.entity.Trip;
 import com.tripplanner.databinding.PreviousTripFragmentBinding;
 
 import java.util.ArrayList;
@@ -157,6 +158,7 @@ public class PreviousTripFragment extends Fragment {
                 finishedTripAdapter.setArray(trips);
                 finishedTripAdapter.notifyDataSetChanged();
                 finshedtripList=trips;
+                Log.d("previos", "onChanged: ");
             }
         });
     }

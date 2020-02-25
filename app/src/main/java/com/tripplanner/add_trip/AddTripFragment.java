@@ -21,6 +21,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -171,7 +172,6 @@ public class AddTripFragment extends Fragment {
             Toast.makeText(getContext(), "Please choose trip date and time", Toast.LENGTH_SHORT).show();
         }
         if (hasDateTime && hasName) {
-            Log.d(TAG, "insert: " + trip);
 
             tripViewModel.insertTrip(trip, noteAdapter.getNotes()).observe(getActivity(), aBoolean -> {
                 Toast.makeText(getContext(),"Inserted Successfully",Toast.LENGTH_SHORT).show();
@@ -183,7 +183,7 @@ public class AddTripFragment extends Fragment {
 
 
     }
-    public void setAlarmManger() {
+    private void setAlarmManger() {
 
         // Set the alarm to start at 8:30 a.m.
          Calendar calendar = Calendar.getInstance();
@@ -200,5 +200,9 @@ public class AddTripFragment extends Fragment {
                     notifyPendingIntent);
 
         }
+    }
+    public void goback(View v)
+    {
+        Navigation.findNavController(v).popBackStack();
     }
 }

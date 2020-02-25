@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.tripplanner.Constants;
 import com.tripplanner.R;
-import com.tripplanner.data_layer.local_data.Entity.Trip;
+import com.tripplanner.data_layer.local_data.entity.Trip;
 import com.tripplanner.databinding.PreviousTripContentBinding;
 
 import java.util.List;

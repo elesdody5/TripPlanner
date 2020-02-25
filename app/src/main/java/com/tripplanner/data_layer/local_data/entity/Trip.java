@@ -16,9 +16,6 @@ import java.util.List;
 
 @Entity(tableName = "trip_table")
 public class Trip {
-    public  static final int STATUS_CANCELED=0;
-    public  static final int STATUS_DONE=1;
-    public  static final int STATUS_UPCOMING=2;
 
 
 

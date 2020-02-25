@@ -8,7 +8,9 @@
         <variable
             name="model"
             type="com.tripplanner.home.HomeViewModel" />
-
+        <variable
+            name="homeFragment"
+            type="com.tripplanner.home.HomeFragment" />
 
     </data>
 
@@ -68,7 +70,7 @@
                 android:id="@+id/imageView"
                 android:layout_width="27dp"
                 android:layout_height="36dp"
-                android:onClick="addTrip"
+                android:onClick="@{(view)->homeFragment.addTrip(view)}"
                 android:src="@drawable/add"
                 app:layout_constraintBottom_toBottomOf="@+id/textView"
                 app:layout_constraintEnd_toEndOf="@+id/searchView" />

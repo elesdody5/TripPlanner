@@ -8,7 +8,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.tripplanner.data_layer.Repository;
-import com.tripplanner.data_layer.local_data.Entity.Trip;
+import com.tripplanner.data_layer.local_data.entity.Trip;
 
 import java.util.List;
 
