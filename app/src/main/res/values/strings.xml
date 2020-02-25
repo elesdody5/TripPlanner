@@ -4,12 +4,21 @@
     <string name="facebook_login_protocol_scheme" translatable="false">fb475337183137722</string>
 
     <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="previous_trip">Previous Trip</string>
+    <string name="previous_trip_finished">Finished</string>
+    <string name="previous_trip_delayed">Delayed</string>
+    <string name="delete">DELETE</string>
+    <string name="TripName">Trip Name</string>
+    <string name="trip_date">Date: 21/2/2020</string>
+    <string name="tripTime">Time: 2:00pm</string>
+    <string name="from">From:</string>
+    <string name="To">To:</string>
+    <string name="task_finished">Task: 100% Finished</string>
     <string name="Upcoming">Up Coming Trip</string>
     <string name="Date">Date:</string>
     <string name="Time">Time:</string>
-    <string name="TripName">Trip Name</string>
-    <string name="From">From:</string>
-    <string name="To">To:</string>
+  <string name="TripName">Trip Name</string>
     <string name="DELETE">DELETE</string>
     <string name="StartTrip">Start Trip</string>
 </resources>
