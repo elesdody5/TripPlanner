@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+
+    <!-- sara-->
+    <color name="white">#FFFFFF</color>
+    <color name="roundShapeBorder">#E7E7EB</color>
+    <color name="bg_row_background">#fa315b</color>
+    <color name="item_name">#535353</color>
+    <color name="description">#a9a9a9</color>
+    <color name="black">#000000</color>
+    <color name="purple">#EC3BF8</color>
+    <color name="orange">#E68516</color>
+
+    <!---sara -->
+
+    <color name="colorPrimary">#ED77F9</color>
+    <color name="colorPrimaryDark">#FEFEFE</color>
+    <color name="colorAccent">#EC3BF8</color>
+
 </resources>

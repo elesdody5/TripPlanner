@@ -15,6 +15,7 @@ public class Note {
     private boolean checked;
 
     public Note(long id, String noteName, long tripId,boolean checked) {
+
         this.id = id;
         this.noteName = noteName;
         this.tripId = tripId;
@@ -26,6 +27,7 @@ public class Note {
         this.tripId = tripId;
         this.checked=checked;
     }
+
     @Ignore
     public Note() {
     }
@@ -62,5 +64,6 @@ public class Note {
     public void setTripId(long tripId) {
         this.tripId = tripId;
     }
+
 
 }

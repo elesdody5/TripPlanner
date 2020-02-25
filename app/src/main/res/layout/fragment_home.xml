@@ -1,14 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".home.HomeFragment">
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <data>
+
+        <variable
+            name="model"
+            type="com.tripplanner.home.HomeViewModel" />
+
+
+    </data>
+
+    <LinearLayout
+        android:id="@+id/mainlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:background="#fefefe"
+        android:clickable="false"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        tools:context=".home.HomeFragment">
 
-</FrameLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:background="@drawable/header_shape"
+            android:backgroundTint="#FEFEFE"
+            android:clipToPadding="false"
+            app:elevation="1dp"
+            android:outlineProvider="background">
+
+            <SearchView
+                android:id="@+id/searchView"
+                android:layout_width="350dp"
+                android:layout_height="51dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/search"
+                android:elevation="-3dp"
+                android:queryHint="Search Trips"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.482"
+                app:layout_constraintStart_toStartOf="parent">
+
+            </SearchView>
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="229dp"
+                android:layout_height="34dp"
+                android:layout_marginBottom="16dp"
+                android:fontFamily="sans-serif"
+                android:letterSpacing="5"
+                android:text="Up Coming Trips"
+                android:textColor="#050505"
+                android:textColorHint="#FC070707"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/searchView"
+                app:layout_constraintStart_toStartOf="@+id/searchView" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="27dp"
+                android:layout_height="36dp"
+                android:onClick="addTrip"
+                android:src="@drawable/add"
+                app:layout_constraintBottom_toBottomOf="@+id/textView"
+                app:layout_constraintEnd_toEndOf="@+id/searchView" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/TripList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout></layout>

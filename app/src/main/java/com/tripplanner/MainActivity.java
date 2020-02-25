@@ -2,12 +2,17 @@ package com.tripplanner;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 import android.os.Bundle;
 
 /*sara*/
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.tripplanner.R;
@@ -31,8 +36,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        BottomNavigationView navView = findViewById(R.id.nav_view);
 
+        NavController navController = Navigation.findNavController(this,R.id.nav_host_fragment);
+        NavigationUI.setupWithNavController(navView, navController);
         /*sara*/
+        /*
         user = FirebaseAuth.getInstance().getCurrentUser();
         loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
         if (user == null) {
@@ -42,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             setContentView(R.layout.activity_main);
             loginViewModel.setCurrentUser(user);
-        }
+        }*/
 
         /*sara*/
     }
@@ -67,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 RC_SIGN_IN);
     }
 
-    @Override
+   /* @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -86,6 +96,6 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         }
-    }
+    }*/
     /*sara*/
 }

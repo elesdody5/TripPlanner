@@ -34,6 +34,7 @@ public class Trip {
     private Place endPoint;
     private boolean tripType;
     private  int tripStatus;
+
     @TypeConverters({DateTimeConverter.class})
     @ServerTimestamp
     private Date tripDate;
@@ -43,7 +44,9 @@ public class Trip {
 
 
 
+
     public Trip(long id, String userId, String name, Place startPoint, Place endPoint, boolean tripType, int tripStatus, Date tripDate, boolean online) {
+
         this.id = id;
         this.name = name;
         this.startPoint = startPoint;
@@ -69,6 +72,7 @@ public class Trip {
     @Ignore
     public Trip() {
     }
+
 
 
     public long getId() {
@@ -112,6 +116,7 @@ public class Trip {
     }
 
     public int getTripStatus() {
+
         return tripStatus;
     }
 
@@ -164,4 +169,5 @@ public class Trip {
                 ", online=" + online +
                 '}';
     }
+
 }

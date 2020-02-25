@@ -8,7 +8,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -121,7 +120,7 @@ public class Repository {
                     }
                     tripDao.insertTrip(pastTrips);
                 } else {
-                    Log.w(TAG, "Error getting documents.", task.getException());
+                    Log.e(TAG,  task.getException().getMessage());
                 }
             }
         });
