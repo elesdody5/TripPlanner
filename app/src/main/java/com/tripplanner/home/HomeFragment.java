@@ -20,7 +20,7 @@ import android.view.ViewGroup;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.tripplanner.R;
-import com.tripplanner.Trip;
+import com.tripplanner.data_layer.local_data.entity.Trip;
 import com.tripplanner.databinding.FragmentHomeBinding;
 
 import java.util.List;
@@ -75,13 +75,13 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
         model= ViewModelProviders.of(requireActivity()).get(HomeViewModel.class);
 
         binding.setModel(model);
-        model.getTrips().observe(this, new Observer<List<Trip>>() {
-            @Override
-            public void onChanged(List<Trip> Trips) {
-                HomeFragment.this.displayTrips(Trips);
-                displayTrips(Trips);
-            }
-        });
+//        model.getTrips().observe(this, new Observer<List<Trip>>() {
+//            @Override
+//            public void onChanged(List<Trip> Trips) {
+//                HomeFragment.this.displayTrips(Trips);
+//                displayTrips(Trips);
+//            }
+//        });
     }
    void displayTrips(List<Trip> trips){
         mAdapter.setTripList(trips);

@@ -7,7 +7,7 @@
     <data>
         <variable
             name="obj"
-            type="com.tripplanner.Trip" />
+            type="com.tripplanner.data_layer.local_data.entity.Trip" />
 
     </data>
 
@@ -19,49 +19,46 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/background"
             android:layout_width="350dp"
-            android:layout_height="match_parent"
+            android:layout_height="97dp"
             android:background="@drawable/bottom_menu_shape"
+            android:backgroundTint="#F85973"
             android:elevation="2dp"
             android:outlineProvider="bounds"
-            app:cardBackgroundColor="#F85973"
+            android:visibility="visible"
+            app:cardBackgroundColor="#fefefe"
             app:cardCornerRadius="10dp"
-            app:cardElevation="2dp"
+            app:cardElevation="3dp"
             app:cardForegroundColor="#fefefe">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="60dp"
-                    android:layout_marginBottom="16dp"
-                    android:text="@string/DELETE"
-                    android:textColor="#FEFEFE"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="18dp"
+                    android:layout_height="23dp"
+                    android:layout_marginEnd="30dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.49" />
+                    app:layout_constraintVertical_bias="0.492"
+                    app:srcCompat="@drawable/delete" />
 
-                <ImageView
-                    android:id="@+id/imageView2"
+                <TextView
+                    android:id="@+id/textView3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/textView2"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/textView2"
-                    app:layout_constraintTop_toTopOf="@+id/textView2"
-                    app:srcCompat="@drawable/delete" />
+                    android:text="DELETE"
+                    android:textColor="#FEFEFE"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+                    app:layout_constraintEnd_toStartOf="@+id/imageView2"
+                    app:layout_constraintTop_toTopOf="@+id/imageView2" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.cardview.widget.CardView>
+
 
         <androidx.cardview.widget.CardView
             android:id="@+id/foreground"
@@ -70,14 +67,16 @@
             android:background="@drawable/bottom_menu_shape"
             android:elevation="2dp"
             android:outlineProvider="bounds"
+
+            android:visibility="invisible"
             app:cardBackgroundColor="#fefefe"
             app:cardCornerRadius="10dp"
-            app:cardElevation="2dp"
+            app:cardElevation="3dp"
             app:cardForegroundColor="#fefefe">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="103dp">
+                android:layout_height="97dp">
 
                 <TextView
                     android:id="@+id/Date"
@@ -112,12 +111,10 @@
                     android:id="@+id/textView6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="32dp"
                     android:text="@string/From"
                     android:textSize="12sp"
-                    app:layout_constraintBottom_toTopOf="@+id/textView7"
-                    app:layout_constraintStart_toStartOf="@+id/textView7"
-                    app:layout_constraintTop_toTopOf="@+id/Name" />
+                    app:layout_constraintBottom_toBottomOf="@+id/Name"
+                    app:layout_constraintStart_toStartOf="@+id/textView7" />
 
                 <TextView
                     android:id="@+id/textView7"
@@ -126,41 +123,42 @@
                     android:layout_marginStart="17dp"
                     android:text="@string/To"
                     android:textSize="12sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/textView5"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageView6"
                     app:layout_constraintStart_toEndOf="@+id/imageView6" />
 
                 <TextView
                     android:id="@+id/textView5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="3dp"
                     android:text="@string/Time"
                     android:textColor="#676565"
                     android:textSize="12sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/textView4" />
+                    app:layout_constraintStart_toStartOf="@+id/textView4"
+                    app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
                 <ImageView
                     android:id="@+id/imageView6"
-                    android:layout_width="18dp"
-                    android:layout_height="70dp"
+                    android:layout_width="19dp"
+                    android:layout_height="54dp"
                     android:layout_marginStart="30dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginEnd="30dp"
+                    android:layout_marginBottom="16dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.501"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.542"
+                    app:layout_constraintVertical_bias="0.04000002"
                     app:srcCompat="@drawable/from_to" />
 
                 <TextView
                     android:id="@+id/Name"
-                    android:layout_width="121dp"
-                    android:layout_height="24dp"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="16dp"
-                    android:text="@={obj.name}"
+                    android:layout_width="117dp"
+                    android:layout_height="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
                     android:textColor="#FD0F0F0F"
                     android:textSize="15sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -170,11 +168,9 @@
                     android:id="@+id/textView4"
                     android:layout_width="35dp"
                     android:layout_height="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="3dp"
                     android:text="@string/Date"
                     android:textSize="12sp"
-                    app:layout_constraintBottom_toTopOf="@+id/textView5"
                     app:layout_constraintStart_toStartOf="@+id/Name"
                     app:layout_constraintTop_toBottomOf="@+id/Name" />
 
@@ -186,6 +182,18 @@
                     android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="@+id/textView7"
                     app:layout_constraintStart_toStartOf="@+id/From" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginBottom="16dp"
+                    android:text="@string/StartTrip"
+                    android:textColor="#18F228"
+                    android:textSize="12dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

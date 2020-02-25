@@ -6,11 +6,8 @@ import androidx.room.Database;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-import com.tripplanner.data_layer.local_data.Entity.Note;
-import com.tripplanner.Trip;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import com.tripplanner.data_layer.local_data.entity.Note;
+import com.tripplanner.data_layer.local_data.entity.Trip;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

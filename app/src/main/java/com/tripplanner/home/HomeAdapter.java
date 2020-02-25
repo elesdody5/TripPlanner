@@ -8,7 +8,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import com.tripplanner.Trip;
+import com.tripplanner.data_layer.local_data.entity.Trip;
 import com.tripplanner.databinding.TripCardBinding;
 
 import java.util.List;
@@ -72,20 +72,22 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
         // Return the size of your dataset (invoked by the layout manager)
         @Override
         public int getItemCount() {
+         if (trips!=null)
             return trips.size();
+         else return 0;
         }
 
 
         public void removeItem(int position) {
-
+            trips.remove(position);
+            // notify the item removed by position
+            // to perform recycler view delete animations
+            notifyItemRemoved(position);
 
        }
 
     public void DeleteTrip(int position) {
-        trips.remove(position);
-        // notify the item removed by position
-        // to perform recycler view delete animations
-        notifyItemRemoved(position);
+
 
 
     }

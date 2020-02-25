@@ -11,4 +11,5 @@
     <string name="From">From:</string>
     <string name="To">To:</string>
     <string name="DELETE">DELETE</string>
+    <string name="StartTrip">Start Trip</string>
 </resources>

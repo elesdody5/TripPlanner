@@ -1,19 +1,9 @@
 package com.tripplanner.data_layer.remote;
 
-import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.WriteBatch;
-import com.google.firebase.firestore.model.DocumentCollections;
-import com.tripplanner.data_layer.local_data.Entity.User;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static com.tripplanner.Constants.TRIPS;
 import static com.tripplanner.Constants.USERS;

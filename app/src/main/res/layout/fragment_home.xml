@@ -29,7 +29,7 @@
             android:background="@drawable/header_shape"
             android:backgroundTint="#FEFEFE"
             android:clipToPadding="false"
-            android:elevation="3dp"
+            app:elevation="1dp"
             android:outlineProvider="background">
 
             <SearchView
@@ -51,10 +51,10 @@
 
             <TextView
                 android:id="@+id/textView"
-                android:layout_width="188dp"
-                android:layout_height="35dp"
+                android:layout_width="229dp"
+                android:layout_height="34dp"
                 android:layout_marginBottom="16dp"
-                android:fontFamily="sans-serif-condensed-light"
+                android:fontFamily="sans-serif"
                 android:letterSpacing="5"
                 android:text="Up Coming Trips"
                 android:textColor="#050505"

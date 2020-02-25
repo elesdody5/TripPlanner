@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this,R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(navView, navController);
         /*sara*/
+        /*
         user = FirebaseAuth.getInstance().getCurrentUser();
         loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
         if (user == null) {
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             setContentView(R.layout.activity_main);
             loginViewModel.setCurrentUser(user);
-        }
+        }*/
 
         /*sara*/
     }
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 RC_SIGN_IN);
     }
 
-    @Override
+   /* @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -95,6 +96,6 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         }
-    }
+    }*/
     /*sara*/
 }

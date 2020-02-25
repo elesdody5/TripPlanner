@@ -5,11 +5,10 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.tripplanner.data_layer.Repository;
-import com.tripplanner.data_layer.local_data.Entity.Note;
-import com.tripplanner.Trip;
+import com.tripplanner.data_layer.local_data.entity.Note;
+import com.tripplanner.data_layer.local_data.entity.Trip;
 import com.tripplanner.data_layer.local_data.TripDao;
 
 import java.util.List;
