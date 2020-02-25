@@ -3,14 +3,12 @@ package com.tripplanner.home;
 
 import android.app.Application;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.tripplanner.data_layer.Repository;
-import com.tripplanner.data_layer.local_data.Entity.User;
+import com.tripplanner.data_layer.local_data.entity.User;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.ViewModel;
 
 public class LoginViewModel extends AndroidViewModel {
     Repository repository;
