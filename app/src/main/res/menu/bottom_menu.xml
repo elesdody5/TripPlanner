@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:icon="@drawable/ic_route"
+        android:title="Previous Trips" />
+
+    <item
+        android:icon="@drawable/ic_home"
+        android:iconTint="#928D8D"
+        android:title="Home" />
+    <item
+        android:icon="@drawable/ic_user"
+        android:iconTint="#928D8D"
+        android:title="Profile" />
+
+</menu>

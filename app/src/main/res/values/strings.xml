@@ -4,5 +4,12 @@
     <string name="facebook_login_protocol_scheme" translatable="false">fb475337183137722</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="Upcoming">Up Coming Trip</string>
+    <string name="Date">Date:</string>
+    <string name="Time">Time:</string>
+    <string name="TripName">Trip Name</string>
+    <string name="From">From:</string>
+    <string name="To">To:</string>
+    <string name="DELETE">DELETE</string>
+    <string name="StartTrip">Start Trip</string>
 </resources>
