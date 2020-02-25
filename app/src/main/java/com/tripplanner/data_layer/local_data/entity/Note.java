@@ -1,4 +1,4 @@
-package com.tripplanner.data_layer.local_data.Entity;
+package com.tripplanner.data_layer.local_data.entity;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;

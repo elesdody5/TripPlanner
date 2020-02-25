@@ -15,4 +15,10 @@
     <string name="from">From:</string>
     <string name="To">To:</string>
     <string name="task_finished">Task: 100% Finished</string>
+    <string name="Upcoming">Up Coming Trip</string>
+    <string name="Date">Date:</string>
+    <string name="Time">Time:</string>
+  <string name="TripName">Trip Name</string>
+    <string name="DELETE">DELETE</string>
+    <string name="StartTrip">Start Trip</string>
 </resources>
