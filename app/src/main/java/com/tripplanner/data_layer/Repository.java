@@ -88,18 +88,18 @@ public class Repository {
         firebase.getUserDocument(user.getId()).collection(TRIPS)
                 .whereGreaterThanOrEqualTo("date", currentTime)
                 .get().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        ArrayList<Trip> upComingTrips = new ArrayList<>();
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            upComingTrips.add(getTrip(document));
+            if (task.isSuccessful()) {
+                ArrayList<Trip> upComingTrips = new ArrayList<>();
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    upComingTrips.add(getTrip(document));
 
-                        }
-                        // update database
-                        tripDao.insertTrip(upComingTrips);
-                    } else {
-                        Log.w(TAG, "Error getting documents.", task.getException());
-                    }
-                });
+                }
+                // update database
+                tripDao.insertTrip(upComingTrips);
+            } else {
+                Log.w(TAG, "Error getting documents.", task.getException());
+            }
+        });
 
 
     }
@@ -132,16 +132,16 @@ public class Repository {
         firebase.getUserDocument(user.getId()).collection(TRIPS)
                 .whereEqualTo(TRIP_STATUS, Trip.STATUS_CANCELED)
                 .get().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        ArrayList<Trip> pastTrips = new ArrayList<>();
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            pastTrips.add(getTrip(document));
-                        }
-                        tripDao.insertTrip(pastTrips);
-                    } else {
-                        Log.e(TAG,  task.getException().getMessage());
-                    }
-                });
+            if (task.isSuccessful()) {
+                ArrayList<Trip> pastTrips = new ArrayList<>();
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    pastTrips.add(getTrip(document));
+                }
+                tripDao.insertTrip(pastTrips);
+            } else {
+                Log.w(TAG, "Error getting documents.", task.getException());
+            }
+        });
 
 
     }
@@ -173,41 +173,34 @@ public class Repository {
         return notes;
     }
 
-
-    public void insertNote(final List<Note> notes) {
-        Room.databaseWriteExecutor.execute(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                         long [] ids = tripDao.insertNote(notes);
-                        for (int i =0;i<notes.size();i++) {
-                            notes.get(i).setId(ids[i]);
-                        }
-                        uploadNotes(notes);
-                    }
-                }
-        );
-    }
-
-    private void uploadNotes(List<Note> notes) {
-        int tripId = notes.get(0).getTripId();
-        WriteBatch writeBatch = firebase.getBatch();
-        for (Note note : notes) {
-            DocumentReference noteDocumentReference = firebase.getNotesCollection(user.getId(), String.valueOf(tripId)).document(String.valueOf(note.getId()));
-            writeBatch.set(noteDocumentReference, note);
-        }
-        writeBatch.commit().addOnCompleteListener(task -> Log.i(TAG, "onComplete: uploadNotes"));
-    }
-
-    public void insertTrip(final Trip trip) {
+    public LiveData<Boolean> insertTrip(final Trip trip, ArrayList<Note> notes) {
+        MutableLiveData<Boolean> inserted = new MutableLiveData<>();
         Room.databaseWriteExecutor.execute(() -> {
             long id = tripDao.insertTrip(trip);
+
             if (id != -1) {
-                firebase.getTripDocument(user.getId(), String.valueOf(id))
-                        .set(trip);
+                // insert notes if it has
+                if (!notes.isEmpty())
+                    for (Note note : notes) {
+                        note.setTripId(id);
+                    }
+                long[] ids = tripDao.insertNote(notes);
+
+                // update the server
+                if (!trip.isOnline()) {
+                    firebase.getTripDocument(user.getId(), String.valueOf(id))
+                            .set(trip).addOnSuccessListener(aVoid ->
+                    {
+                        for (int i = 0; i < notes.size(); i++) {
+                            notes.get(i).setId(ids[i]);
+                            firebase.getNotesCollection(user.getId(), String.valueOf(id)).document(String.valueOf(ids[i])).set(notes.get(i));
+                        }
+                        inserted.postValue(true);
+                    });
+                }
             }
         });
-
+        return inserted;
     }
 
     private Trip getTrip(QueryDocumentSnapshot document) {
@@ -220,7 +213,7 @@ public class Repository {
                 new Place(String.valueOf(startPlace.get(NAME)), (double) startPlace.get("lat"), (double) startPlace.get("long")),
                 new Place(String.valueOf(endPlace.get(NAME)), (double) endPlace.get("lat"), (double) endPlace.get("long")),
                 document.getBoolean(TRIP_TYPE),
-                document.getLong(TRIP_STATUS),
+                document.getLong(TRIP_STATUS).intValue(),
                 document.getDate("date"),
                 document.getBoolean(ONLINE));
 
@@ -229,26 +222,25 @@ public class Repository {
     public void setCurrentUser(User user) {
         Repository.user = user;
     }
-    public void updateTrip(Trip trip,Map<String,Object> tripData)
-    {
-        Room.databaseWriteExecutor.execute(()->{
-            int id =tripDao.updateTrip(trip);
-            if(id!=-1)
-            {
-                firebase.getTripDocument(user.getId(),String.valueOf(trip.getId()))
+
+    public void updateTrip(Trip trip, Map<String, Object> tripData) {
+        Room.databaseWriteExecutor.execute(() -> {
+            int id = tripDao.updateTrip(trip);
+            if (id != -1) {
+                firebase.getTripDocument(user.getId(), String.valueOf(trip.getId()))
                         .update(tripData)
                         .addOnSuccessListener(aVoid -> Log.i(TAG, "onSuccess: update trip"));
             }
         });
 
-    };
-    public void updateNote(Note note ,Map<String,Object> noteData)
-    {
-        Room.databaseWriteExecutor.execute(()->{
-            int id =tripDao.updateNote(note);
-            if(id!=-1)
-            {
-                firebase.getNotesCollection(user.getId(),String.valueOf(note.getTripId()))
+    }
+
+
+    public void updateNote(Note note, Map<String, Object> noteData) {
+        Room.databaseWriteExecutor.execute(() -> {
+            int id = tripDao.updateNote(note);
+            if (id != -1) {
+                firebase.getNotesCollection(user.getId(), String.valueOf(note.getTripId()))
                         .document(String.valueOf(note.getId()))
                         .update(noteData)
                         .addOnSuccessListener(aVoid -> Log.i(TAG, "onSuccess: update note"));
@@ -256,14 +248,14 @@ public class Repository {
         });
 
     }
-    public void   deleteTrip(int tripId)
-    {
+
+    public void deleteTrip(int tripId) {
         tripDao.deleteTrip(tripId);
         tripDao.deleteTripNote(tripId);
 
     }
-    public void deleteNote(Note note)
-    {
+
+    public void deleteNote(Note note) {
         tripDao.deleteTripNote(note);
     }
 

@@ -11,10 +11,11 @@ public class Note {
     @NonNull
     private long id;
     private String noteName;
-    private int tripId;
+    private long tripId;
     private boolean checked;
 
-    public Note(long id, String noteName, int tripId,boolean checked) {
+    public Note(long id, String noteName, long tripId,boolean checked) {
+
         this.id = id;
         this.noteName = noteName;
         this.tripId = tripId;
@@ -26,6 +27,11 @@ public class Note {
         this.tripId = tripId;
         this.checked=checked;
     }
+
+    @Ignore
+    public Note() {
+    }
+
 
     public boolean isChecked() {
         return checked;
@@ -51,11 +57,13 @@ public class Note {
         this.noteName = noteName;
     }
 
-    public int getTripId() {
+    public long getTripId() {
         return tripId;
     }
 
-    public void setTripId(int tripId) {
+    public void setTripId(long tripId) {
         this.tripId = tripId;
     }
+
+
 }

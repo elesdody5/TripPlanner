@@ -33,7 +33,8 @@ public class Trip {
     @Embedded(prefix = "end")
     private Place endPoint;
     private boolean tripType;
-    private  long tripStatus;
+    private  int tripStatus;
+
     @TypeConverters({DateTimeConverter.class})
     @ServerTimestamp
     private Date tripDate;
@@ -43,7 +44,9 @@ public class Trip {
 
 
 
-    public Trip(long id, String userId, String name, Place startPoint, Place endPoint, boolean tripType, long tripStatus, Date tripDate,boolean online) {
+
+    public Trip(long id, String userId, String name, Place startPoint, Place endPoint, boolean tripType, int tripStatus, Date tripDate, boolean online) {
+
         this.id = id;
         this.name = name;
         this.startPoint = startPoint;
@@ -66,6 +69,11 @@ public class Trip {
         notes=new ArrayList<>();
         this.online = online;
     }
+    @Ignore
+    public Trip() {
+    }
+
+
 
     public long getId() {
         return id;
@@ -107,7 +115,8 @@ public class Trip {
         this.tripType = tripType;
     }
 
-    public long getTripStatus() {
+    public int getTripStatus() {
+
         return tripStatus;
     }
 
@@ -144,4 +153,21 @@ public class Trip {
     public void setOnline(boolean online) {
         this.online = online;
     }
+
+    @Override
+    public String toString() {
+        return "Trip{" +
+                "id=" + id +
+                ", userId='" + userId + '\'' +
+                ", name='" + name + '\'' +
+                ", startPoint=" + startPoint +
+                ", endPoint=" + endPoint +
+                ", tripType=" + tripType +
+                ", tripStatus=" + tripStatus +
+                ", tripDate=" + tripDate +
+                ", notes=" + notes +
+                ", online=" + online +
+                '}';
+    }
+
 }
