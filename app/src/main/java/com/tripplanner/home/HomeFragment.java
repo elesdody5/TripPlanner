@@ -1,6 +1,7 @@
 package com.tripplanner.home;
 
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -21,6 +22,7 @@ import android.view.ViewGroup;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.tripplanner.R;
+import com.tripplanner.alarm.NotificationActivity;
 import com.tripplanner.data_layer.local_data.entity.Trip;
 import com.tripplanner.databinding.FragmentHomeBinding;
 
