@@ -4,7 +4,7 @@
     <string name="facebook_login_protocol_scheme" translatable="false">fb475337183137722</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="Upcoming">Up Coming Trip</string>
+    <string name="Upcoming">UpComing Trip</string>
     <string name="Date">Date:</string>
     <string name="Time">Time:</string>
     <string name="TripName">Trip Name</string>
@@ -12,5 +12,11 @@
     <string name="To">To:</string>
     <string name="DELETE">DELETE</string>
     <string name="StartTrip">Start Trip</string>
-    <string name="Upcommingtrips">Up Comming Trips</string>
+    <string name="Noconnection">No Connection</string>
+    <string name="NoUpcomingtrips">No Upcoming Trips</string>
+    <string name="Noupcomingtrips">when you add a Trip you\'ll see your   trips here</string>
+    <string name="NoResult">No Result</string>
+    <string name="textnoreslt">Sorry, there is no result for this search.
+ Please try another phrase</string>
+
 </resources>

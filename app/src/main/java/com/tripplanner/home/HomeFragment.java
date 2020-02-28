@@ -2,6 +2,7 @@ package com.tripplanner.home;
 
 
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.databinding.DataBindingUtil;
@@ -18,8 +19,10 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.tripplanner.R;
@@ -64,6 +67,7 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
         binding.TripList.setAdapter(mAdapter);
         binding.TripList.setItemAnimator(new DefaultItemAnimator());
         binding.TripList.setLayoutManager(layoutManager);
+        this.getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         binding.searchView.addTextChangedListener(new TextWatcher() {
             @Override
@@ -82,7 +86,7 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
         binding.addtrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+             conecctionStatus(false);
             }
         });
 
@@ -107,11 +111,12 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
                     if (Trips != null) {
 
                         displayTrips(Trips);
+                        binding.noupcomingrips.setVisibility(View.INVISIBLE);
                     }
                 }
             });
     }else {
-
+             binding.noupcomingrips.setVisibility(View.VISIBLE);
           }
 
 
@@ -121,6 +126,11 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
         mAdapter.setTripList(trips);
     }
 
+    void conecctionStatus(Boolean state)
+    {
+        if(state==true){ binding.noConnection.setVisibility(View.GONE);}
+        else { binding.noConnection.setVisibility(View.VISIBLE);}
+    }
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
@@ -159,7 +169,11 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
         List<Trip> filterdtrips = new ArrayList<>();
         if(text.equals("")||text==null){
 
-            if(trips!=null){ mAdapter.setTripList(trips.getValue());}
+            if(trips!=null){
+
+                mAdapter.setTripList(trips.getValue());
+                binding.noresult.setVisibility(View.INVISIBLE);
+            }
         }
 
 
@@ -170,7 +184,17 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
             }
 
         }
+        if (filterdtrips.size()<=0){
+        binding.noresult.setVisibility(View.VISIBLE);
+        binding.TripList.setVisibility(View.INVISIBLE);
+        binding.noupcomingrips.setVisibility(View.INVISIBLE);
+        }
+        else{
         mAdapter.filterList(filterdtrips);
+            binding.noresult.setVisibility(View.INVISIBLE);
+            binding.TripList.setVisibility(View.VISIBLE);
+            binding.noupcomingrips.setVisibility(View.INVISIBLE);
+        }
     }
 
 

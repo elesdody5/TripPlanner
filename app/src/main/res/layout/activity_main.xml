@@ -35,9 +35,10 @@
 
         android:background="@drawable/bottom_menu_shape"
         android:clipToPadding="false"
+        android:focusableInTouchMode="false"
         android:paddingLeft="20dp"
-        android:paddingRight="20dp"
 
+        android:paddingRight="20dp"
         app:elevation="4dp"
         app:itemRippleColor="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
