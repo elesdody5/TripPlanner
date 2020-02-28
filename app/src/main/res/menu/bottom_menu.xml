@@ -2,14 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/previousTripFragment"
         android:icon="@drawable/ic_route"
         android:title="Previous Trips" />
 
     <item
+        android:id="@+id/homeFragment"
         android:icon="@drawable/ic_home"
         android:iconTint="#928D8D"
         android:title="Home" />
     <item
+        android:id="@+id/profile_fragment"
         android:icon="@drawable/ic_user"
         android:iconTint="#928D8D"
         android:title="Profile" />

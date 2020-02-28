@@ -111,7 +111,7 @@
                     android:id="@+id/textView6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/From"
+                    android:text="@string/from"
                     android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="@+id/Name"
                     app:layout_constraintStart_toStartOf="@+id/textView7" />

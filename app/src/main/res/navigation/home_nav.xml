@@ -9,10 +9,28 @@
         android:id="@+id/homeFragment"
         android:name="com.tripplanner.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
-<!--omnia-->
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_addTripFragment"
+            app:destination="@id/addTripFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_previousTripFragment"
+            app:destination="@id/previousTripFragment" />
+    </fragment>
+    <!--omnia-->
     <!--sara-->
+    <fragment
+    android:id="@+id/previousTripFragment"
+    android:name="com.tripplanner.previous_trip.PreviousTripFragment"
+    android:label="previous_trip_fragment"
+    tools:layout="@layout/previous_trip_fragment" />
+
     <!--sara-->
     <!--elesdody-->
+    <fragment
+        android:id="@+id/addTripFragment"
+        android:name="com.tripplanner.add_trip.AddTripFragment"
+        android:label="fragment_add_trip"
+        tools:layout="@layout/fragment_add_trip" />
     <!--elesdody-->
 </navigation>
