@@ -4,9 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="note"
             type="com.tripplanner.data_layer.local_data.entity.Note" />
+
+        <import type="android.view.View" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,26 +21,38 @@
             android:id="@+id/note_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="38dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="81dp"
+            android:layout_marginStart="16dp"
+            android:text="@{note.noteName}"
             android:textColor="#999090"
             android:textSize="17sp"
-            app:layout_constraintEnd_toStartOf="@+id/checkbox"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:text="@{note.noteName}" />
+            tools:text="-visit aunt" />
 
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/checkbox"
+        <com.google.android.material.chip.Chip
+            android:id="@+id/done_chip"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="@{note.checked}"
-            android:layout_marginEnd="54dp"
+            android:text="@string/done"
+            android:textColor="@android:color/holo_blue_light"
+            android:visibility="@{note.checked?View.VISIBLE:View.INVISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/delete_icon"
+            app:layout_constraintHorizontal_bias="0.905"
+            app:layout_constraintStart_toEndOf="@+id/note_name"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/delete_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-
-            />
+            app:srcCompat="@drawable/ic_delete_black_24dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

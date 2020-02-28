@@ -19,56 +19,40 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
-            <LinearLayout
-                android:id="@+id/date_picker"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="top"
-                android:orientation="horizontal">
-
-                <com.google.android.material.textview.MaterialTextView
-                    style="@style/textViewStyle"
-                    android:layout_width="wrap_content"
-
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:startIconDrawable="@drawable/ic_date_range_black_24dp"
+                app:startIconTint="@color/colorAccent"
+                app:hintEnabled="true"
+                android:hint="@string/Date"
+                >
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/date_picker"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Date:" />
+                    android:inputType="date"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/date_tv"
-                    style="@style/textViewStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text='dd/MM/YYY' />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:src="@drawable/ic_date_range_black_24dp" />
-            </LinearLayout>
-
-            <LinearLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                android:orientation="horizontal">
-
-                <com.google.android.material.textview.MaterialTextView
-                    style="@style/textViewStyle"
-
-                    android:layout_width="wrap_content"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:startIconDrawable="@drawable/ic_access_time_black_24dp"
+                app:startIconTint="@color/colorAccent"
+                app:hintEnabled="true"
+                android:hint="@string/Time"
+                >
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/time_picker"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Time:" />
+                    android:inputType="time"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/time_tv"
-                    style="@style/textViewStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </layout>

@@ -12,7 +12,11 @@
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_homeFragment_to_addTripFragment"
-            app:destination="@id/addTripFragment" />
+            app:destination="@id/addTripFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/action_homeFragment_to_previousTripFragment"
             app:destination="@id/previousTripFragment" />
@@ -31,6 +35,12 @@
         android:id="@+id/addTripFragment"
         android:name="com.tripplanner.add_trip.AddTripFragment"
         android:label="fragment_add_trip"
-        tools:layout="@layout/fragment_add_trip" />
+        tools:layout="@layout/fragment_add_trip" >
+        <argument
+            android:name="trip"
+            app:argType="com.tripplanner.data_layer.local_data.entity.Trip"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
     <!--elesdody-->
 </navigation>

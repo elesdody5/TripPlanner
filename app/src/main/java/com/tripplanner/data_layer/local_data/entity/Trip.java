@@ -1,5 +1,8 @@
 package com.tripplanner.data_layer.local_data.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 import androidx.room.Embedded;
 import androidx.room.Entity;
@@ -15,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity(tableName = "trip_table")
-public class Trip {
+public class Trip implements Parcelable {
 
 
 
@@ -43,7 +46,6 @@ public class Trip {
 
 
     public Trip(long id, String userId, String name, Place startPoint, Place endPoint, boolean tripType, int tripStatus, Date tripDate, boolean online) {
-
         this.id = id;
         this.name = name;
         this.startPoint = startPoint;
@@ -71,6 +73,26 @@ public class Trip {
     }
 
 
+    protected Trip(Parcel in) {
+        id = in.readLong();
+        userId = in.readString();
+        name = in.readString();
+        tripType = in.readByte() != 0;
+        tripStatus = in.readInt();
+        online = in.readByte() != 0;
+    }
+
+    public static final Creator<Trip> CREATOR = new Creator<Trip>() {
+        @Override
+        public Trip createFromParcel(Parcel in) {
+            return new Trip(in);
+        }
+
+        @Override
+        public Trip[] newArray(int size) {
+            return new Trip[size];
+        }
+    };
 
     public long getId() {
         return id;
@@ -167,4 +189,18 @@ public class Trip {
                 '}';
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeLong(id);
+        parcel.writeString(userId);
+        parcel.writeString(name);
+        parcel.writeByte((byte) (tripType ? 1 : 0));
+        parcel.writeInt(tripStatus);
+        parcel.writeByte((byte) (online ? 1 : 0));
+    }
 }

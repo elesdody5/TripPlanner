@@ -27,6 +27,9 @@
             android:exported="false"></receiver>
 
         <activity android:name=".alarm.NotificationActivity" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyC77CT8-aL5JxAIVJJqOVMQD1_lHZ-WMok" />
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop">
