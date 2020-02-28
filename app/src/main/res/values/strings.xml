@@ -26,4 +26,19 @@
     <!--sara-->
     <!--elesdody-->
     <!--elesdody-->
+    <string name="Upcoming">UpComing Trip</string>
+    <string name="Date">Date:</string>
+    <string name="Time">Time:</string>
+    <string name="TripName">Trip Name</string>
+    <string name="From">From:</string>
+    <string name="To">To:</string>
+    <string name="DELETE">DELETE</string>
+    <string name="StartTrip">Start Trip</string>
+    <string name="Noconnection">No Connection</string>
+    <string name="NoUpcomingtrips">No Upcoming Trips</string>
+    <string name="Noupcomingtrips">when you add a Trip you\'ll see your   trips here</string>
+    <string name="NoResult">No Result</string>
+    <string name="textnoreslt">Sorry, there is no result for this search.
+ Please try another phrase</string>
+
 </resources>

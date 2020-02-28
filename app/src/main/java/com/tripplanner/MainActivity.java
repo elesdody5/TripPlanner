@@ -20,6 +20,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.tripplanner.R;
+import com.tripplanner.data_layer.local_data.entity.Place;
+import com.tripplanner.data_layer.local_data.entity.Trip;
 import com.tripplanner.home.LoginViewModel;
 
 import android.content.Intent;
