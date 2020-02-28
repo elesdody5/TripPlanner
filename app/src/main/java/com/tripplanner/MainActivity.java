@@ -16,12 +16,16 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.tripplanner.R;
+import com.tripplanner.data_layer.local_data.entity.Place;
+import com.tripplanner.data_layer.local_data.entity.Trip;
 import com.tripplanner.home.LoginViewModel;
 
 import android.content.Intent;
 import android.util.Log;
+import android.view.View;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /*sara*/
@@ -76,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
                         .build(),
                 RC_SIGN_IN);
     }
+
+
 
    /* @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

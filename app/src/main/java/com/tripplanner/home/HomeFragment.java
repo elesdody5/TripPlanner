@@ -14,15 +14,21 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.tripplanner.R;
+import com.tripplanner.data_layer.local_data.entity.Place;
 import com.tripplanner.data_layer.local_data.entity.Trip;
 import com.tripplanner.databinding.FragmentHomeBinding;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -36,6 +42,7 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
 
     HomeViewModel model;
     LiveData<List<Trip>> trips;
+    List<Trip> alltrips=new ArrayList<>();
     private HomeAdapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private  FragmentHomeBinding binding;
@@ -57,6 +64,28 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
         binding.TripList.setAdapter(mAdapter);
         binding.TripList.setItemAnimator(new DefaultItemAnimator());
         binding.TripList.setLayoutManager(layoutManager);
+
+        binding.searchView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                filter(editable.toString());
+            }
+        });
+
+        binding.addtrip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(binding.TripList);
 
@@ -68,49 +97,44 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
 
 
 
-
-
-
-    void setViewModel(){
-        model= ViewModelProviders.of(requireActivity()).get(HomeViewModel.class);
-
+    void setViewModel() {
+        model = ViewModelProviders.of(requireActivity()).get(HomeViewModel.class);
         binding.setModel(model);
-//        model.getTrips().observe(this, new Observer<List<Trip>>() {
-//            @Override
-//            public void onChanged(List<Trip> Trips) {
-//                HomeFragment.this.displayTrips(Trips);
-//                displayTrips(Trips);
-//            }
-//        });
+        if (model.getTrips() != null){
+            model.getTrips().observe(this, new Observer<List<Trip>>() {
+                @Override
+                public void onChanged(List<Trip> Trips) {
+                    if (Trips != null) {
+
+                        displayTrips(Trips);
+                    }
+                }
+            });
+    }else {
+
+          }
+
+
     }
-   void displayTrips(List<Trip> trips){
+
+    void displayTrips(List<Trip> trips){
         mAdapter.setTripList(trips);
-   }
+    }
 
-    public void addTrip(View view){
-     model.addTrip();
-
-   }
-
-   void deleteTrip(Trip trip){
-      mAdapter.DeleteTrip(1);
-      model.deleteTrip();
-
-   }
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
         if (viewHolder instanceof HomeAdapter.MyViewHolder) {
             // get the removed item name to display it in snack bar
-            String name = trips.getValue().get(viewHolder.getAdapterPosition()).getName();
+            String name = mAdapter.trips.get(viewHolder.getAdapterPosition()).getName();
 
             // backup of removed item for undo purpose
-            final Trip deletedTrip = trips.getValue().get(viewHolder.getAdapterPosition());
+            final Trip deletedTrip = mAdapter.trips.get(viewHolder.getAdapterPosition());
             final int deletedIndex = viewHolder.getAdapterPosition();
 
             // remove the item from recycler view
             mAdapter.removeItem(viewHolder.getAdapterPosition());
-            model.deleteTrip();
+//            model.deleteTrip(deletedTrip);
             // showing snack bar with Undo option
             Snackbar snackbar = Snackbar
                     .make(binding.mainlayout, name + " removed from cart!", Snackbar.LENGTH_LONG);
@@ -120,7 +144,7 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
 
                     // undo is selected, restore the deleted item
                     mAdapter.restoreItem(deletedTrip, deletedIndex);
-                    model.addTrip();
+    //                model.addTrip(deletedTrip);
                 }
             });
             snackbar.setActionTextColor(Color.YELLOW);
@@ -130,6 +154,24 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
     }
 
 
+    private void filter(String text) {
+
+        List<Trip> filterdtrips = new ArrayList<>();
+        if(text.equals("")||text==null){
+
+            if(trips!=null){ mAdapter.setTripList(trips.getValue());}
+        }
+
+
+        for (Trip t : mAdapter.trips) {
+            if (t.getName().toLowerCase().contains(text.toLowerCase())) {
+
+                filterdtrips.add(t);
+            }
+
+        }
+        mAdapter.filterList(filterdtrips);
+    }
 
 
     /*omnia*/
