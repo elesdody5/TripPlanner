@@ -25,24 +25,25 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
 
-    public LiveData<List<Trip>> getTrips() {
+    public LiveData<List<Trip>> getTrips(){
+        try {
+            return repo.getUpComingTrips();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+         return null;}
 
-        return repo.getUpComingTrips();
-    }
-
-    public void getTripNotes(Trip trip)  {
+    public void getTripNotes(Trip trip) throws Exception {
         repo.getTodoNotes((int)trip.getId());
 
     }
 
-    public void addTrip(){
-     // repo.
+    public void addTrip(Trip trip){
+     repo.insertTrip(trip);
     }
 
-    public  void editTrip(){}
-    public void deleteTrip(){}
-    public void deleteNote(){}
-    public  void EditTip(){}
+
+    public void deleteTrip(Trip trip){repo.deleteTrip((int)trip.getId());}
 
 
 

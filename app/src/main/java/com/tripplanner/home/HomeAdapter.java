@@ -1,20 +1,24 @@
 package com.tripplanner.home;
 
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.Filterable;
 
 import androidx.cardview.widget.CardView;
+import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.tripplanner.data_layer.local_data.entity.Trip;
 import com.tripplanner.databinding.TripCardBinding;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> {
-        private List<Trip> trips;
+        public List<Trip> trips=new ArrayList<>();
 
 
  public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -45,10 +49,15 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
             trips = myDataset;
             notifyDataSetChanged();
          }
+    public void addTripList(Trip trip) {
+        Log.i("Omnia","adding");
+        trips.add(trip);
+        notifyItemInserted(trips.size()-1);
+    }
 
 
 
-        // Create new views (invoked by the layout manager)
+    // Create new views (invoked by the layout manager)
 
 
         @Override
@@ -86,11 +95,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 
        }
 
-    public void DeleteTrip(int position) {
 
-
-
-    }
         public void restoreItem(Trip trip, int position) {
         trips.add(position, trip);
         // notify item added by position
@@ -98,4 +103,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
        }
 
 
-}
+    public void filterList(List<Trip> filterdTrips) {
+        this.trips = filterdTrips;
+        notifyDataSetChanged();
+    }
+
+
+    }
+
+
