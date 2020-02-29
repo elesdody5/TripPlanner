@@ -4,6 +4,7 @@
     package="com.tripplanner">
 
 
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -42,6 +43,11 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <service
+            android:name=".alarm.FloatingViewService"
+            android:enabled="true"
+            android:exported="false"/>
     </application>
 
 </manifest>
