@@ -25,7 +25,7 @@
         <receiver
             android:name=".alarm.NotificationActivity$TripAlarmReciver"
             android:enabled="true"
-            android:exported="false"></receiver>
+            android:exported="false"/>
 
         <activity android:name=".alarm.NotificationActivity" />
         <meta-data
@@ -34,16 +34,17 @@
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop">
+        </activity>
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+        <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
-
         <service
             android:name=".alarm.FloatingViewService"
             android:enabled="true"

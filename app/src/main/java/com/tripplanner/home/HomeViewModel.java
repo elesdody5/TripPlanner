@@ -17,7 +17,6 @@ public class HomeViewModel extends AndroidViewModel {
     Repository repo;
     LiveData<List<Trip>> data;
     LiveData<List<Note>> notes;
-    TripDao tripDao;
 
     public HomeViewModel(@NonNull Application application) {
         super(application);
@@ -38,9 +37,7 @@ public class HomeViewModel extends AndroidViewModel {
 
     }
 
-    public void addTrip(Trip trip){
-     repo.insertTrip(trip);
-    }
+
 
 
     public void deleteTrip(Trip trip){repo.deleteTrip((int)trip.getId());}

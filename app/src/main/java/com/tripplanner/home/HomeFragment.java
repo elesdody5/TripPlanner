@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -47,7 +48,6 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
 
     HomeViewModel model;
     LiveData<List<Trip>> trips;
-    List<Trip> alltrips=new ArrayList<>();
     private HomeAdapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private  FragmentHomeBinding binding;
@@ -70,7 +70,6 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
         binding.TripList.setItemAnimator(new DefaultItemAnimator());
         binding.TripList.setLayoutManager(layoutManager);
         this.getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
         binding.searchView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
@@ -85,12 +84,7 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
             }
         });
 
-        binding.addtrip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-             conecctionStatus(false);
-            }
-        });
+        binding.addtrip.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.addTripFragment));
 
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(binding.TripList);
@@ -107,14 +101,11 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
         model = ViewModelProviders.of(requireActivity()).get(HomeViewModel.class);
         binding.setModel(model);
         if (model.getTrips() != null){
-            model.getTrips().observe(this, new Observer<List<Trip>>() {
-                @Override
-                public void onChanged(List<Trip> Trips) {
-                    if (Trips != null) {
+            model.getTrips().observe(this, Trips -> {
+                if (Trips != null) {
 
-                        displayTrips(Trips);
-                        binding.noupcomingrips.setVisibility(View.INVISIBLE);
-                    }
+                    displayTrips(Trips);
+                    binding.noupcomingrips.setVisibility(View.INVISIBLE);
                 }
             });
     }else {
@@ -130,7 +121,7 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
 
     void conecctionStatus(Boolean state)
     {
-        if(state==true){ binding.noConnection.setVisibility(View.GONE);}
+        if(state){ binding.noConnection.setVisibility(View.GONE);}
         else { binding.noConnection.setVisibility(View.VISIBLE);}
     }
 
