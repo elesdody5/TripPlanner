@@ -6,6 +6,9 @@
 <variable
     name="trip"
     type="com.tripplanner.data_layer.local_data.entity.Trip" />
+        <variable
+            name="fragment"
+            type="com.tripplanner.add_trip.AddTripFragment" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -50,6 +53,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="time"
+                    android:onClick="@{()->fragment.openTimePicker()}"
                     />
             </com.google.android.material.textfield.TextInputLayout>
 

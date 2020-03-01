@@ -36,6 +36,8 @@ public class PlaceAutoSuggestAdapter extends ArrayAdapter implements Filterable 
         return results.get(pos).getName();
     }
 
+    public Place getPlace(int pos){return results.get(pos);}
+
     @Override
     public Filter getFilter(){
         Filter filter=new Filter() {

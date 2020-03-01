@@ -1,6 +1,7 @@
 package com.tripplanner.util;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
@@ -40,16 +41,16 @@ public class ValidationUtil {
             autoComplete.setError("Please enter this field");
             return false;
         }
-        return false;
+        return true;
     }
 
     private static boolean checkDate(TextInputEditText textView) {
         String time = textView.getText().toString();
-        boolean hasDateTime = !time.isEmpty();
-        if (!hasDateTime) {
+        if (TextUtils.isEmpty(time)) {
             textView.setError("Please enter date and time ");
             return false;
         }
+        Log.d("check", "checkDate: ");
         return true;
     }
 }

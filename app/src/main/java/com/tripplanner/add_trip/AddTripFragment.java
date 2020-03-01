@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -24,9 +25,11 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
+import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
+import com.tripplanner.Constants;
 import com.tripplanner.R;
 import com.tripplanner.add_trip.place.PlaceAutoSuggestAdapter;
 import com.tripplanner.alarm.NotificationActivity;
@@ -52,7 +55,10 @@ public class AddTripFragment extends Fragment {
     public static final int ALARM_ID = 200;
     private static final String TAG = "AddTripFragment";
     private Trip trip;
-    PlaceAutoSuggestAdapter adapter;
+    PlaceAutoSuggestAdapter Fromadapter;
+    PlaceAutoSuggestAdapter toAdapter;
+
+    long time;
 
     public AddTripFragment() {
     }
@@ -65,9 +71,19 @@ public class AddTripFragment extends Fragment {
                 inflater, R.layout.fragment_add_trip, container, false);
         View root = fragmentAddTripBinding.getRoot();
         tripViewModel = ViewModelProviders.of(getActivity()).get(AddTripViewModel.class);
-        fragmentAddTripBinding.placeView.fromEt.setAdapter(new PlaceAutoSuggestAdapter(getContext(), R.layout.pop_up_item));
-        fragmentAddTripBinding.placeView.toEt.setAdapter(new PlaceAutoSuggestAdapter(getContext(), R.layout.pop_up_item));
+       Fromadapter = new PlaceAutoSuggestAdapter(getContext(), R.layout.pop_up_item);
+       toAdapter = new PlaceAutoSuggestAdapter(getContext(),R.layout.pop_up_item);
+        fragmentAddTripBinding.placeView.fromEt.setAdapter(Fromadapter);
+        fragmentAddTripBinding.placeView.toEt.setAdapter(toAdapter);
+        fragmentAddTripBinding.placeView.fromEt.setOnItemClickListener((adapterView, view, i, l) -> trip.setStartPoint(Fromadapter.getPlace(i)));
+        fragmentAddTripBinding.placeView.toEt.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                trip.setEndPoint(toAdapter.getPlace(i));
+            }
+        });
         trip = AddTripFragmentArgs.fromBundle(getArguments()).getTrip();
+
         if (trip == null) {
             trip = new Trip();
         }
@@ -101,8 +117,10 @@ public class AddTripFragment extends Fragment {
     private void setupTimeDatePicker() {
         MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
         MaterialDatePicker materialDatePicker = builder.build();
+        CalendarConstraints.Builder calendarConstraints = new CalendarConstraints.Builder();
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTS"));
-        calendar.clear();
+        calendarConstraints.setStart(calendar.getTimeInMillis());
+        builder.setCalendarConstraints(calendarConstraints.build());
         long today = MaterialDatePicker.todayInUtcMilliseconds();
         builder.setSelection(today);
         fragmentAddTripBinding.dateView.datePicker.setOnClickListener(view -> {
@@ -115,9 +133,8 @@ public class AddTripFragment extends Fragment {
                     fragmentAddTripBinding.dateView.datePicker.setText(materialDatePicker.getHeaderText());
                     Date date = getDate(materialDatePicker.getHeaderText());
                     trip.setTripDate(date);
+                    Log.d(TAG, "setupTimeDatePicker: "+trip.getTripDate());
                     Log.d(TAG, "setupTimeDatePicker: " + selection.toString());
-                    openTimePicker();
-
                 }
             });
         });
@@ -134,14 +151,14 @@ public class AddTripFragment extends Fragment {
         return null;
     }
 
-    private void openTimePicker() {
+    public void openTimePicker() {
         TimePickerDialog mTimePicker;
         mTimePicker = new TimePickerDialog(getContext(), (timePicker, selectedHour, selectedMinute) -> {
             fragmentAddTripBinding.dateView.timePicker.setText(selectedHour + ":" + selectedMinute);
             Calendar cal = Calendar.getInstance();
             cal.set(Calendar.HOUR_OF_DAY, selectedHour);
             cal.set(Calendar.MINUTE, selectedMinute);
-            trip.getTripDate().setTime(cal.getTime().getTime());
+            time = cal.getTime().getTime();
         }, 12, 0, true);
         mTimePicker.setTitle("Select Time");
         mTimePicker.show();
@@ -170,13 +187,16 @@ public class AddTripFragment extends Fragment {
     }
 
     public void insertTip(View view) {
-        if (tripViewModel.validate(fragmentAddTripBinding))
+        if (tripViewModel.validate(fragmentAddTripBinding)) {
+            Log.d(TAG, "insertTip: "+trip);
+            trip.getTripDate().setTime(time);
             tripViewModel.insertTrip(trip, noteAdapter.getNotes()).observe(getActivity(), aBoolean -> {
                 Toast.makeText(getContext(), "Inserted Successfully", Toast.LENGTH_SHORT).show();
                 setAlarmManger();
                 goback(view);
             });
-}
+        }
+    }
 
     private void setAlarmManger() {
 
@@ -185,6 +205,7 @@ public class AddTripFragment extends Fragment {
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.setTime(trip.getTripDate());
         Intent notifyIntent = new Intent(getContext(), NotificationActivity.TripAlarmReciver.class);
+        notifyIntent.putExtra(Constants.TRIPS,trip.getId());
         final PendingIntent notifyPendingIntent = PendingIntent.getBroadcast
                 (getContext(), ALARM_ID, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         final AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(ALARM_SERVICE);

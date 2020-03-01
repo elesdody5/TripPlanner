@@ -86,6 +86,7 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
 
         binding.addtrip.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.addTripFragment));
 
+
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(binding.TripList);
 
@@ -102,11 +103,9 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
         binding.setModel(model);
         if (model.getTrips() != null){
             model.getTrips().observe(this, Trips -> {
-                if (Trips != null) {
-
+                //Log.d("trips", "setViewModel: "+Trips.get(0));
                     displayTrips(Trips);
                     binding.noupcomingrips.setVisibility(View.INVISIBLE);
-                }
             });
     }else {
              binding.noupcomingrips.setVisibility(View.VISIBLE);
@@ -116,6 +115,7 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
     }
 
     void displayTrips(List<Trip> trips){
+        Log.d("trips", "displayTrips: "+trips);
         mAdapter.setTripList(trips);
     }
 

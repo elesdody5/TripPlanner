@@ -11,7 +11,7 @@ public class Constants {
     public static final String TRIP_STATUS = "tripStatus";
     public static final String ONLINE = "online";
     public static final String DATE = "date";
-    public  static final int STATUS_CANCELED=0;
-    public  static final int STATUS_DONE=1;
-    public  static final int STATUS_UPCOMING=2;
+    public  static final long STATUS_CANCELED=0;
+    public  static final long STATUS_DONE=1;
+    public  static final long STATUS_UPCOMING=2;
 }

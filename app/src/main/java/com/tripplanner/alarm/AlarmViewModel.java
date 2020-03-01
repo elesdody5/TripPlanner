@@ -10,6 +10,7 @@ import com.tripplanner.data_layer.local_data.entity.Note;
 import com.tripplanner.data_layer.local_data.entity.Trip;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AlarmViewModel extends AndroidViewModel {
     Repository repo;
@@ -20,14 +21,13 @@ public class AlarmViewModel extends AndroidViewModel {
         repo=new Repository(application);
     }
 
-    public Trip getTrip(int tripId)
+    Trip getTrip(long tripId)
     {
-        return repo.getTripDummy(tripId);
-
+        return repo.getTripById(tripId);
     }
-    public ArrayList<Note> getNotes(int tripId)
+    List<Note> getNotes(long tripId)
     {
-        return repo.getNotesDummy(tripId);
+        return repo.getTripNotes(tripId);
 
     }
 

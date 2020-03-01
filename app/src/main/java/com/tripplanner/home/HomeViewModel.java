@@ -25,13 +25,9 @@ public class HomeViewModel extends AndroidViewModel {
 
 
     public LiveData<List<Trip>> getTrips(){
-        try {
-            return repo.getUpComingTrips();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-         return null;}
 
+            return repo.getUpComingTrips();
+        }
     public void getTripNotes(Trip trip) throws Exception {
         repo.getTodoNotes((int)trip.getId());
 

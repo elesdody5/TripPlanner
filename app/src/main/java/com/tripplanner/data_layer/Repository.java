@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -95,6 +96,7 @@ public class Repository {
                     upComingTrips.add(getTrip(document));
 
                 }
+                if(!upComingTrips.isEmpty())
                 // update database
                 tripDao.insertTrip(upComingTrips);
             } else {
@@ -147,8 +149,8 @@ public class Repository {
         Map<String, String> userData = new HashMap<>();
         userData.put(NAME, user.getName());
         userData.put("imageUrl", user.getProfileUrl());
-        firebase.getUserDocument(user.getId()).set(userData);
         setCurrentUser(user);
+        firebase.getUserDocument(user.getId()).set(userData);
     }
 
     public LiveData<List<Note>> getTodoNotes(final int tripId) {
@@ -173,11 +175,12 @@ public class Repository {
     public LiveData<Boolean> insertTrip(final Trip trip, ArrayList<Note> notes) {
         MutableLiveData<Boolean> inserted = new MutableLiveData<>();
         Room.databaseWriteExecutor.execute(() -> {
+            trip.setUserId(user.getId());
+            trip.setTripStatus(STATUS_UPCOMING);
             long id = tripDao.insertTrip(trip);
 
             if (id != -1) {
                 trip.setId(id);
-                trip.setTripStatus(STATUS_UPCOMING);
                 // insert notes if it has
                 if (!notes.isEmpty())
                     for (Note note : notes) {
@@ -203,14 +206,12 @@ public class Repository {
     private Trip getTrip(QueryDocumentSnapshot document) {
         Map<String, Object> startPlace = (Map<String, Object>) document.get(START_POINT);
         Map<String, Object> endPlace = (Map<String, Object>) document.get(END_POINT);
-        Log.d(TAG, "lat: "+startPlace.get("lat"));
-        Log.d(TAG, "long"+startPlace.get("long"));
         return new Trip(
                 Integer.parseInt(document.getId()),
                 document.getString(USER_ID),
                 document.getString(NAME),
-                new Place(String.valueOf(startPlace.get(NAME)), (double) startPlace.get("lat"), (double) startPlace.get("long")),
-                new Place(String.valueOf(endPlace.get(NAME)), (double) endPlace.get("lat"), (double) endPlace.get("long")),
+                new Place(String.valueOf(startPlace.get(NAME)), (double) startPlace.get("lat"), (double) startPlace.get("lng")),
+                new Place(String.valueOf(endPlace.get(NAME)), (double) endPlace.get("lat"), (double) endPlace.get("lng")),
                 document.getBoolean(TRIP_TYPE),
                 document.getLong(TRIP_STATUS).intValue(),
                 document.getDate("date"),
@@ -218,7 +219,7 @@ public class Repository {
 
     }
 
-    public void setCurrentUser(User user) {
+    private void setCurrentUser(User user) {
         Repository.user = user;
     }
 
@@ -260,26 +261,13 @@ public class Repository {
 
 
     //Trip and Note DummyData
-    public  Trip getTripDummy(int id )
+    public  Trip getTripById(long id )
     {
-
-        Place place1=new Place("ITISMART",30.071732, 31.020666);
-        Place place2=new Place("ITISMART",30.071732, 31.020666);
-        Trip trip=new Trip(2,"22","GoTo",place1,place2,false, STATUS_UPCOMING, Calendar.getInstance().getTime(),true);
-        return trip;
-    }
-    public  ArrayList<Note> getNotesDummy(int tripid)
-    {
-        Note note=new Note("ahmed",2,false);
-        Note note2=new Note("Mohamed",2,false);
-        Note note3=new Note("Tamer",2,false);
-        ArrayList<Note> notes=new ArrayList<>();
-        notes.add(note);
-        notes.add(note2);
-        notes.add(note3);
-        return  notes;
-
+        return tripDao.getTripbyId(id);
     }
 
 
+    public List<Note> getTripNotes(long tripId) {
+        return tripDao.getNotes(tripId);
+    }
 }

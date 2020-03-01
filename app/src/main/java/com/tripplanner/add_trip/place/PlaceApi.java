@@ -48,7 +48,6 @@ public class PlaceApi {
 
         try {
             JSONObject jsonObject = new JSONObject(jsonResult.toString());
-            Log.d("json", "autoComplete: " + jsonResult.toString());
             JSONArray prediction = jsonObject.getJSONArray("results");
             for (int i = 0; i < prediction.length(); i++) {
                 String name = prediction.getJSONObject(i).getString("name");

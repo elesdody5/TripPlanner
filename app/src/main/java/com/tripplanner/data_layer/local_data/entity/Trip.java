@@ -19,10 +19,6 @@ import java.util.List;
 
 @Entity(tableName = "trip_table")
 public class Trip implements Parcelable {
-
-
-
-
     @PrimaryKey(autoGenerate = true)
     @NonNull
     private long id;
@@ -33,10 +29,9 @@ public class Trip implements Parcelable {
     @Embedded(prefix = "end")
     private Place endPoint;
     private boolean tripType;
-    private  int tripStatus;
+    private  long tripStatus;
 
     @TypeConverters({DateTimeConverter.class})
-    @ServerTimestamp
     private Date tripDate;
     @Ignore
     private List<Note> notes;
@@ -45,7 +40,7 @@ public class Trip implements Parcelable {
 
 
 
-    public Trip(long id, String userId, String name, Place startPoint, Place endPoint, boolean tripType, int tripStatus, Date tripDate, boolean online) {
+    public Trip(long id, String userId, String name, Place startPoint, Place endPoint, boolean tripType, long tripStatus, Date tripDate, boolean online) {
         this.id = id;
         this.name = name;
         this.startPoint = startPoint;
@@ -57,7 +52,7 @@ public class Trip implements Parcelable {
         this.online = online;
     }
     @Ignore
-    public Trip(String userId,String name, Place startPoint, Place endPoint, boolean tripType, int tripStatus, Date tripDate,boolean online) {
+    public Trip(String userId,String name, Place startPoint, Place endPoint, boolean tripType, long tripStatus, Date tripDate,boolean online) {
         this.name = name;
         this.startPoint = startPoint;
         this.endPoint = endPoint;
@@ -78,8 +73,10 @@ public class Trip implements Parcelable {
         userId = in.readString();
         name = in.readString();
         tripType = in.readByte() != 0;
-        tripStatus = in.readInt();
+        tripStatus = in.readLong();
+        notes = in.createTypedArrayList(Note.CREATOR);
         online = in.readByte() != 0;
+        tripDate = (java.util.Date) in.readSerializable();
     }
 
     public static final Creator<Trip> CREATOR = new Creator<Trip>() {
@@ -134,12 +131,12 @@ public class Trip implements Parcelable {
         this.tripType = tripType;
     }
 
-    public int getTripStatus() {
+    public long getTripStatus() {
 
         return tripStatus;
     }
 
-    public void setTripStatus(int tripStatus) {
+    public void setTripStatus(long tripStatus) {
         this.tripStatus = tripStatus;
     }
 
@@ -200,7 +197,9 @@ public class Trip implements Parcelable {
         parcel.writeString(userId);
         parcel.writeString(name);
         parcel.writeByte((byte) (tripType ? 1 : 0));
-        parcel.writeInt(tripStatus);
+        parcel.writeLong(tripStatus);
+        parcel.writeTypedList(notes);
         parcel.writeByte((byte) (online ? 1 : 0));
+        parcel.writeSerializable(tripDate);
     }
 }
