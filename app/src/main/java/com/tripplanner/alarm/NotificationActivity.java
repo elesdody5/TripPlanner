@@ -1,52 +1,47 @@
 package com.tripplanner.alarm;
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.MediaPlayer;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.Settings;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.tripplanner.MainActivity;
-import com.tripplanner.R;
+import com.tripplanner.Constants;
 import com.tripplanner.data_layer.local_data.entity.Note;
 import com.tripplanner.data_layer.local_data.entity.Trip;
+import com.tripplanner.util.NotificationUtil;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class NotificationActivity extends AppCompatActivity {
     private static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
     AlarmViewModel alarmViewModel;
     Trip trip;
-    ArrayList<Note> tripNotes;
-
+    List<Note> tripNotes;
+    private static final String TAG = "NotificationActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         alarmViewModel = ViewModelProviders.of(this).get(AlarmViewModel.class);
-        trip = alarmViewModel.getTrip(2);
-        tripNotes = alarmViewModel.getNotes(2);
-        displayAlert();
+        Log.d(TAG, "onCreate: "+getIntent().getIntExtra(Constants.TRIPS,0));
+        trip = alarmViewModel.getTrip(getIntent().getIntExtra(Constants.TRIPS,0));
+        tripNotes = alarmViewModel.getNotes(trip.getId());
+        displayAlert(this);
     }
 
-    private void displayAlert() {
+    private void displayAlert(Context context) {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setMessage("Are you sure you want to exit?").setCancelable(false)
                 .setPositiveButton("Start", new DialogInterface.OnClickListener() {
@@ -55,18 +50,12 @@ public class NotificationActivity extends AppCompatActivity {
                         setPermation();
 
                     }
-                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
+                }).setNegativeButton("Cancel", (dialogInterface, i) -> {
 
 
-            }
-        }).setNeutralButton("Snoze", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-            }
-        });
+                }).setNeutralButton("Snoze", (dialogInterface, i) -> {
+                NotificationUtil.makeStatusNotification(trip.getName(),"Starting strip ",context);
+                });
 
         builder.show();
     }
@@ -90,9 +79,9 @@ public class NotificationActivity extends AppCompatActivity {
         } else {
             Log.d("ffff", "setPermation: fffff");
             Intent intent = new Intent(NotificationActivity.this, FloatingViewService.class);
-            intent.putParcelableArrayListExtra("notes", tripNotes);
+            intent.putParcelableArrayListExtra("notes", (ArrayList<? extends Parcelable>) tripNotes);
             startService(intent);
-            openGoogleMapDierction(trip.getEndPoint().getLatitude(), trip.getEndPoint().getLongitude());
+            openGoogleMapDierction(trip.getEndPoint().getLat(), trip.getEndPoint().getLng());
 
 
         }
@@ -105,9 +94,9 @@ public class NotificationActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 Log.d("result", "onActivityResult: ");
                 Intent intent = new Intent(NotificationActivity.this, FloatingViewService.class);
-                intent.putParcelableArrayListExtra("notes", tripNotes);
+                intent.putParcelableArrayListExtra("notes", (ArrayList<? extends Parcelable>) tripNotes);
                 startService(intent);
-                openGoogleMapDierction(trip.getEndPoint().getLatitude(), trip.getEndPoint().getLongitude());
+                openGoogleMapDierction(trip.getEndPoint().getLat(), trip.getEndPoint().getLng());
             } else { //Permission is not available
                 Toast.makeText(this,
                         "Draw over other app permission not available. Closing the application",
@@ -125,8 +114,10 @@ public class NotificationActivity extends AppCompatActivity {
 
         @Override
         public void onReceive(Context context, Intent intent) {
+            Log.d(TAG, "onReceive: "+intent.getIntExtra(Constants.TRIPS,0));
             Intent i = new Intent(context, NotificationActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            i.putExtra(Constants.TRIPS,intent.getIntExtra(Constants.TRIPS,0));
             context.startActivity(i);
         }
     }

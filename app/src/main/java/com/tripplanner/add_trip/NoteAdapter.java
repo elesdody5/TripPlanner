@@ -12,6 +12,7 @@ import com.tripplanner.data_layer.local_data.entity.Note;
 import com.tripplanner.databinding.NoteItemViewBinding;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
    private ArrayList<Note> noteList;
@@ -46,13 +47,18 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
 
     void addNote(Note note) {
         noteList.add(note);
-        notifyDataSetChanged();
+        notifyItemInserted(noteList.size()-1);
     }
     private void deleteItem(int postion)
     {
         noteList.remove(postion);
         notifyItemRemoved(postion);
     }
+   void addList(ArrayList<Note> noteList)
+   {
+       this.noteList = noteList;
+       notifyDataSetChanged();
+   }
 
     ArrayList<Note> getNotes() {
         return noteList;

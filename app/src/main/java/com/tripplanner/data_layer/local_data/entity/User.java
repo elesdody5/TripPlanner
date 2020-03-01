@@ -50,4 +50,14 @@ public class User {
     public void setTrips(List<Trip> trips) {
         this.trips = trips;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", profileUrl='" + profileUrl + '\'' +
+                ", trips=" + trips +
+                '}';
+    }
 }

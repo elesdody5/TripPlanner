@@ -48,9 +48,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         setupNavigation();
-
         loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseAuthStateListener = firebaseAuth -> {

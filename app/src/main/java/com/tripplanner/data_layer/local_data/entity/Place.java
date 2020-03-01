@@ -5,13 +5,13 @@ import androidx.room.Entity;
 @Entity(tableName = "place")
 public class Place {
     private  String name;
-    private double latitude;
-    private double longitude;
+    private double lat;
+    private double lng;
 
-    public Place(String name, double latitude, double longitude) {
+    public Place(String name, double lat, double lng) {
         this.name = name;
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.lat = lat;
+        this.lng = lng;
     }
 
 
@@ -25,19 +25,19 @@ public class Place {
         this.name = name;
     }
 
-    public double getLatitude() {
-        return latitude;
+    public double getLat() {
+        return lat;
     }
 
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
+    public void setLat(double lat) {
+        this.lat = lat;
     }
 
-    public double getLongitude() {
-        return longitude;
+    public double getLng() {
+        return lng;
     }
 
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
+    public void setLng(double lng) {
+        this.lng = lng;
     }
 }

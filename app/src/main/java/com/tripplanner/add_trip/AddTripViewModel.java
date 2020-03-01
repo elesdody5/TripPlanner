@@ -14,6 +14,7 @@ import com.tripplanner.databinding.FragmentAddTripBinding;
 import com.tripplanner.util.ValidationUtil;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AddTripViewModel extends AndroidViewModel {
     private Repository repository;
@@ -33,5 +34,9 @@ public class AddTripViewModel extends AndroidViewModel {
 
     boolean validate(FragmentAddTripBinding fragmentAddTripBinding) {
         return ValidationUtil.tripValidation(fragmentAddTripBinding);
+    }
+
+    public List<Note> getTripNote(long tripId) {
+        return repository.getTripNotes(tripId);
     }
 }

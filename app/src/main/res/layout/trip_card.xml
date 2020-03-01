@@ -12,6 +12,7 @@
     </data>
 
     <FrameLayout
+        android:id="@+id/trip_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="#fefefe"
