@@ -14,65 +14,36 @@
         android:id="@+id/constraintLayout"
         tools:context=".previous_trip.PreviousTripFragment">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/materialToolbar2"
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="64dp"
-            android:background="@drawable/round_shape"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:title="@string/previous_trip" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/materialTextView"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="@string/previous_trip_finished"
-            android:textSize="18dp"
-            app:layout_constraintEnd_toEndOf="@+id/finishedTripRecyclerView"
-            app:layout_constraintHorizontal_bias="0.044"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/materialToolbar2" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/finishedTripRecyclerView"
+         <!--   <Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />-->
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabGravity="fill"
+                app:tabMode="fixed" />
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewpager"
             android:layout_width="match_parent"
-            android:layout_height="270dp"
-            android:layout_marginStart="14dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="14dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/materialTextView" />
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:layout_editor_absoluteY="60dp" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/delayed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="14dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="331dp"
-            android:text="@string/previous_trip_delayed"
-            android:textSize="18dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/finishedTripRecyclerView" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/delayedTripRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="270dp"
-            android:layout_marginStart="14dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="14dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/delayed" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </layout>

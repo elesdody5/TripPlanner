@@ -50,9 +50,12 @@
 
     </style>
     <style name="searchInput" parent="Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
-        <item name="android:layout_marginStart">15dp</item>
-        <item name="android:layout_marginEnd">41dp</item>
-        <item name="android:layout_marginBottom">11dp</item>
-        <item name="boxBackgroundColor">#F2F5FC</item>
+    <item name="android:layout_marginStart">15dp</item>
+    <item name="android:layout_marginEnd">41dp</item>
+    <item name="android:layout_marginBottom">11dp</item>
+    <item name="boxBackgroundColor">#F2F5FC</item>
     </style>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
