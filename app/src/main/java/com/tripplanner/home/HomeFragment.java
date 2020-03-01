@@ -85,7 +85,6 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
         });
 
         binding.addtrip.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.addTripFragment));
-
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(binding.TripList);
 

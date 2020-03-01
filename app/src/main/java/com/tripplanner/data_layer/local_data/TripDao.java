@@ -42,6 +42,8 @@ public interface TripDao {
 
     @Query("Select * From trip_table where  userId=:userid AND tripStatus=:status")
     LiveData<List<Trip>> getTrips(String userid, int status);
+    @Query("select * from trip_table where id=:id")
+    Trip getTripById(long id);
 
     @Query("Select * From note_table where tripId=:tripId")
     LiveData<List<Note>> getNotes(int tripId);

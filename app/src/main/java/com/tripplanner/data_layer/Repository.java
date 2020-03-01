@@ -260,6 +260,13 @@ public class Repository {
 
 
     //Trip and Note DummyData
+
+    public Trip getTripById(long id)
+    {
+        return tripDao.getTripById(id);
+
+    }
+
     public  Trip getTripDummy(int id )
     {
 
@@ -268,12 +275,12 @@ public class Repository {
         Trip trip=new Trip(2,"22","GoTo",place1,place2,false, STATUS_UPCOMING, Calendar.getInstance().getTime(),true);
         return trip;
     }
-    public  ArrayList<Note> getNotesDummy(int tripid)
+    public  List<Note> getNotesDummy(int tripid)
     {
         Note note=new Note("ahmed",2,false);
         Note note2=new Note("Mohamed",2,false);
         Note note3=new Note("Tamer",2,false);
-        ArrayList<Note> notes=new ArrayList<>();
+        List<Note> notes=new ArrayList<>();
         notes.add(note);
         notes.add(note2);
         notes.add(note3);
