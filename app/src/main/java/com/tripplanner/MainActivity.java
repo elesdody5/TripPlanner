@@ -72,7 +72,8 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navHostFragment.getNavController());
 
         navHostFragment.getNavController().addOnDestinationChangedListener((controller, destination, arguments) -> {
-            if (destination.getId() == R.id.addTripFragment) {
+            if (destination.getId() == R.id.addTripFragment||destination.getId()==R.id.previousTripDetailsFragment2||
+            destination.getId()==R.id.loginFragment) {
                 navView.setVisibility(View.GONE);
             } else {
                 navView.setVisibility(View.VISIBLE);
@@ -86,18 +87,18 @@ public class MainActivity extends AppCompatActivity {
     //TODO create login with firebase
     public void createSignInIntent() {
 
-        List<AuthUI.IdpConfig> providers = Arrays.asList(
+     /*   List<AuthUI.IdpConfig> providers = Arrays.asList(
                 new AuthUI.IdpConfig.GoogleBuilder().build(),
-                new AuthUI.IdpConfig.FacebookBuilder().build());
+                new AuthUI.IdpConfig.FacebookBuilder().build());*/
 
         // Create and launch sign-in intent
-        startActivityForResult(
+     /*   startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
                         .setAvailableProviders(providers)
                         .setTheme(R.style.LoginTheme)
                         .build(),
-                RC_SIGN_IN);
+                RC_SIGN_IN);*/
     }
 
     @Override

@@ -14,4 +14,5 @@ public class Constants {
     public  static final int STATUS_CANCELED=0;
     public  static final int STATUS_DONE=1;
     public  static final int STATUS_UPCOMING=2;
+    public static final String KEY_TRIP="trip";
 }

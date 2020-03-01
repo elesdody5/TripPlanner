@@ -13,19 +13,17 @@ import com.tripplanner.data_layer.local_data.entity.Trip;
 
 import java.util.List;
 
-public class PreviousTripViewModel extends AndroidViewModel {
+public class DoneTripViewModel extends AndroidViewModel {
+
     // TODO: Implement the ViewModel
     Repository repository;
 
-    public PreviousTripViewModel(@NonNull Application application) {
+    public DoneTripViewModel(@NonNull Application application) {
         super(application);
         repository = new Repository(application);
     }
     public LiveData<List<Trip>> getDoneTrip() {
         Log.d("size", "getDoneTrip: "+repository.getDoneTrips().getValue());
         return repository.getDoneTrips();
-    }
-    public LiveData<List<Trip>> getCancelTrip() {
-        return repository.getCancelTrips();
     }
 }

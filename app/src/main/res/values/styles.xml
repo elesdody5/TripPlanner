@@ -35,24 +35,4 @@
         <item name="android:textColor">@android:color/black</item>
 
     </style>
-    <style name="saveButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
-        <item name="android:gravity">center</item>
-        <item name="android:layout_marginTop">8dp</item>
-        <item name="android:layout_marginBottom">11dp</item>
-        <item name="android:paddingStart">111dp</item>
-        <item name="android:paddingEnd">111dp</item>
-        <item name="android:paddingTop">12dp</item>
-        <item name="android:paddingBottom">12dp</item>
-        <item name="android:textColor">@color/colorAccent</item>
-        <item name="android:textSize">18sp</item>
-        <item name="strokeColor">@color/colorAccent</item>
-        <item name="cornerRadius">30dp</item>
-
-    </style>
-    <style name="searchInput" parent="Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
-        <item name="android:layout_marginStart">15dp</item>
-        <item name="android:layout_marginEnd">41dp</item>
-        <item name="android:layout_marginBottom">11dp</item>
-        <item name="boxBackgroundColor">#F2F5FC</item>
-    </style>
 </resources>

@@ -13,11 +13,11 @@ import com.tripplanner.data_layer.local_data.entity.Trip;
 
 import java.util.List;
 
-public class PreviousTripViewModel extends AndroidViewModel {
+public class MapContinerViewModel extends AndroidViewModel {
     // TODO: Implement the ViewModel
     Repository repository;
 
-    public PreviousTripViewModel(@NonNull Application application) {
+    public MapContinerViewModel(@NonNull Application application) {
         super(application);
         repository = new Repository(application);
     }
