@@ -39,6 +39,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.tripplanner.R;
+import com.tripplanner.data_layer.remote.Firebase;
 import com.tripplanner.databinding.LoginFragmentBinding;
 
 import java.util.Arrays;
@@ -74,6 +75,7 @@ public class LoginFragment extends Fragment {
                 inflater, R.layout.login_fragment, container, false);
         view = loginFragmentBinding.getRoot();
         auth = FirebaseAuth.getInstance();
+
         loginFragmentBinding.loginCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,12 +94,7 @@ public class LoginFragment extends Fragment {
 
         mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
         //email password
-        view.findViewById(R.id.sign_in_button_google).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                signIn();
-            }
-        });
+        view.findViewById(R.id.sign_in_button_google).setOnClickListener(view -> signIn());
         return view;
     }
 
@@ -230,6 +227,8 @@ public class LoginFragment extends Fragment {
     }
 */
     private void goHomeScreen() {
+        Log.d(TAG, "goHomeScreen: "+auth.getCurrentUser().getUid());
+        mViewModel.savetUser(auth.getCurrentUser());
         //navigation to go home
         Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_homeFragment);
 
@@ -276,7 +275,6 @@ public class LoginFragment extends Fragment {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-
                             Toast.makeText(getActivity(), "User Signed In", Toast.LENGTH_SHORT).show();
                             goHomeScreen();
                         } else {

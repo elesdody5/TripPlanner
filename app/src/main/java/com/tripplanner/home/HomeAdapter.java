@@ -3,14 +3,17 @@ package com.tripplanner.home;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filterable;
 
 import androidx.cardview.widget.CardView;
 import androidx.lifecycle.LiveData;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.tripplanner.add_trip.AddTripFragmentArgs;
 import com.tripplanner.data_layer.local_data.entity.Trip;
 import com.tripplanner.databinding.TripCardBinding;
 
@@ -75,9 +78,16 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
     public void onBindViewHolder(MyViewHolder holder, int position) {
         final Trip tripData = trips.get(position);
         holder.bind(tripData);
+        holder.binding.tripCard.setOnClickListener(view -> {
+                    HomeFragmentDirections.ActionHomeFragmentToAddTripFragment action = HomeFragmentDirections.actionHomeFragmentToAddTripFragment();
+                    action.setTrip(trips.get(position));
+                    Navigation.findNavController(view).navigate(action);
+                }
+        );
 
 
-    }
+
+}
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override

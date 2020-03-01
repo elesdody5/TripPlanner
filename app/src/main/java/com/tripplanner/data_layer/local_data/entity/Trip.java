@@ -10,11 +10,10 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
-import com.google.firebase.firestore.ServerTimestamp;
 import com.tripplanner.data_layer.local_data.DateTimeConverter;
 
-import java.util.Date;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity(tableName = "trip_table")

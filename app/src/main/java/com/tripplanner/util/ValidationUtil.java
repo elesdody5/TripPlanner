@@ -19,8 +19,8 @@ public class ValidationUtil {
         return checkName(fragmentAddTripBinding.tripToolBar.tripName)
                 && checkPlaces(fragmentAddTripBinding.placeView.fromEt)
                 && checkPlaces(fragmentAddTripBinding.placeView.toEt)
-                && checkDate(fragmentAddTripBinding.dateView.datePicker)
-                && checkDate(fragmentAddTripBinding.dateView.datePicker);
+                && checkDate(fragmentAddTripBinding.dateView.date)
+                && checkDate(fragmentAddTripBinding.dateView.time);
 
 
     }
@@ -44,7 +44,7 @@ public class ValidationUtil {
         return true;
     }
 
-    private static boolean checkDate(TextInputEditText textView) {
+    private static boolean checkDate(MaterialTextView textView) {
         String time = textView.getText().toString();
         if (TextUtils.isEmpty(time)) {
             textView.setError("Please enter date and time ");

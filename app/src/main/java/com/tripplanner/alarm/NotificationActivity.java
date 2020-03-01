@@ -38,7 +38,6 @@ public class NotificationActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: "+getIntent().getIntExtra(Constants.TRIPS,0));
         trip = alarmViewModel.getTrip(getIntent().getIntExtra(Constants.TRIPS,0));
         tripNotes = alarmViewModel.getNotes(trip.getId());
-
         displayAlert(this);
     }
 
@@ -115,6 +114,7 @@ public class NotificationActivity extends AppCompatActivity {
 
         @Override
         public void onReceive(Context context, Intent intent) {
+            Log.d(TAG, "onReceive: "+intent.getIntExtra(Constants.TRIPS,0));
             Intent i = new Intent(context, NotificationActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             i.putExtra(Constants.TRIPS,intent.getIntExtra(Constants.TRIPS,0));

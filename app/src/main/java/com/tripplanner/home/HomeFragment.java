@@ -1,8 +1,12 @@
 package com.tripplanner.home;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -25,6 +29,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.tripplanner.R;
@@ -50,7 +55,9 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
     LiveData<List<Trip>> trips;
     private HomeAdapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    private  FragmentHomeBinding binding;
+    private FragmentHomeBinding binding;
+    boolean isConnected;
+
     public HomeFragment() {
 
     }
@@ -60,11 +67,11 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         /*omnia*/
-       binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
 
-       View view = binding.getRoot();
-       layoutManager=new LinearLayoutManager(this.getContext());
-       mAdapter=new HomeAdapter();
+        View view = binding.getRoot();
+        layoutManager = new LinearLayoutManager(this.getContext());
+        mAdapter = new HomeAdapter();
         binding.TripList.setHasFixedSize(true);
         binding.TripList.setAdapter(mAdapter);
         binding.TripList.setItemAnimator(new DefaultItemAnimator());
@@ -72,10 +79,12 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
         this.getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         binding.searchView.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
 
             @Override
             public void afterTextChanged(Editable editable) {
@@ -84,45 +93,66 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
             }
         });
 
-        binding.addtrip.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.addTripFragment));
+        binding.addtrip.setOnClickListener(v ->
+
+        {
+            if (isConnected)
+                Navigation.findNavController(view).navigate(R.id.addTripFragment);
+            else
+                Toast.makeText(getActivity(), "Cannot add in Offline mode", Toast.LENGTH_LONG).show();
+        });
 
 
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(binding.TripList);
 
         setViewModel();
+        conecctionStatus(isOnline());
         return view;
 
 
     }
 
 
+    public  boolean isOnline() {
+
+
+        ConnectivityManager cm =
+                (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        }
+        return false;
+    }
 
     void setViewModel() {
         model = ViewModelProviders.of(requireActivity()).get(HomeViewModel.class);
         binding.setModel(model);
-        if (model.getTrips() != null){
-            model.getTrips().observe(this, Trips -> {
-                //Log.d("trips", "setViewModel: "+Trips.get(0));
-                    displayTrips(Trips);
-                    binding.noupcomingrips.setVisibility(View.INVISIBLE);
-            });
-    }else {
-             binding.noupcomingrips.setVisibility(View.VISIBLE);
-          }
+
+        model.getTrips().observe(getViewLifecycleOwner(), Trips -> {
+            displayTrips(Trips);
+            binding.noupcomingrips.setVisibility(View.INVISIBLE);
+        });
 
 
     }
 
-    void displayTrips(List<Trip> trips){
-        Log.d("trips", "displayTrips: "+trips);
-        mAdapter.setTripList(trips);
+    void displayTrips(List<Trip> trips) {
+        if (!trips.isEmpty())
+            mAdapter.setTripList(trips);
+        else {
+            binding.noupcomingrips.setVisibility(View.VISIBLE);
+        }
     }
 
-    void conecctionStatus(Boolean state)
-    {
-        if(state){ binding.noConnection.setVisibility(View.GONE);}
-        else { binding.noConnection.setVisibility(View.VISIBLE);}
+    void conecctionStatus(Boolean state) {
+        isConnected = state;
+        if (state) {
+            binding.noConnection.setVisibility(View.GONE);
+        } else {
+            binding.noConnection.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -147,7 +177,7 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
 
                     // undo is selected, restore the deleted item
                     mAdapter.restoreItem(deletedTrip, deletedIndex);
-    //                model.addTrip(deletedTrip);
+                    //                model.addTrip(deletedTrip);
                 }
             });
             snackbar.setActionTextColor(Color.YELLOW);
@@ -160,9 +190,9 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
     private void filter(String text) {
 
         List<Trip> filterdtrips = new ArrayList<>();
-        if(text.equals("")||text==null){
+        if (text.equals("") || text == null) {
 
-            if(trips!=null){
+            if (trips != null) {
 
                 mAdapter.setTripList(trips.getValue());
                 binding.noresult.setVisibility(View.INVISIBLE);
@@ -177,13 +207,12 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
             }
 
         }
-        if (filterdtrips.size()<=0){
-        binding.noresult.setVisibility(View.VISIBLE);
-        binding.TripList.setVisibility(View.INVISIBLE);
-        binding.noupcomingrips.setVisibility(View.INVISIBLE);
-        }
-        else{
-        mAdapter.filterList(filterdtrips);
+        if (filterdtrips.size() <= 0) {
+            binding.noresult.setVisibility(View.VISIBLE);
+            binding.TripList.setVisibility(View.INVISIBLE);
+            binding.noupcomingrips.setVisibility(View.INVISIBLE);
+        } else {
+            mAdapter.filterList(filterdtrips);
             binding.noresult.setVisibility(View.INVISIBLE);
             binding.TripList.setVisibility(View.VISIBLE);
             binding.noupcomingrips.setVisibility(View.INVISIBLE);

@@ -172,7 +172,7 @@ public class Repository {
         return notes;
     }
 
-    public LiveData<Boolean> insertTrip(final Trip trip, ArrayList<Note> notes) {
+    public LiveData<Boolean> insertTrip(Trip trip, ArrayList<Note> notes) {
         MutableLiveData<Boolean> inserted = new MutableLiveData<>();
         Room.databaseWriteExecutor.execute(() -> {
             trip.setUserId(user.getId());
@@ -214,7 +214,7 @@ public class Repository {
                 new Place(String.valueOf(endPlace.get(NAME)), (double) endPlace.get("lat"), (double) endPlace.get("lng")),
                 document.getBoolean(TRIP_TYPE),
                 document.getLong(TRIP_STATUS).intValue(),
-                document.getDate("date"),
+                document.getDate("tripDate"),
                 document.getBoolean(ONLINE));
 
     }

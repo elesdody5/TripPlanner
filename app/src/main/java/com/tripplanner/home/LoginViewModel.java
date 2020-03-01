@@ -5,10 +5,14 @@ import android.app.Application;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.tripplanner.data_layer.Repository;
+import com.tripplanner.data_layer.local_data.entity.Note;
 import com.tripplanner.data_layer.local_data.entity.User;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+
+import java.util.List;
 
 public class LoginViewModel extends AndroidViewModel {
     Repository repository;
@@ -32,5 +36,7 @@ public class LoginViewModel extends AndroidViewModel {
     private void insertUser(User user) {
         repository.insertUser(user);
     }
+
+
 
 }
