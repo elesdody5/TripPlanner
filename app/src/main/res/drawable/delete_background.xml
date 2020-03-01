@@ -9,7 +9,7 @@
         android:top="4dp">
         <shape android:shape="rectangle">
             <solid android:color="@color/bg_row_background" />
-            <corners android:radius="30dp" />
+            <corners android:radius="20dp" />
         </shape>
     </item>
 </layer-list>
