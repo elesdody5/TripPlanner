@@ -40,7 +40,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.tripplanner.Constants;
 import com.tripplanner.R;
+import com.tripplanner.data_layer.remote.Firebase;
+
 import com.tripplanner.data_layer.local_data.entity.Trip;
+
 import com.tripplanner.databinding.LoginFragmentBinding;
 import com.tripplanner.previous_trip_details.GsonUtils;
 
@@ -71,7 +74,8 @@ public class LoginFragment extends Fragment {
                 inflater, R.layout.login_fragment, container, false);
         view = loginFragmentBinding.getRoot();
         auth = FirebaseAuth.getInstance();
-         args = getArguments();
+        args = getArguments();
+
 
         loginFragmentBinding.loginCardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,6 +92,7 @@ public class LoginFragment extends Fragment {
 
         mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
         //email password
+
         view.findViewById(R.id.sign_in_button_google).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -238,6 +243,8 @@ public class LoginFragment extends Fragment {
       }
   */
     private void goHomeScreen() {
+        Log.d(TAG, "goHomeScreen: "+auth.getCurrentUser().getUid());
+        mViewModel.savetUser(auth.getCurrentUser());
         //navigation to go home
         Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_homeFragment);
 
@@ -260,11 +267,12 @@ public class LoginFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        FirebaseUser currentUser = auth.getCurrentUser();
-        String userJsonString="";
-        if(args!=null)
-        {  userJsonString = (String) args.get(Constants.USERS);}
-        currentUser= GsonUtils.getGsonParser().fromJson(userJsonString, FirebaseUser.class);
+        FirebaseUser currentUser;
+
+        currentUser = auth.getCurrentUser();
+        
+        //String userJsonString="";
+//        currentUser= GsonUtils.getGsonParser().fromJson(userJsonString, FirebaseUser.class);
         if (currentUser != null) {
             goHomeScreen();
         }
