@@ -1,6 +1,7 @@
 package com.tripplanner.home;
 
 
+
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -52,6 +53,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
     // Provide a suitable constructor (depends on the kind of dataset)
     public HomeAdapter() {
 
+
     }
 
 
@@ -59,6 +61,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
         trips = myDataset;
         notifyDataSetChanged();
     }
+
 
     public void addTripList(Trip trip) {
         Log.i("Omnia", "adding");
@@ -68,6 +71,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 
 
     // Create new views (invoked by the layout manager)
+
 
 
     @Override
@@ -96,7 +100,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 
 
 
+
 }
+
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override

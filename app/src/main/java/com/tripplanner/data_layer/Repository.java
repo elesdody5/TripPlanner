@@ -235,7 +235,6 @@ public class Repository {
 
     }
 
-
     public void updateNote(Note note, Map<String, Object> noteData) {
         Room.databaseWriteExecutor.execute(() -> {
             int id = tripDao.updateNote(note);
@@ -252,7 +251,6 @@ public class Repository {
     public void deleteTrip(int tripId) {
         tripDao.deleteTrip(tripId);
         tripDao.deleteTripNote(tripId);
-
     }
 
     public void deleteNote(Note note) {
