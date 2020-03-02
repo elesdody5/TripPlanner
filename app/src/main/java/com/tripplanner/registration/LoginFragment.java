@@ -77,6 +77,7 @@ public class LoginFragment extends Fragment {
         args = getArguments();
 
 
+
         loginFragmentBinding.loginCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

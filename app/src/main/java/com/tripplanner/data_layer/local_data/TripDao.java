@@ -11,6 +11,7 @@ import androidx.room.Update;
 import com.tripplanner.data_layer.local_data.entity.Note;
 import com.tripplanner.data_layer.local_data.entity.Trip;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Dao
@@ -32,19 +33,20 @@ public interface TripDao {
     int updateNote(Note note);
 
     @Query("DELETE FROM trip_table WHERE id = :id")
-    void deleteTrip(int id);
+    void deleteTrip(long id);
 
     @Query("DELETE FROM note_table WHERE tripId = :tripid")
-    void deleteTripNote(int tripid);
+    void deleteTripNote(long tripid);
 
     @Delete
     int deleteTripNote(Note note);
 
     @Query("Select * From trip_table where  userId=:userid AND tripStatus=:status")
-    LiveData<List<Trip>> getTrips(String userid, int status);
-
+    LiveData<List<Trip>> getTrips(String userid, long status);
+    @Query("Select * From trip_table where  id=:id")
+    Trip getTripbyId(long id);
     @Query("Select * From note_table where tripId=:tripId")
-    LiveData<List<Note>> getNotes(int tripId);
+    List<Note> getNotes(long tripId);
 
 
 }

@@ -15,6 +15,30 @@
       },
       "oauth_client": [
         {
+          "client_id": "649679824368-rpms0cutq5drvcc7tk3omakjiltf8frc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tripplanner",
+            "certificate_hash": "60006e32aee37df5e99cbe2592db6bffdf62db5d"
+          }
+        },
+        {
+          "client_id": "649679824368-vi6h1nfb7fvbnjfro352gshhhoqr3v7g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tripplanner",
+            "certificate_hash": "8f7bdd929b824159637b570049040d09579a07a6"
+          }
+        },
+        {
+          "client_id": "649679824368-acc2i373pf3bff5ukonh0aos1rjunpo1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tripplanner",
+            "certificate_hash": "a5d174a04aa9f07ccd71fbf2d5e9707e26bcb5c0"
+          }
+        },
+        {
           "client_id": "649679824368-3i9c6t257ct20p7f41ktau40j7hk4i5f.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

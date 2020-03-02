@@ -1,5 +1,8 @@
 package com.tripplanner.data_layer.local_data.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 import androidx.room.Embedded;
 import androidx.room.Entity;
@@ -7,19 +10,14 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
-import com.google.firebase.firestore.ServerTimestamp;
 import com.tripplanner.data_layer.local_data.DateTimeConverter;
 
-import java.util.Date;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity(tableName = "trip_table")
-public class Trip {
-
-
-
-
+public class Trip implements Parcelable {
     @PrimaryKey(autoGenerate = true)
     @NonNull
     private long id;
@@ -30,10 +28,9 @@ public class Trip {
     @Embedded(prefix = "end")
     private Place endPoint;
     private boolean tripType;
-    private  int tripStatus;
+    private  long tripStatus;
 
     @TypeConverters({DateTimeConverter.class})
-    @ServerTimestamp
     private Date tripDate;
     @Ignore
     private List<Note> notes;
@@ -42,8 +39,7 @@ public class Trip {
 
 
 
-    public Trip(long id, String userId, String name, Place startPoint, Place endPoint, boolean tripType, int tripStatus, Date tripDate, boolean online) {
-
+    public Trip(long id, String userId, String name, Place startPoint, Place endPoint, boolean tripType, long tripStatus, Date tripDate, boolean online) {
         this.id = id;
         this.name = name;
         this.startPoint = startPoint;
@@ -55,7 +51,7 @@ public class Trip {
         this.online = online;
     }
     @Ignore
-    public Trip(String userId,String name, Place startPoint, Place endPoint, boolean tripType, int tripStatus, Date tripDate,boolean online) {
+    public Trip(String userId,String name, Place startPoint, Place endPoint, boolean tripType, long tripStatus, Date tripDate,boolean online) {
         this.name = name;
         this.startPoint = startPoint;
         this.endPoint = endPoint;
@@ -71,6 +67,28 @@ public class Trip {
     }
 
 
+    protected Trip(Parcel in) {
+        id = in.readLong();
+        userId = in.readString();
+        name = in.readString();
+        tripType = in.readByte() != 0;
+        tripStatus = in.readLong();
+        notes = in.createTypedArrayList(Note.CREATOR);
+        online = in.readByte() != 0;
+        tripDate = (java.util.Date) in.readSerializable();
+    }
+
+    public static final Creator<Trip> CREATOR = new Creator<Trip>() {
+        @Override
+        public Trip createFromParcel(Parcel in) {
+            return new Trip(in);
+        }
+
+        @Override
+        public Trip[] newArray(int size) {
+            return new Trip[size];
+        }
+    };
 
     public long getId() {
         return id;
@@ -112,12 +130,12 @@ public class Trip {
         this.tripType = tripType;
     }
 
-    public int getTripStatus() {
+    public long getTripStatus() {
 
         return tripStatus;
     }
 
-    public void setTripStatus(int tripStatus) {
+    public void setTripStatus(long tripStatus) {
         this.tripStatus = tripStatus;
     }
 
@@ -167,4 +185,20 @@ public class Trip {
                 '}';
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeLong(id);
+        parcel.writeString(userId);
+        parcel.writeString(name);
+        parcel.writeByte((byte) (tripType ? 1 : 0));
+        parcel.writeLong(tripStatus);
+        parcel.writeTypedList(notes);
+        parcel.writeByte((byte) (online ? 1 : 0));
+        parcel.writeSerializable(tripDate);
+    }
 }

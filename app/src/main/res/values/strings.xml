@@ -20,6 +20,7 @@
     <string name="Time" >Time:</string>
     <string name="DELETE" >DELETE</string>
     <string name="StartTrip" >Start Trip</string>
+    <string name="done">Done</string>
     <!-- omnia-->
     <!-- omnia-->
     <!--sara-->
@@ -48,4 +49,12 @@
     <!--sara-->
     <!--elesdody-->
     <!--elesdody-->
+    <string name="Noconnection">No Connection</string>
+    <string name="NoUpcomingtrips">No Upcoming Trips</string>
+    <string name="Noupcomingtrips">when you add a Trip you\'ll see your   trips here</string>
+    <string name="NoResult">No Result</string>
+    <string name="textnoreslt">Sorry, there is no result for this search.
+ Please try another phrase</string>
+    <string name="round_trip">Round Trip</string>
+
 </resources>

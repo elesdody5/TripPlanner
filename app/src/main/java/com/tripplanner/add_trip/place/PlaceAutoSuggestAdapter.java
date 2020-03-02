@@ -5,11 +5,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 
+import com.tripplanner.data_layer.local_data.entity.Place;
+
 import java.util.ArrayList;
 
 public class PlaceAutoSuggestAdapter extends ArrayAdapter implements Filterable {
 
-    ArrayList<String> results;
+    ArrayList<Place> results;
 
     int resource;
     Context context;
@@ -20,6 +22,7 @@ public class PlaceAutoSuggestAdapter extends ArrayAdapter implements Filterable 
         super(context,resId);
         this.context=context;
         this.resource=resId;
+        results =new ArrayList<>();
 
     }
 
@@ -30,8 +33,10 @@ public class PlaceAutoSuggestAdapter extends ArrayAdapter implements Filterable 
 
     @Override
     public String getItem(int pos){
-        return results.get(pos);
+        return results.get(pos).getName();
     }
+
+    public Place getPlace(int pos){return results.get(pos);}
 
     @Override
     public Filter getFilter(){

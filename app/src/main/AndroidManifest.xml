@@ -4,6 +4,7 @@
     package="com.tripplanner">
 
 
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -22,27 +23,33 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
         <receiver
             android:name=".alarm.NotificationActivity$TripAlarmReciver"
             android:enabled="true"
-            android:exported="false"></receiver>
+            android:exported="false"/>
 
         <activity android:name=".alarm.NotificationActivity" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyC77CT8-aL5JxAIVJJqOVMQD1_lHZ-WMok" />
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop">
+        </activity>
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+        <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
+        <service
+            android:name=".alarm.FloatingViewService"
+            android:enabled="true"
+            android:exported="false"/>
     </application>
 
 </manifest>

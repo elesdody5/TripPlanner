@@ -12,6 +12,7 @@ import com.tripplanner.data_layer.local_data.entity.Note;
 import com.tripplanner.databinding.NoteItemViewBinding;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
    private ArrayList<Note> noteList;
@@ -34,6 +35,9 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.bind(noteList.get(position));
+        holder.binding.deleteIcon.setOnClickListener(view -> {
+            deleteItem(position);
+        });
     }
 
     @Override
@@ -41,12 +45,22 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
         return noteList.size();
     }
 
-    public void addNote(Note note) {
+    void addNote(Note note) {
         noteList.add(note);
-        notifyDataSetChanged();
+        notifyItemInserted(noteList.size()-1);
     }
+    private void deleteItem(int postion)
+    {
+        noteList.remove(postion);
+        notifyItemRemoved(postion);
+    }
+   void addList(ArrayList<Note> noteList)
+   {
+       this.noteList = noteList;
+       notifyDataSetChanged();
+   }
 
-    public ArrayList<Note> getNotes() {
+    ArrayList<Note> getNotes() {
         return noteList;
     }
 
@@ -58,12 +72,9 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
             this.binding = binding;
         }
 
-        public void bind(Note note) {
+        void bind(Note note) {
             binding.setNote(note);
             binding.executePendingBindings();
-            binding.checkbox.setOnCheckedChangeListener((compoundButton, b) -> {
-                note.setChecked(b);
-            });
         }
     }
 }

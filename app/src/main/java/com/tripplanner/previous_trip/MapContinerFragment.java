@@ -111,16 +111,16 @@ public class MapContinerFragment extends Fragment implements OnMapReadyCallback,
         //   mMap.addMarker(place2);
 
         googleMap.addMarker(new MarkerOptions()
-                .position(new LatLng(place1.getLatitude(), place2.getLongitude()))
+                .position(new LatLng(place1.getLat(), place2.getLng()))
                 .title("Marker"));
 
     }
 
     private String getUrl(Place origin, Place dest, String directionMode) {
         // Origin of route
-        String str_origin = "origin=" + origin.getLatitude() + "," + origin.getLongitude();
+        String str_origin = "origin=" + origin.getLat() + "," + origin.getLng();
         // Destination of route
-        String str_dest = "destination=" + dest.getLatitude() + "," + dest.getLongitude();
+        String str_dest = "destination=" + dest.getLat() + "," + dest.getLng();
         // Mode
         String mode = "mode=" + directionMode;
         // Building the parameters to the web service
@@ -144,7 +144,7 @@ public class MapContinerFragment extends Fragment implements OnMapReadyCallback,
             int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
             currentPolyline = mMap.addPolyline( valuesLine .get(i).color(color));
             Float zoom = mMap.getCameraPosition().zoom;
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(place1.getLatitude(), place1.getLongitude()),zoom));        }
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(place1.getLat(), place1.getLng()),zoom));        }
 
     }
 

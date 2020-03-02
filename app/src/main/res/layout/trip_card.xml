@@ -12,23 +12,28 @@
     </data>
 
     <FrameLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/trip_card"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:backgroundTint="#fefefe"
+        android:orientation="vertical"
+        android:paddingLeft="30dp"
+        android:paddingTop="10dp"
+        android:paddingRight="30dp"
+        android:paddingBottom="10dp">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/background"
-            android:layout_width="350dp"
-            android:layout_height="97dp"
-            android:background="@drawable/bottom_menu_shape"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+
             android:backgroundTint="#F85973"
-            android:elevation="2dp"
+
             android:outlineProvider="bounds"
-            android:visibility="visible"
-            app:cardBackgroundColor="#fefefe"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="3dp"
-            app:cardForegroundColor="#fefefe">
+
+            app:cardCornerRadius="13dp"
+            app:cardElevation="0dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -62,19 +67,15 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/foreground"
-            android:layout_width="350dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/bottom_menu_shape"
-            android:elevation="2dp"
-            android:outlineProvider="bounds"
 
-            android:visibility="invisible"
-            app:cardBackgroundColor="#fefefe"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="3dp"
-            app:cardForegroundColor="#fefefe">
+
+            app:cardCornerRadius="13dp"
+            app:cardElevation="0dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+
                 android:layout_width="match_parent"
                 android:layout_height="97dp">
 
@@ -83,7 +84,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:text="@{obj.tripDate.toString()}"
+                    android:text=""
                     android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="@+id/textView4"
                     app:layout_constraintStart_toEndOf="@+id/textView4" />
@@ -123,7 +124,7 @@
                     android:layout_marginStart="17dp"
                     android:text="@string/To"
                     android:textSize="12sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/imageView6"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView5"
                     app:layout_constraintStart_toEndOf="@+id/imageView6" />
 
                 <TextView
@@ -159,6 +160,7 @@
                     android:layout_height="16dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="10dp"
+                    android:text="@{obj.name}"
                     android:textColor="#FD0F0F0F"
                     android:textSize="15sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -168,7 +170,7 @@
                     android:id="@+id/textView4"
                     android:layout_width="35dp"
                     android:layout_height="16dp"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="5dp"
                     android:text="@string/Date"
                     android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="@+id/Name"
@@ -188,7 +190,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="24dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="10dp"
                     android:text="@string/StartTrip"
                     android:textColor="#18F228"
                     android:textSize="12dp"
