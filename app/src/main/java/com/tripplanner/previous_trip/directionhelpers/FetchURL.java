@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+
 import com.tripplanner.previous_trip.MapContinerFragment;
 import com.tripplanner.previous_trip.MapOfAllTripsFragment;
 import com.tripplanner.previous_trip_details.previousTripDetailsFragment;
@@ -77,7 +78,6 @@ public FetchURL(MapContinerFragment mContext)
             data = sb.toString();
             br.close();
         } catch (Exception e) {
-            Log.d("mylog", "Exception downloading URL: " + e.toString());
         } finally {
             iStream.close();
             urlConnection.disconnect();

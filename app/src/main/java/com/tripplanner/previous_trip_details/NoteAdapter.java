@@ -1,8 +1,10 @@
 package com.tripplanner.previous_trip_details;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,6 +24,11 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHandle
         this.noteList = noteList;
 
     }
+    public void setNoteList(List<Note> noteList)
+    {
+        this.noteList = noteList;
+        notifyDataSetChanged();
+    }
     @NonNull
     @Override
     public NoteViewHandler onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -33,6 +40,8 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHandle
     public void onBindViewHolder(@NonNull NoteViewHandler holder, int position) {
         Note note = noteList.get(position);
         holder.textView.setText(note.getNoteName());
+        holder.imageView_delete.setVisibility(View.INVISIBLE);
+
 
     }
 
@@ -45,9 +54,12 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHandle
 
     public class NoteViewHandler extends RecyclerView.ViewHolder {
         TextView textView;
+        ImageView imageView_delete;
         public NoteViewHandler(@NonNull View itemView) {
             super(itemView);
             textView=itemView.findViewById(R.id.note_name);
+            imageView_delete=itemView.findViewById(R.id.delete_icon);
+
         }
     }
 }

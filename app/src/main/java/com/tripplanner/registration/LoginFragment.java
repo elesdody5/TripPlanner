@@ -264,21 +264,15 @@ public class LoginFragment extends Fragment {
             }
         }
     }
-
     @Override
     public void onStart() {
         super.onStart();
         FirebaseUser currentUser;
-
         currentUser = auth.getCurrentUser();
-        
-        //String userJsonString="";
-//        currentUser= GsonUtils.getGsonParser().fromJson(userJsonString, FirebaseUser.class);
         if (currentUser != null) {
             goHomeScreen();
         }
     }
-
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
@@ -291,7 +285,6 @@ public class LoginFragment extends Fragment {
                             Toast.makeText(getActivity(), "User Signed In", Toast.LENGTH_SHORT).show();
                             goHomeScreen();
                         } else {
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
                             Toast.makeText(getActivity(), "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -299,7 +292,6 @@ public class LoginFragment extends Fragment {
                     }
                 });
     }
-
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);

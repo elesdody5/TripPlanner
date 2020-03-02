@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".previous_trip_details.previousTripDetailsFragment"
     tools:showIn="@layout/previous_trip_details_fragment">
@@ -14,42 +14,62 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         >
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardView"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_margin="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="9dp"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="5dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <LinearLayout
+        <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="10dp">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_height="wrap_content">
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:src="@drawable/from_to"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/from"
+            android:text="@string/from"
+            android:textSize="@dimen/padd_15"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/padd_15"
+            android:id="@+id/to"
+            android:layout_marginTop="13dp"
+            android:text="@string/To"/>
+    </LinearLayout>
 
-                <com.google.android.material.textview.MaterialTextView
+
+</LinearLayout>
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/Date"
-                    android:textSize="@dimen/textsize_tripDetails"
-
+                    android:text="Date"
+                    android:id="@+id/date"
+                    android:layout_marginTop="17dp"
+                    android:textColor="#000"
+                    android:layout_marginStart="15dp"
+                    android:textSize="@dimen/padd_15"
                     />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="1dp"
                     android:text="@string/Time"
-                    android:textSize="@dimen/textsize_tripDetails" />
-
+                    android:textColor="#000"
+                    android:id="@+id/time"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="17dp"
+                    android:textSize="@dimen/padd_15" />
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -72,4 +92,4 @@
                 tools:listitem="@layout/note_item_view" />
         </androidx.cardview.widget.CardView>
     </LinearLayout>
-</androidx.core.widget.NestedScrollView>
+</ScrollView>
