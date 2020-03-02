@@ -252,6 +252,7 @@ public class Repository {
     public void deleteTrip(int tripId) {
         tripDao.deleteTrip(tripId);
         tripDao.deleteTripNote(tripId);
+        firebase.getTripDocument(user.getId(),String.valueOf(tripId)).delete();
 
     }
 

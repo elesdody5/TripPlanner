@@ -68,10 +68,7 @@ public class AddTripFragment extends Fragment {
     private DatePickerDialog.OnDateSetListener dateRound;
     private Calendar myCalendar;
 
-    private long time2;
-    private long time;
-    private Date roundDate;
-
+    private Calendar calendar2;
     public AddTripFragment() {
     }
 
@@ -98,7 +95,6 @@ public class AddTripFragment extends Fragment {
         if (trip == null) {
             trip = new Trip();
         } else {
-            time = trip.getTripDate().getTime();
             timeFormat(trip.getTripDate());
             myCalendar.setTime(trip.getTripDate());
             updateLabel();
@@ -163,22 +159,22 @@ public class AddTripFragment extends Fragment {
     }
 
     private void setupTimeDatePickerRound() {
-        Calendar myCalendar = Calendar.getInstance();
+         calendar2 = Calendar.getInstance();
 
         dateRound = (view, year, monthOfYear, dayOfMonth) -> {
             // TODO Auto-generated method stub
-            myCalendar.set(Calendar.YEAR, year);
-            myCalendar.set(Calendar.MONTH, monthOfYear);
-            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            updateLabelRound(myCalendar);
+            calendar2.set(Calendar.YEAR, year);
+            calendar2.set(Calendar.MONTH, monthOfYear);
+            calendar2.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateLabelRound();
         };
 
         fragmentAddTripBinding.roundDateView.datePicker.setOnClickListener(view ->
         {
-            myCalendar.get(Calendar.YEAR);
-            new DatePickerDialog(getActivity(), dateRound, myCalendar
-                    .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                    myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            calendar2.get(Calendar.YEAR);
+            new DatePickerDialog(getActivity(), dateRound, calendar2
+                    .get(Calendar.YEAR), calendar2.get(Calendar.MONTH),
+                    calendar2.get(Calendar.DAY_OF_MONTH)).show();
         });
         fragmentAddTripBinding.roundDateView.timePicker.setOnClickListener(view -> openTimePickerRound());
 
@@ -190,25 +186,21 @@ public class AddTripFragment extends Fragment {
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         Date date = myCalendar.getTime();
         fragmentAddTripBinding.dateView.date.setText(sdf.format(date));
-        trip.setTripDate(date);
     }
 
-    private void updateLabelRound(Calendar calendar) {
+    private void updateLabelRound() {
         String myFormat = "dd/MM/yyyy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-        Date date = calendar.getTime();
+        Date date = calendar2.getTime();
         fragmentAddTripBinding.roundDateView.date.setText(sdf.format(date));
-        roundDate = date;
     }
 
     private void openTimePicker() {
         TimePickerDialog mTimePicker;
         mTimePicker = new TimePickerDialog(getContext(), (timePicker, selectedHour, selectedMinute) -> {
-            Calendar cal = Calendar.getInstance();
-            cal.set(Calendar.HOUR_OF_DAY, selectedHour);
-            cal.set(Calendar.MINUTE, selectedMinute);
-            time = cal.getTime().getTime();
-            timeFormat(cal.getTime());
+            myCalendar.set(Calendar.HOUR_OF_DAY, selectedHour);
+            myCalendar.set(Calendar.MINUTE, selectedMinute);
+            timeFormat(myCalendar.getTime());
         }, 12, 0, true);
         mTimePicker.setTitle("Select Time");
         mTimePicker.show();
@@ -217,11 +209,9 @@ public class AddTripFragment extends Fragment {
     private void openTimePickerRound() {
         TimePickerDialog mTimePicker;
         mTimePicker = new TimePickerDialog(getContext(), (timePicker, selectedHour, selectedMinute) -> {
-            Calendar cal = Calendar.getInstance();
-            cal.set(Calendar.HOUR_OF_DAY, selectedHour);
-            cal.set(Calendar.MINUTE, selectedMinute);
-            time2 = cal.getTime().getTime();
-            roundtimeFormat(cal.getTime());
+            calendar2.set(Calendar.HOUR_OF_DAY, selectedHour);
+            calendar2.set(Calendar.MINUTE, selectedMinute);
+            roundtimeFormat(calendar2.getTime());
         }, 12, 0, true);
         mTimePicker.setTitle("Select Time");
         mTimePicker.show();
@@ -264,7 +254,7 @@ public class AddTripFragment extends Fragment {
                 ArrayList<Note> notes = new ArrayList<>(noteAdapter.getNotes());
                 tripViewModel.insertTrip(roundTrip, notes).observe(getViewLifecycleOwner(), aLong -> setAlarmManger(aLong.intValue()));
             }
-                trip.getTripDate().setTime(time);
+                trip.setTripDate(myCalendar.getTime());
                 tripViewModel.insertTrip(trip, noteAdapter.getNotes()).observe(getActivity(), aLong -> {
                     Log.d(TAG, "insertTip: " + trip);
                     Toast.makeText(getContext(), "Inserted Successfully", Toast.LENGTH_SHORT).show();
@@ -280,8 +270,7 @@ public class AddTripFragment extends Fragment {
             trip.setName(fragmentAddTripBinding.tripToolBar.tripName.getText().toString());
             trip.setStartPoint(this.trip.getEndPoint());
             trip.setEndPoint(this.trip.getStartPoint());
-            roundDate.setTime(time2);
-            trip.setTripDate(roundDate);
+            trip.setTripDate(calendar2.getTime());
             return trip;
         }
 

@@ -25,8 +25,12 @@ import java.util.List;
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> {
     public List<Trip> trips = new ArrayList<>();
 
+    public List<Trip> getTrips() {
+        return trips;
+    }
+
     interface  StartTrip{
-        LiveData<Long> startTrip();
+        void startTrip(long tripId);
     }
     StartTrip startTrip ;
 
@@ -91,7 +95,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
                 }
         );
         holder.binding.startTrip.setOnClickListener(view -> {
-            startTrip.startTrip();
+            startTrip.startTrip(trips.get(position).getId());
         });
 
 
