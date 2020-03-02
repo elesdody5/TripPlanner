@@ -57,7 +57,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
     // Provide a suitable constructor (depends on the kind of dataset)
     public HomeAdapter() {
 
-       // this.startTrip = startTrip;
+
     }
 
 
