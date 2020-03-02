@@ -49,8 +49,8 @@ public class NotificationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         alarmViewModel = ViewModelProviders.of(this).get(AlarmViewModel.class);
-        trip = alarmViewModel.getTrip(2);
-        tripNotes = new ArrayList<>(alarmViewModel.getNotes(2));
+        trip = alarmViewModel.getTrip(getIntent().getIntExtra(Constants.TRIPS,0));
+        tripNotes = new ArrayList<>(alarmViewModel.getNotes(getIntent().getIntExtra(Constants.TRIPS,0)));
         tripNotification = new TripNotification(getApplicationContext(), trip);
         displayAlert();
     }
@@ -112,7 +112,7 @@ public class NotificationActivity extends AppCompatActivity {
             Intent intent = new Intent(NotificationActivity.this, FloatingViewService.class);
             intent.putParcelableArrayListExtra("notes", tripNotes);
             startService(intent);
-            openGoogleMapDierction(trip.getEndPoint().getLatitude(), trip.getEndPoint().getLongitude());
+            openGoogleMapDierction(trip.getEndPoint().getLat(), trip.getEndPoint().getLng());
 
 
         }
@@ -127,7 +127,7 @@ public class NotificationActivity extends AppCompatActivity {
                 Intent intent = new Intent(NotificationActivity.this, FloatingViewService.class);
                 intent.putParcelableArrayListExtra("notes", tripNotes);
                 startService(intent);
-                openGoogleMapDierction(trip.getEndPoint().getLatitude(), trip.getEndPoint().getLongitude());
+                openGoogleMapDierction(trip.getEndPoint().getLat(), trip.getEndPoint().getLng());
             } else { //Permission is not available
                 Toast.makeText(this,
                         "Draw over other app permission not available. Closing the application",
@@ -145,7 +145,9 @@ public class NotificationActivity extends AppCompatActivity {
 
         @Override
         public void onReceive(Context context, Intent intent) {
+             int  tripId=intent.getIntExtra(Constants.TRIPS,0);
             Intent i = new Intent(context, NotificationActivity.class);
+            i.putExtra(Constants.TRIPS,tripId);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(i);
         }

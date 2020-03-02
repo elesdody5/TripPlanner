@@ -170,7 +170,6 @@ public class FloatingViewService extends Service {
             }
         });
     }
-
     private boolean isViewCollapsed() {
         return mFloatingView == null || mFloatingView.findViewById(R.id.collapse_view).getVisibility() == View.VISIBLE;
     }
