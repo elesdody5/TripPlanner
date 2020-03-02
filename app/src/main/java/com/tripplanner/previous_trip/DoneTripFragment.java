@@ -24,6 +24,7 @@ import android.widget.FrameLayout;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.tripplanner.R;
+import com.tripplanner.data_layer.local_data.entity.Note;
 import com.tripplanner.data_layer.local_data.entity.Trip;
 import com.tripplanner.databinding.DoneTripFragmentBinding;
 
@@ -37,16 +38,27 @@ public class DoneTripFragment extends Fragment {
     private TripAdapter finishedTripAdapter;
     List<Trip> finshedtripList=new ArrayList<>();
     ConstraintLayout frameLayout;
+    DoneTripFragmentBinding binding;
+    List<Note> notes=new ArrayList<>();
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        DoneTripFragmentBinding binding = DataBindingUtil.inflate(
+         binding = DataBindingUtil.inflate(
                 inflater, R.layout.done_trip_fragment, container, false);
         View view = binding.getRoot();
             finishedTripRecView = binding.finishedTripRecyclerView;
             frameLayout = binding.mainlayout;
+        if(finshedtripList.size()==0)
+        {
+            binding.emptyStateId.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            binding.emptyStateId.setVisibility(View.INVISIBLE);
 
-            finishedTripAdapter = new TripAdapter(new ArrayList<>());
+        }
+            finishedTripAdapter = new TripAdapter(finshedtripList);
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
             finishedTripRecView.setLayoutManager(mLayoutManager);
             finishedTripRecView.setAdapter(finishedTripAdapter);
@@ -59,7 +71,8 @@ public class DoneTripFragment extends Fragment {
 
                         final Trip deletedItem = finshedtripList.get(viewHolder.getAdapterPosition());
                         final int deletedIndex = viewHolder.getAdapterPosition();
-
+                        mViewModel.deleteTrip((int) deletedItem.getId());
+                        notes=deletedItem.getNotes();
                         finishedTripAdapter.removeItem(viewHolder.getAdapterPosition());
                         Snackbar snackbar = Snackbar
                                 .make(frameLayout, name + " removed from trip!", Snackbar.LENGTH_LONG);
@@ -67,6 +80,8 @@ public class DoneTripFragment extends Fragment {
                             @Override
                             public void onClick(View view) {
                                 finishedTripAdapter.restoreItem(deletedItem, deletedIndex);
+                                mViewModel.insertTrip(deletedItem, (ArrayList<Note>) notes);
+
                             }
                         });
                         snackbar.setActionTextColor(Color.YELLOW);
@@ -89,7 +104,15 @@ public class DoneTripFragment extends Fragment {
                 finishedTripAdapter.setArray(trips);
                 finishedTripAdapter.notifyDataSetChanged();
                 finshedtripList=trips;
-             //   Log.d("previos", "onChanged: "+trips.size());
+                if(finshedtripList.size()==0)
+                {
+                    binding.emptyStateId.setVisibility(View.VISIBLE);
+                }
+                else
+                {
+                    binding.emptyStateId.setVisibility(View.INVISIBLE);
+
+                }
             }
         });
 

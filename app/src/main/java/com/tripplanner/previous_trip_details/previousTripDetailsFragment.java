@@ -60,8 +60,8 @@ public class previousTripDetailsFragment extends Fragment implements OnMapReadyC
         place1=new Place("12",27.658143, 85.3199503);
         place2=new Place("12",27.667491, 85.3208583);
         Bundle args = getArguments();
-        String personJsonString = (String) args.get(Constants.KEY_TRIP);
-        Trip trip= GsonUtils.getGsonParser().fromJson(personJsonString, Trip.class);
+        String tripJsonString = (String) args.get(Constants.KEY_TRIP);
+        Trip trip= GsonUtils.getGsonParser().fromJson(tripJsonString, Trip.class);
       Toolbar toolbar= view.findViewById(R.id.toolbar);
       toolbar.setTitle(trip.getName());
         mapFragment = (MapFragment) getActivity().getFragmentManager()
