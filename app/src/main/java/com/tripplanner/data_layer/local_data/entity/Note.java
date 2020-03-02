@@ -100,4 +100,14 @@ public class Note implements Parcelable {
         parcel.writeLong(tripId);
         parcel.writeByte((byte) (checked ? 1 : 0));
     }
+
+    @Override
+    public String toString() {
+        return "Note{" +
+                "id=" + id +
+                ", noteName='" + noteName + '\'' +
+                ", tripId=" + tripId +
+                ", checked=" + checked +
+                '}';
+    }
 }

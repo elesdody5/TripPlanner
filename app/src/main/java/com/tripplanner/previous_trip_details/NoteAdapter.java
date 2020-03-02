@@ -22,6 +22,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHandle
 
     public NoteAdapter(List<Note> noteList) {
         this.noteList = noteList;
+        Log.d("adpter", "NoteAdapter: "+noteList);
 
     }
     public void setNoteList(List<Note> noteList)

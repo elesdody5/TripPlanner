@@ -20,8 +20,11 @@ import com.tripplanner.add_trip.AddTripFragmentArgs;
 import com.tripplanner.data_layer.local_data.entity.Trip;
 import com.tripplanner.databinding.TripCardBinding;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> {
     public List<Trip> trips = new ArrayList<>();
@@ -55,8 +58,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public HomeAdapter() {
-
+    public HomeAdapter(StartTrip startTrip) {
+    this.startTrip = startTrip;
 
     }
 
@@ -101,11 +104,21 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
         holder.binding.startTrip.setOnClickListener(view -> {
             startTrip.startTrip(trips.get(position).getId());
         });
-
-
+        holder.binding.Date.setText(updateLabel(tripData.getTripDate()));
+        holder.binding.Time.setText(roundtimeFormat(tripData.getTripDate()));
 
 
 }
+    private String roundtimeFormat(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("K:mm a");
+        String formattedTime = sdf.format(date);
+        return formattedTime;
+    }
+    private String updateLabel(Date date) {
+        String myFormat = "dd/MM/yyyy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        return sdf.format(date);
+    }
 
 
     // Return the size of your dataset (invoked by the layout manager)
