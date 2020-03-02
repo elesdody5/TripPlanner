@@ -13,18 +13,7 @@ import com.tripplanner.R;
 public class NotificationUtil {
     private static final String CHANNEL_ID = "VERBOSE_NOTIFICATION" ;
     private static final int NOTIFICATION_ID = 1;
-    /**
-     * Create a Notification that is shown as a heads-up notification if possible.
-     *
-     * For this codelab, this is used to show a notification so that you know when different steps
-     * of the background work chain are starting
-     *
-     * @param message Message shown on the notification
-     * @param context Context needed to create Toast
-     */
    public static void makeStatusNotification(String tripName,String message, Context context) {
-
-        // Make a channel if necessary
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // Create the NotificationChannel, but only on API 26+ because
             // the NotificationChannel class is new and not in the support library
@@ -48,8 +37,10 @@ public class NotificationUtil {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.logo)
                 .setContentTitle("Starting Trip")
-                .setContentText(message)
+                .setContentText(tripName)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setAutoCancel(false)
+                .setOngoing(true)
                 .setVibrate(new long[0]);
 
         // Show the notification

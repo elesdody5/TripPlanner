@@ -15,4 +15,7 @@ public class Constants {
     public  static final long STATUS_DONE=1;
     public  static final long STATUS_UPCOMING=2;
     public static final String KEY_TRIP="trip";
+    public  static final  int NOTIFICATION_ID=1;
+    public  static final  String NOTIFICATION_CHANNEL_ID="2";
+    public  static final  String RIP_OB_KEY="3";
 }

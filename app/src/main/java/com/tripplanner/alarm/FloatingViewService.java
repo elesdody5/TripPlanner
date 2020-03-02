@@ -29,7 +29,6 @@ public class FloatingViewService extends Service {
     private View mFloatingView;
     LinearLayout linearLayout;
     ArrayList<Note> noteList;
-
     public FloatingViewService() {
     }
 
@@ -46,9 +45,8 @@ public class FloatingViewService extends Service {
             CheckBox checkBox = new CheckBox(getApplicationContext());
             checkBox.setText(noteList.get(i).getNoteName());
             linearLayout.addView(checkBox);
-
-
         }
+
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -172,7 +170,6 @@ public class FloatingViewService extends Service {
             }
         });
     }
-
     private boolean isViewCollapsed() {
         return mFloatingView == null || mFloatingView.findViewById(R.id.collapse_view).getVisibility() == View.VISIBLE;
     }
