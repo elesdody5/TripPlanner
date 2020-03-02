@@ -7,6 +7,9 @@
     <variable
         name="trip"
         type="com.tripplanner.data_layer.local_data.entity.Trip" />
+        <variable
+            name="fragment"
+            type="com.tripplanner.add_trip.AddTripFragment" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -28,7 +31,7 @@
                 android:layout_marginTop="6dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="15dp"
-                android:onClick="@{(view)->fragmet.roundTrip(view)}"
+                android:onClick="@{(view)->fragment.roundTrip(view)}"
                 android:text="@string/round_trip"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/textInputLayout2"
@@ -52,6 +55,7 @@
                 android:id="@+id/textInputLayout2"
                 style="@style/searchInput"
                 android:layout_width="0dp"
+                android:hint="@string/To"
                 android:layout_height="wrap_content"
                 android:background="@drawable/from_to_background"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView"
@@ -64,7 +68,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="38dp"
                     android:background="@color/fui_transparent"
-                    android:hint="@string/To"
+
                     android:padding="10dp"
                     android:text='@{trip.endPoint.name}'
                     android:textSize="14sp" />
@@ -74,6 +78,7 @@
                 android:id="@+id/textInputLayout"
                 style="@style/searchInput"
                 android:layout_width="0dp"
+                android:hint="@string/from"
                 android:layout_height="wrap_content"
                 android:background="@drawable/from_to_background"
                 app:layout_constraintBottom_toTopOf="@+id/textInputLayout2"
@@ -87,7 +92,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="37dp"
                     android:background="@color/fui_transparent"
-                    android:hint="@string/from"
+
                     android:padding="10dp"
                     android:text='@{trip.startPoint.name }'
                     android:textSize="14sp" />

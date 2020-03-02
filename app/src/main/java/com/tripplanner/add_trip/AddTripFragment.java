@@ -218,7 +218,8 @@ public class AddTripFragment extends Fragment {
     }
 
     public void roundTrip(View view) {
-        if (fragmentAddTripBinding.roundTrip.isChecked()) {
+        Log.d(TAG, "roundTrip: ");
+        if (fragmentAddTripBinding.placeView.roundTrip.isChecked()) {
             fragmentAddTripBinding.roundDateView.getRoot().setVisibility(View.VISIBLE);
         } else
             fragmentAddTripBinding.roundDateView.getRoot().setVisibility(View.GONE);
@@ -250,11 +251,12 @@ public class AddTripFragment extends Fragment {
 
         if (tripViewModel.validate(fragmentAddTripBinding)) {
             view.setEnabled(false);
-            if (fragmentAddTripBinding.roundTrip.isChecked()) {
+            if (fragmentAddTripBinding.placeView.roundTrip.isChecked()) {
                 Trip roundTrip = setRounTrip();
                 ArrayList<Note> notes = new ArrayList<>(noteAdapter.getNotes());
                 tripViewModel.insertTrip(roundTrip, notes).observe(getViewLifecycleOwner(), aLong -> setAlarmManger(aLong.intValue()));
             }
+            if (trip.getStartPoint() != null && trip.getEndPoint() != null) {
                 trip.setTripDate(myCalendar.getTime());
                 tripViewModel.insertTrip(trip, noteAdapter.getNotes()).observe(getActivity(), aLong -> {
                     Log.d(TAG, "insertTip: " + trip);
@@ -264,7 +266,9 @@ public class AddTripFragment extends Fragment {
                     view.setEnabled(true);
                 });
             }
-
+        }
+        else
+            Toast.makeText(getContext(),"Please select places from list",Toast.LENGTH_LONG).show();
         }
 
         private Trip setRounTrip () {
