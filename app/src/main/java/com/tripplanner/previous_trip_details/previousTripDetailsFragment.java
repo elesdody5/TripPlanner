@@ -1,6 +1,7 @@
 package com.tripplanner.previous_trip_details;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.graphics.Color;
@@ -16,7 +17,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -35,8 +38,11 @@ import com.tripplanner.previous_trip.MapOfAllTripsViewModel;
 import com.tripplanner.previous_trip.directionhelpers.FetchURL;
 import com.tripplanner.previous_trip.directionhelpers.TaskLoadedCallback;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 public class previousTripDetailsFragment extends Fragment implements OnMapReadyCallback, TaskLoadedCallback {
@@ -48,6 +54,8 @@ public class previousTripDetailsFragment extends Fragment implements OnMapReadyC
     MapFragment mapFragment;
     RecyclerView noteRecycler;
     NoteAdapter noteAdapter;
+    TextView from,to,date,time;
+    Trip trip;
    List <Note>note=new ArrayList<>();
     public static previousTripDetailsFragment newInstance() {
         return new previousTripDetailsFragment();
@@ -61,16 +69,28 @@ public class previousTripDetailsFragment extends Fragment implements OnMapReadyC
         place2=new Place("12",27.667491, 85.3208583);
         Bundle args = getArguments();
         String tripJsonString = (String) args.get(Constants.KEY_TRIP);
-        Trip trip= GsonUtils.getGsonParser().fromJson(tripJsonString, Trip.class);
+         trip= GsonUtils.getGsonParser().fromJson(tripJsonString, Trip.class);
       Toolbar toolbar= view.findViewById(R.id.toolbar);
       toolbar.setTitle(trip.getName());
+      from=view.findViewById(R.id.from);
+        to=view.findViewById(R.id.to);
+        date=view.findViewById(R.id.date);
+        time=view.findViewById(R.id.time);
+
+        from.setText("From: "+trip.getStartPoint().getName());
+        to.setText("To: "+trip.getEndPoint().getName());
+        date.setText("Date: "+getDate(trip.getTripDate()));
+        time.setText("Time: "+getTime(trip.getTripDate()));
         mapFragment = (MapFragment) getActivity().getFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        new FetchURL(previousTripDetailsFragment.this).execute(getUrl(place1, place2, "driving"), "driving");
+        new FetchURL(previousTripDetailsFragment.this).execute(getUrl(trip.getStartPoint(), trip.getEndPoint(), "driving"), "driving");
         noteRecycler=view.findViewById(R.id.prenote_rv);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-        noteAdapter =new NoteAdapter(note);
+        mViewModel = ViewModelProviders.of(this).get(PreviousTripDetailsViewModel.class);
+        // TODO: Use the ViewModel
+
+        noteAdapter =new NoteAdapter(mViewModel.getTripNotes((int)trip.getId()));
         noteRecycler.setAdapter(noteAdapter);
         noteRecycler.setLayoutManager(mLayoutManager);
 
@@ -78,24 +98,37 @@ public class previousTripDetailsFragment extends Fragment implements OnMapReadyC
 
         return view;
     }
-
+    public String getDate(Date date)
+    {
+        String myFormat = "dd/MM/yyyy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        return sdf.format(date).toString();
+    }
+    public String getTime(Date date)
+    {
+        String time = new SimpleDateFormat("hh:mm", Locale.getDefault()).format(date);
+        return  time;
+    }
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(PreviousTripDetailsViewModel.class);
-        // TODO: Use the ViewModel
     }
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        Log.d("mylog", "Added Markers");
-        //   mMap.addMarker(place1.getLatitude());
-        //   mMap.addMarker(place2);
 
-        googleMap.addMarker(new MarkerOptions()
-                .position(new LatLng(place1.getLat(), place2.getLng()))
+        mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(trip.getStartPoint().getLat(), trip.getStartPoint().getLng()))
                 .title("Marker"));
+        Float zoom = mMap.getCameraPosition().zoom;
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(trip.getStartPoint().getLat(),trip.getStartPoint().getLng()),zoom));
+        CameraUpdate center=
+                CameraUpdateFactory.newLatLng(new LatLng( trip.getStartPoint().getLat(),
+                        trip.getEndPoint().getLat()));
+        CameraUpdate zoom2=CameraUpdateFactory.zoomTo(7);
 
+        mMap.moveCamera(center);
+        mMap.animateCamera(zoom2);
     }
     private String getUrl(Place origin, Place dest, String directionMode) {
         // Origin of route

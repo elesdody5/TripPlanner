@@ -35,11 +35,17 @@ public class DoneTripFragment extends Fragment {
 
     private DoneTripViewModel mViewModel;
     private RecyclerView finishedTripRecView;
-    private TripAdapter finishedTripAdapter;
-    List<Trip> finshedtripList=new ArrayList<>();
+
     ConstraintLayout frameLayout;
     DoneTripFragmentBinding binding;
+    private TripAdapter finishedTripAdapter;
     List<Note> notes=new ArrayList<>();
+    private static final String TAG = "DoneTripFragment";
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -47,9 +53,31 @@ public class DoneTripFragment extends Fragment {
          binding = DataBindingUtil.inflate(
                 inflater, R.layout.done_trip_fragment, container, false);
         View view = binding.getRoot();
+        mViewModel = ViewModelProviders.of(getActivity()).get(DoneTripViewModel.class);
+
+        mViewModel.getDoneTrip().observe(getViewLifecycleOwner(), new Observer<List<Trip>>() {
+            @Override
+            public void onChanged(List<Trip> trips) {
+                finishedTripAdapter.setArray(trips);
+                Log.i(TAG, "onChanged: "+ finishedTripAdapter.tripArray().size());
+               // finshedtripList=trips;
+              //  Log.i(TAG, "onChanged: "+trips);
+                if(finishedTripAdapter.tripArray().size()==0)
+                {
+                    binding.emptyStateId.setVisibility(View.VISIBLE);
+
+                }
+                else
+                {
+                    binding.emptyStateId.setVisibility(View.INVISIBLE);
+
+
+                }
+            }
+        });
             finishedTripRecView = binding.finishedTripRecyclerView;
             frameLayout = binding.mainlayout;
-        if(finshedtripList.size()==0)
+       /* if(finishedTripAdapter.tripArray().size()==0)
         {
             binding.emptyStateId.setVisibility(View.VISIBLE);
         }
@@ -57,22 +85,24 @@ public class DoneTripFragment extends Fragment {
         {
             binding.emptyStateId.setVisibility(View.INVISIBLE);
 
-        }
-            finishedTripAdapter = new TripAdapter(finshedtripList);
+        }*/
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
             finishedTripRecView.setLayoutManager(mLayoutManager);
-            finishedTripRecView.setAdapter(finishedTripAdapter);
+           finishedTripAdapter = new TripAdapter(new ArrayList<>());
+
+          finishedTripRecView.setAdapter(finishedTripAdapter);
 
             ItemTouchHelper.SimpleCallback itemTouchHelperCallback_finished = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, new RecyclerItemTouchHelper.RecyclerItemTouchHelperListener() {
                 @Override
                 public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
                     if (viewHolder instanceof TripAdapter.PreviousTripViewHandler) {
-                        String name = finshedtripList.get(viewHolder.getAdapterPosition()).getName();
+                        String name = finishedTripAdapter.tripArray().get(viewHolder.getAdapterPosition()).getName();
 
-                        final Trip deletedItem = finshedtripList.get(viewHolder.getAdapterPosition());
+                        final Trip deletedItem = finishedTripAdapter.tripArray().get(viewHolder.getAdapterPosition());
                         final int deletedIndex = viewHolder.getAdapterPosition();
                         mViewModel.deleteTrip((int) deletedItem.getId());
-                        notes=deletedItem.getNotes();
+                        notes=mViewModel.getTripNotes((int)deletedItem.getId()).getValue();
+
                         finishedTripAdapter.removeItem(viewHolder.getAdapterPosition());
                         Snackbar snackbar = Snackbar
                                 .make(frameLayout, name + " removed from trip!", Snackbar.LENGTH_LONG);
@@ -94,28 +124,19 @@ public class DoneTripFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(DoneTripViewModel.class);
-        // TODO: Use the ViewModel
-        mViewModel.getDoneTrip().observe(getViewLifecycleOwner(), new Observer<List<Trip>>() {
-            @Override
-            public void onChanged(List<Trip> trips) {
-                finishedTripAdapter.setArray(trips);
-                finishedTripAdapter.notifyDataSetChanged();
-                finshedtripList=trips;
-                if(finshedtripList.size()==0)
-                {
-                    binding.emptyStateId.setVisibility(View.VISIBLE);
-                }
-                else
-                {
-                    binding.emptyStateId.setVisibility(View.INVISIBLE);
-
-                }
-            }
-        });
+    public void onStart() {
+        super.onStart();
+        Log.i("ssss", "onCreateView: "+finishedTripAdapter.tripArray().size());
 
     }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        // TODO: Use the ViewModel
+
+
+    }
+
 
 }
