@@ -257,6 +257,7 @@ public class AddTripFragment extends Fragment {
 
     public void insertTip(View view) {
 
+
         if (tripViewModel.validate(fragmentAddTripBinding)) {
             view.setEnabled(false);
             if (fragmentAddTripBinding.roundTrip.isChecked()) {
@@ -273,6 +274,7 @@ public class AddTripFragment extends Fragment {
                     view.setEnabled(true);
                 });
             }
+
         }
 
         private Trip setRounTrip () {

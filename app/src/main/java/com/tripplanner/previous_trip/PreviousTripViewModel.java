@@ -22,7 +22,6 @@ public class PreviousTripViewModel extends AndroidViewModel {
         repository = new Repository(application);
     }
     public LiveData<List<Trip>> getDoneTrip() {
-        Log.d("size", "getDoneTrip: "+repository.getDoneTrips().getValue());
         return repository.getDoneTrips();
     }
     public LiveData<List<Trip>> getCancelTrip() {

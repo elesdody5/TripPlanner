@@ -27,6 +27,7 @@ public class AlarmViewModel extends AndroidViewModel {
         return repo.getTripById(tripId);
 
     }
+
     public List<Note>getNotes(long tripId)
     {
         return repo.getTripNotes(tripId);
@@ -36,6 +37,7 @@ public class AlarmViewModel extends AndroidViewModel {
     {
         repo.updateTrip(trip,tripData);
     }
+
     public void updateNote(Note note, Map<String, Object> notedata)
     {
         repo.updateNote(note,notedata);

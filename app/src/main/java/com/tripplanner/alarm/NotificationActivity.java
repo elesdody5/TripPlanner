@@ -16,12 +16,14 @@ import android.os.Parcelable;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
+
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.ViewModelProviders;
+
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -30,6 +32,7 @@ import com.tripplanner.MainActivity;
 import com.tripplanner.R;
 import com.tripplanner.data_layer.local_data.entity.Note;
 import com.tripplanner.data_layer.local_data.entity.Trip;
+
 import com.tripplanner.previous_trip_details.NoteAdapter;
 import com.tripplanner.util.NotificationUtil;
 import com.tripplanner.util.TripNotification;
@@ -37,6 +40,7 @@ import com.tripplanner.util.TripNotification;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
 
@@ -54,6 +58,7 @@ public class NotificationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         alarmViewModel = ViewModelProviders.of(this).get(AlarmViewModel.class);
+
         Log.d("idddddddddddd", "id: "+getIntent().getIntExtra(Constants.TRIPS,0));
         trip = alarmViewModel.getTrip(getIntent().getIntExtra(Constants.TRIPS,0));
         tripNotes = new ArrayList<>(alarmViewModel.getNotes(trip.getId()));
@@ -71,11 +76,13 @@ public class NotificationActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         hm = new HashMap<>();
+
                         hm.put("tripStatus", Constants.STATUS_DONE);
                         alarmViewModel.updateTrip(trip, hm);
                         setPermation();
                         tripNotification.cancelNotification();
                         r.stop();
+
                         finish();
                     }
                 }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -86,6 +93,7 @@ public class NotificationActivity extends AppCompatActivity {
                 alarmViewModel.updateTrip(trip, hm);
                 tripNotification.cancelNotification();
                 r.stop();
+
                 finish();
             }
         }).setNeutralButton("Snoze", new DialogInterface.OnClickListener() {
@@ -93,6 +101,7 @@ public class NotificationActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 tripNotification.sendNotification();
                 r.stop();
+
                 finish();
             }
         });
@@ -148,6 +157,7 @@ public class NotificationActivity extends AppCompatActivity {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -160,6 +170,7 @@ public class NotificationActivity extends AppCompatActivity {
 
         @Override
         public void onReceive(Context context, Intent intent) {
+
             int  tripId=intent.getIntExtra(Constants.TRIPS,0);
             Log.d("ioioioio", "onReceive: "+tripId);
             Intent i = new Intent(context, NotificationActivity.class);
@@ -168,8 +179,6 @@ public class NotificationActivity extends AppCompatActivity {
             context.startActivity(i);
         }
     }
-
-
 
 
 

@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
+
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,6 +36,7 @@ public class FloatingViewService extends Service {
     private View mFloatingView;
     LinearLayout linearLayout;
     ArrayList<Note> noteList;
+
     RecyclerView notesRecycler;
     NotesAdapter noteAdapter;
     RecyclerView.LayoutManager mLayoutManager;
@@ -52,6 +54,7 @@ public class FloatingViewService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         noteList = intent.getParcelableArrayListExtra("notes");
+
         noteAdapter =new NotesAdapter(noteList,this);
         notesRecycler.setAdapter(noteAdapter);
 
@@ -70,6 +73,7 @@ public class FloatingViewService extends Service {
 
 
         //Inflate the floating view layout we created
+
         repository=new Repository(getApplication());
         mFloatingView = LayoutInflater.from(this).inflate(R.layout.layout_floating_widget, null);
         linearLayout = mFloatingView.findViewById(R.id.data);
@@ -198,6 +202,7 @@ public class FloatingViewService extends Service {
         super.onDestroy();
         if (mFloatingView != null) mWindowManager.removeView(mFloatingView);
     }
+
     public  void updateNote(Note note, Map<String,Object> objectMap){
         repository.updateNote(note,objectMap);
 
