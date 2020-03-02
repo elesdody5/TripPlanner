@@ -22,7 +22,9 @@
 
         <com.google.android.material.appbar.MaterialToolbar
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:titleMargin="6dp"
+            app:titleMarginTop="10dp">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -34,15 +36,15 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/trip_name"
-                style="@android:style/TextAppearance.Material.Body1"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:background="@null"
                 android:clickable="false"
-                android:paddingEnd="20dp"
-                android:paddingStart="20dp"
                 android:hint="Trip Name"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
                 android:text='@={trip.name,default="Trip Name"}'
                 android:textSize="20sp" />
         </com.google.android.material.appbar.MaterialToolbar>
