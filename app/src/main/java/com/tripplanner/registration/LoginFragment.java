@@ -74,7 +74,8 @@ public class LoginFragment extends Fragment {
                 inflater, R.layout.login_fragment, container, false);
         view = loginFragmentBinding.getRoot();
         auth = FirebaseAuth.getInstance();
-         args = getArguments();
+        args = getArguments();
+
 
 
         loginFragmentBinding.loginCardView.setOnClickListener(new View.OnClickListener() {
@@ -267,11 +268,12 @@ public class LoginFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        FirebaseUser currentUser = auth.getCurrentUser();
-        String userJsonString="";
-        if(args!=null)
-        {  userJsonString = (String) args.get(Constants.USERS);}
-        currentUser= GsonUtils.getGsonParser().fromJson(userJsonString, FirebaseUser.class);
+        FirebaseUser currentUser;
+
+        currentUser = auth.getCurrentUser();
+        
+        //String userJsonString="";
+//        currentUser= GsonUtils.getGsonParser().fromJson(userJsonString, FirebaseUser.class);
         if (currentUser != null) {
             goHomeScreen();
         }

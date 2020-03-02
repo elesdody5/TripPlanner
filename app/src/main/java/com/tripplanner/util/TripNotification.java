@@ -50,7 +50,7 @@ public class TripNotification {
     private NotificationCompat.Builder getNotificationBuilder() {
         Intent intent = new Intent(context, NotificationActivity.class);
         intent.putExtra(Constants.RIP_OB_KEY, trip);
-        intent.putExtra(Constants.TRIPS,trip.getId());
+
         PendingIntent pendingIntent = PendingIntent.getActivity(context,Constants.NOTIFICATION_ID,
                 intent, PendingIntent.FLAG_ONE_SHOT);
 

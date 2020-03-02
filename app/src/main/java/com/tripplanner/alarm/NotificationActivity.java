@@ -50,7 +50,7 @@ public class NotificationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         alarmViewModel = ViewModelProviders.of(this).get(AlarmViewModel.class);
         trip = alarmViewModel.getTrip(getIntent().getIntExtra(Constants.TRIPS,0));
-        tripNotes = new ArrayList<>(alarmViewModel.getNotes(getIntent().getIntExtra(Constants.TRIPS,0)));
+        tripNotes = new ArrayList<>(alarmViewModel.getNotes(trip.getId()));
         tripNotification = new TripNotification(getApplicationContext(), trip);
         displayAlert();
     }

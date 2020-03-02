@@ -1,6 +1,7 @@
 package com.tripplanner.home;
 
 
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.Filterable;
 
 import androidx.cardview.widget.CardView;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,6 +25,10 @@ import java.util.List;
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> {
     public List<Trip> trips = new ArrayList<>();
 
+    interface  StartTrip{
+        LiveData<Long> startTrip();
+    }
+    StartTrip startTrip ;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -44,8 +50,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public HomeAdapter() {
-
+    public HomeAdapter(StartTrip startTrip) {
+        this.startTrip = startTrip;
     }
 
 
@@ -84,6 +90,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
                     Navigation.findNavController(view).navigate(action);
                 }
         );
+        holder.binding.startTrip.setOnClickListener(view -> {
+            startTrip.startTrip();
+        });
 
 
 
