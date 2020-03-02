@@ -25,8 +25,11 @@ public class DoneTripViewModel extends AndroidViewModel {
         repository = new Repository(application);
     }
     public LiveData<List<Trip>> getDoneTrip() {
-        Log.d("size", "getDoneTrip: "+repository.getDoneTrips().getValue());
         return repository.getDoneTrips();
+    }
+    public LiveData<List<Note>> getTripNotes(int id)
+    {
+        return repository.getTodoNotes(id);
     }
     public void deleteTrip(int id)
     {

@@ -13,6 +13,7 @@ import com.tripplanner.data_layer.local_data.entity.User;
 public class LoginViewModel extends AndroidViewModel {
     // TODO: Implement the ViewModel
     Repository repository;
+    String uri="";
 
     public LoginViewModel(@NonNull Application application) {
         super(application);
@@ -27,7 +28,11 @@ public class LoginViewModel extends AndroidViewModel {
 
     //map FirebaseUser Into User entity
     private User mapFirebaseUserIntoUser(FirebaseUser firebaseUser) {
-        return new User(firebaseUser.getUid(), firebaseUser.getDisplayName(), firebaseUser.getPhotoUrl().toString());
+        if(firebaseUser.getPhotoUrl()!=null)
+        {
+            uri=firebaseUser.getPhotoUrl().toString();
+        }
+        return new User(firebaseUser.getUid(), firebaseUser.getDisplayName(),uri );
     }
 
     private void insertUser(User user) {

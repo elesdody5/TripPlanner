@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -40,11 +41,7 @@ public class MapContinerFragment extends Fragment implements OnMapReadyCallback,
 
     private MapContinerViewModel mViewModel;
     private GoogleMap mMap;
-    private Place place1,place2,place3,place4;
-    List<Trip> finshedtripList;
-    List<Trip> canceledtripList=new ArrayList<>();
     private Polyline currentPolyline;
-    MapFragment mapFragment;
     List<PolylineOptions>valuesLine=new ArrayList<>();
 
     @Override
@@ -60,26 +57,7 @@ public class MapContinerFragment extends Fragment implements OnMapReadyCallback,
             ft.commit();
             fm.executePendingTransactions();
         }
-        place1=new Place("12",27.658143, 85.3199503);
-        place2=new Place("12",27.667491, 85.3208583);
-        place3=new Place("12",27.658143, 85.3199503);
-        place4=new Place("12",24.667442, 85.3208453);
-        finshedtripList=new ArrayList<>();
-        Trip trip=new Trip();
-        trip.setStartPoint(place1);
-        trip.setEndPoint(place2);
-        Trip trip2=new Trip();
-        trip2.setStartPoint(place3);
-        trip2.setEndPoint(place4);
-        finshedtripList.add(trip);
-        finshedtripList.add(trip2);
-
         mapFragment.getMapAsync(this);
-        for (int i =0;i< finshedtripList.size();i++) {
-            new FetchURL(MapContinerFragment.this).execute(getUrl(finshedtripList.get(i).getStartPoint(), finshedtripList.get(i).getEndPoint(), "driving"), "driving");
-
-        }
-
         return view;
     }
 
@@ -91,28 +69,34 @@ public class MapContinerFragment extends Fragment implements OnMapReadyCallback,
         mViewModel.getDoneTrip().observe(getViewLifecycleOwner(), new Observer<List<Trip>>() {
             @Override
             public void onChanged(List<Trip> trips) {
-                finshedtripList=trips;
-                //   Log.d("previos", "onChanged: "+trips.size());
+                for (int i =0;i< trips.size();i++) {
+                    new FetchURL(MapContinerFragment.this).execute(getUrl(trips.get(i).getStartPoint(), trips.get(i).getEndPoint(), "driving"), "driving");
+
+                }
+                mMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(trips.get(0).getStartPoint().getLat(), trips.get(0).getStartPoint().getLng()))
+                        .title("Marker"));
+                Float zoom = mMap.getCameraPosition().zoom;
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(trips.get(0).getStartPoint().getLat(),trips.get(0).getStartPoint().getLng()),zoom));
+                CameraUpdate center=
+                        CameraUpdateFactory.newLatLng(new LatLng( trips.get(0).getStartPoint().getLat(),
+                                trips.get(0).getEndPoint().getLat()));
+                CameraUpdate zoom2=CameraUpdateFactory.zoomTo(7);
+
+                mMap.moveCamera(center);
+                mMap.animateCamera(zoom2);
+
             }
         });
-        mViewModel.getCancelTrip().observe(getViewLifecycleOwner(), new Observer<List<Trip>>() {
-            @Override
-            public void onChanged(List<Trip> trips) {
-                canceledtripList=trips;
-                //   Log.d("previos", "onChanged: "+trips.size());
-            }
-        });
+
     }
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        Log.d("mylog", "Added Markers");
         //   mMap.addMarker(place1.getLatitude());
         //   mMap.addMarker(place2);
 
-        googleMap.addMarker(new MarkerOptions()
-                .position(new LatLng(place1.getLat(), place2.getLng()))
-                .title("Marker"));
+
 
     }
 
@@ -143,8 +127,8 @@ public class MapContinerFragment extends Fragment implements OnMapReadyCallback,
         {
             int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
             currentPolyline = mMap.addPolyline( valuesLine .get(i).color(color));
-            Float zoom = mMap.getCameraPosition().zoom;
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(place1.getLat(), place1.getLng()),zoom));        }
+                  }
+
 
     }
 

@@ -58,12 +58,7 @@ public class SignUpFragment extends Fragment {
     }
 
     private void goToSignin() {
-        Bundle bundle = new Bundle();
-        FirebaseUser currentUser;
-        currentUser=null;
-        String personJsonString = GsonUtils.getGsonParser().toJson(currentUser);
-        bundle.putString(Constants.USERS, personJsonString);
-        Navigation.findNavController(view).navigate(R.id.action_signUpFragment_to_loginFragment,bundle);
+        Navigation.findNavController(view).navigate(R.id.action_signUpFragment_to_loginFragment);
 
     }
 
