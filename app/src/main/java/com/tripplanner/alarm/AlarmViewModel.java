@@ -4,13 +4,14 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 
 import com.tripplanner.data_layer.Repository;
 import com.tripplanner.data_layer.local_data.entity.Note;
 import com.tripplanner.data_layer.local_data.entity.Trip;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class AlarmViewModel extends AndroidViewModel {
     Repository repo;
@@ -21,14 +22,18 @@ public class AlarmViewModel extends AndroidViewModel {
         repo=new Repository(application);
     }
 
-    Trip getTrip(long tripId)
+    public Trip getTrip(long tripId)
     {
         return repo.getTripById(tripId);
+
     }
-    List<Note> getNotes(long tripId)
+    public List<Note>getNotes(int tripId)
     {
-        return repo.getTripNotes(tripId);
+        return repo.getTodoNotes(tripId).getValue();
 
     }
-
+    public void updateTrip(Trip trip, Map<String, Object> tripData)
+    {
+        repo.updateTrip(trip,tripData);
+    }
 }
