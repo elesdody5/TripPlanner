@@ -26,7 +26,7 @@ public class AddTripViewModel extends AndroidViewModel {
         Log.d(TAG, "AddTripViewModel: ");
     }
 
-    LiveData<Boolean> insertTrip(Trip trip, ArrayList<Note> notes) {
+    LiveData<Long> insertTrip(Trip trip, ArrayList<Note> notes) {
         return repository.insertTrip(trip, notes);
 
     }

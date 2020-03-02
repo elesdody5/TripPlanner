@@ -172,8 +172,8 @@ public class Repository {
         return notes;
     }
 
-    public LiveData<Boolean> insertTrip(Trip trip, ArrayList<Note> notes) {
-        MutableLiveData<Boolean> inserted = new MutableLiveData<>();
+    public LiveData<Long> insertTrip(Trip trip, ArrayList<Note> notes) {
+        MutableLiveData<Long> inserted = new MutableLiveData<>();
         Room.databaseWriteExecutor.execute(() -> {
             trip.setUserId(user.getId());
             trip.setTripStatus(STATUS_UPCOMING);
@@ -196,7 +196,7 @@ public class Repository {
                             notes.get(i).setId(ids[i]);
                             firebase.getNotesCollection(user.getId(), String.valueOf(id)).document(String.valueOf(ids[i])).set(notes.get(i));
                         }
-                        inserted.postValue(true);
+                        inserted.postValue(id);
                     });
                 }
         });

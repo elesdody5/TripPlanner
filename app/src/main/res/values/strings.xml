@@ -41,5 +41,6 @@
     <string name="NoResult">No Result</string>
     <string name="textnoreslt">Sorry, there is no result for this search.
  Please try another phrase</string>
+    <string name="round_trip">Round Trip</string>
 
 </resources>

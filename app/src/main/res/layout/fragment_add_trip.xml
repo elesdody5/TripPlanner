@@ -14,6 +14,7 @@
             name="trip"
             type="com.tripplanner.data_layer.local_data.entity.Trip" />
 
+
     </data>
 <ScrollView
     android:layout_width="match_parent"
@@ -52,18 +53,46 @@
         <include
             android:id="@+id/date_view"
             layout="@layout/date_card"
-            bind:trip="@{trip}"
-            bind:fragment="@{fragmet}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="11dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="47dp"
-            app:layout_constraintBottom_toTopOf="@+id/add_note_card"
+            app:layout_constraintBottom_toTopOf="@+id/round_date_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/place_view" />
+            app:layout_constraintTop_toBottomOf="@+id/place_view"
+            bind:fragment="@{fragmet}"
+            bind:trip="@{trip}" />
+        <include
+            android:id="@+id/round_date_view"
+            layout="@layout/date_card"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="11dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/round_trip"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/date_view"
+            bind:fragment="@{fragmet}"
+            bind:trip="@{trip}" />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/round_trip"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:onClick="@{(view)->fragmet.roundTrip(view)}"
+            android:text="@string/round_trip"
+            app:layout_constraintBottom_toTopOf="@id/add_note_card"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/round_date_view" />
 
         <include
             android:id="@+id/add_note_card"
@@ -71,12 +100,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/date_view"
+            app:layout_constraintTop_toBottomOf="@+id/round_trip"
             bind:fragment="@{fragmet}" />
 
         <com.google.android.material.button.MaterialButton
