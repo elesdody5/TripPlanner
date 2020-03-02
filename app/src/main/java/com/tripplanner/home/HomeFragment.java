@@ -34,6 +34,7 @@ import android.widget.Toast;
 import com.google.android.material.snackbar.Snackbar;
 import com.tripplanner.R;
 import com.tripplanner.alarm.NotificationActivity;
+import com.tripplanner.data_layer.local_data.entity.Note;
 import com.tripplanner.data_layer.local_data.entity.Place;
 import com.tripplanner.data_layer.local_data.entity.Trip;
 import com.tripplanner.databinding.FragmentHomeBinding;
@@ -52,7 +53,7 @@ import java.util.List;
 public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
 
     HomeViewModel model;
-    LiveData<List<Trip>> trips;
+    List<Trip> trips;
     private HomeAdapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private FragmentHomeBinding binding;
@@ -159,6 +160,7 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
 
             // backup of removed item for undo purpose
             final Trip deletedTrip = mAdapter.trips.get(viewHolder.getAdapterPosition());
+            final List<Note> notes=model.getTripNotes(deletedTrip);
             final int deletedIndex = viewHolder.getAdapterPosition();
 
             // remove the item from recycler view
@@ -190,7 +192,7 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
 
 
 
-                mAdapter.setTripList(trips.getValue());
+                mAdapter.setTripList(trips);
                 binding.noresult.setVisibility(View.INVISIBLE);
 
         }

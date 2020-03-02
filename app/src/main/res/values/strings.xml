@@ -8,53 +8,62 @@
     <string name="previous_trip">Previous Trip</string>
     <string name="previous_trip_finished">Finished</string>
     <string name="previous_trip_delayed">Delayed</string>
-    <string name="delete" >DELETE</string>
-    <string name="TripName" >Trip Name</string>
+    <string name="delete">DELETE</string>
+    <string name="TripName">Trip Name</string>
     <string name="trip_date">Date: 21/2/2020</string>
     <string name="tripTime">Time: 2:00pm</string>
-    <string name="from" >From:</string>
-    <string name="To" >To:</string>
+    <string name="from">From:</string>
+    <string name="To">To:</string>
     <string name="task_finished">Task: 100% Finished</string>
     <string name="Upcoming">Up Coming Trip</string>
-    <string name="Date" >Date:</string>
-    <string name="Time" >Time:</string>
-    <string name="DELETE" >DELETE</string>
-    <string name="StartTrip" >Start Trip</string>
+    <string name="Date">Date:</string>
+    <string name="Time">Time:</string>
+    <string name="DELETE">DELETE</string>
+    <string name="StartTrip">Start Trip</string>
     <string name="done">Done</string>
     <!-- omnia-->
     <!-- omnia-->
     <!--sara-->
     <string name="google_maps_key">AIzaSyC63bAG-cHY03C2tauZuvF1YWk_zlTxnoM</string>
-    <string name="login">Login</string>
-    <string name="signUp">SignUp</string>
+    <string name="login" translatable="false">Login</string>
+    <string name="signUp" translatable="false">SignUp</string>
 
-    <string name="email">Email</string>
-    <string name="send">Send</string>
+    <string name="email" translatable="false">Email</string>
+    <string name="send" translatable="false">Send</string>
 
-    <string name="password">Password</string>
-    <string name="conpassword">Confirm Password</string>
+    <string name="password" translatable="false">Password</string>
+    <string name="conpassword" translatable="false">Confirm Password</string>
 
-    <string name="forgetPassword">Forget Password?</string>
-    <string name="Dont">Don\'t have an account?</string>
-    <string name="haveaccount">Already have an account?</string>
-    <string name="signin">Sign In</string>
+    <string name="forgetPassword" translatable="false">Forget Password?</string>
+    <string name="Dont" translatable="false">Don\'t have an account?</string>
+    <string name="haveaccount" translatable="false">Already have an account?</string>
+    <string name="signin" translatable="false">Sign In</string>
 
-    <string name="registerNow">Register Now</string>
-    <string name="or">or</string>
-    <string name="NoDoneTrip">No Canceled Trips</string>
-    <string name="youWillSee">You will see your Canceled trips here</string>
-    <string name="NoTrip">No Done Trips</string>
-    <string name="youWillSee2">You will see your Done trips here</string>
+    <string name="registerNow" translatable="false">Register Now</string>
+    <string name="or" translatable="false">or</string>
+    <string name="NoDoneTrip" translatable="false">No Canceled Trips</string>
+    <string name="youWillSee" translatable="false">You will see your Canceled trips here</string>
+    <string name="NoTrip" translatable="false">No Done Trips</string>
+    <string name="youWillSee2" translatable="false">You will see your Done trips here</string>
 
     <!--sara-->
     <!--elesdody-->
     <!--elesdody-->
-    <string name="Noconnection">No Connection</string>
-    <string name="NoUpcomingtrips">No Upcoming Trips</string>
-    <string name="Noupcomingtrips">when you add a Trip you\'ll see your   trips here</string>
-    <string name="NoResult">No Result</string>
-    <string name="textnoreslt">Sorry, there is no result for this search.
+    <string name="Noconnection" translatable="false">No Connection</string>
+    <string name="NoUpcomingtrips" translatable="false">No Upcoming Trips</string>
+    <string name="Noupcomingtrips" translatable="false">when you add a Trip you\'ll see your   trips here</string>
+    <string name="NoResult" translatable="false">No Result</string>
+    <string name="textnoreslt" translatable="false">Sorry, there is no result for this search.
  Please try another phrase</string>
-    <string name="round_trip">Round Trip</string>
+    <string name="round_trip" translatable="false">Round Trip</string>
+    <string name="Profile" translatable="false">Profile</string>
+    <string name="ChangePassword" translatable="false">Change Password</string>
+    <string name="editacc" translatable="false">Edit Account</string>
+    <string name="logout" translatable="false">Logout</string>
+    <string name="editEmail" translatable="false">Enter your Email</string>
+    <string name="Enterpassword" translatable="false">Enter new password</string>
+    <string name="confirmpassword" translatable="false">Confirm new password</string>
+    <string name="cancel" translatable="false">cancel</string>
+    <string name="save" translatable="false">save</string>
 
 </resources>
