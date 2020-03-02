@@ -267,11 +267,13 @@ public class LoginFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        FirebaseUser currentUser = auth.getCurrentUser();
-        String userJsonString="";
-        if(args!=null)
-        {  userJsonString = (String) args.get(Constants.USERS);}
-        currentUser= GsonUtils.getGsonParser().fromJson(userJsonString, FirebaseUser.class);
+        FirebaseUser currentUser;
+
+             currentUser = auth.getCurrentUser();
+
+
+        //String userJsonString="";
+//        currentUser= GsonUtils.getGsonParser().fromJson(userJsonString, FirebaseUser.class);
         if (currentUser != null) {
             goHomeScreen();
         }
