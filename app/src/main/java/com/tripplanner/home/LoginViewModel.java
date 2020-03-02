@@ -16,7 +16,7 @@ import java.util.List;
 
 public class LoginViewModel extends AndroidViewModel {
     Repository repository;
-
+String uri;
     public LoginViewModel(@NonNull Application application) {
         super(application);
         repository = new Repository(application);
@@ -30,7 +30,15 @@ public class LoginViewModel extends AndroidViewModel {
 
     //map FirebaseUser Into User entity
     private User mapFirebaseUserIntoUser(FirebaseUser firebaseUser) {
-        return new User(firebaseUser.getUid(), firebaseUser.getDisplayName(), firebaseUser.getPhotoUrl().toString());
+        if(firebaseUser.getPhotoUrl()==null)
+        {
+             uri="";
+        }
+        else
+        {
+            uri=firebaseUser.getPhotoUrl().toString();
+        }
+        return new User(firebaseUser.getUid(), firebaseUser.getDisplayName(), uri);
     }
 
     private void insertUser(User user) {

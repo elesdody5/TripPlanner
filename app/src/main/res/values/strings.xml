@@ -26,11 +26,25 @@
     <!--sara-->
     <string name="google_maps_key">AIzaSyC63bAG-cHY03C2tauZuvF1YWk_zlTxnoM</string>
     <string name="login">Login</string>
+    <string name="signUp">SignUp</string>
+
     <string name="email">Email</string>
     <string name="send">Send</string>
 
     <string name="password">Password</string>
+    <string name="conpassword">Confirm Password</string>
+
     <string name="forgetPassword">Forget Password?</string>
+    <string name="Dont">Don\'t have an account?</string>
+    <string name="haveaccount">Already have an account?</string>
+    <string name="signin">Sign In</string>
+
+    <string name="registerNow">Register Now</string>
+    <string name="or">or</string>
+    <string name="NoDoneTrip">No Canceled Trips</string>
+    <string name="youWillSee">You will see your Canceled trips here</string>
+    <string name="NoTrip">No Done Trips</string>
+    <string name="youWillSee2">You will see your Done trips here</string>
 
     <!--sara-->
     <!--elesdody-->

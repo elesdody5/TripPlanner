@@ -22,6 +22,7 @@ import android.widget.FrameLayout;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.tripplanner.R;
+import com.tripplanner.data_layer.local_data.entity.Note;
 import com.tripplanner.data_layer.local_data.entity.Trip;
 import com.tripplanner.databinding.CancledTripFragmentBinding;
 import com.tripplanner.databinding.DoneTripFragmentBinding;
@@ -37,16 +38,27 @@ public class CancledTripFragment extends Fragment {
     List<Trip> canceltripList=new ArrayList<>();
     FrameLayout frameLayout;
     ConstraintLayout constraintLayout;
+    CancledTripFragmentBinding binding;
+    List<Note> notes=new ArrayList<>();
 
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        CancledTripFragmentBinding binding= DataBindingUtil.inflate(
+         binding= DataBindingUtil.inflate(
                 inflater, R.layout.cancled_trip_fragment, container, false);
         cancelTripRecView = binding.delayedTripRecyclerView;
         constraintLayout = binding.mainlayout;
-        cancelTripAdapter = new TripAdapter(new ArrayList<>());
+        if(canceltripList.size()==0)
+        {
+            binding.emptyStateId.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            binding.emptyStateId.setVisibility(View.INVISIBLE);
+
+        }
+        cancelTripAdapter = new TripAdapter(canceltripList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         cancelTripRecView.setLayoutManager(mLayoutManager);
         cancelTripRecView.setAdapter(cancelTripAdapter);
@@ -59,15 +71,15 @@ public class CancledTripFragment extends Fragment {
 
                     final Trip deletedItem = canceltripList.get(viewHolder.getAdapterPosition());
                     final int deletedIndex = viewHolder.getAdapterPosition();
-
+                    mViewModel.deleteTrip((int) deletedItem.getId());
+                    notes=deletedItem.getNotes();
                     cancelTripAdapter.removeItem(viewHolder.getAdapterPosition());
                     Snackbar snackbar = Snackbar
                             .make(constraintLayout, name + " removed from trip!", Snackbar.LENGTH_LONG);
                     snackbar.setAction("UNDO", new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-
-                            // undo is selected, restore the deleted item
+                            mViewModel.insertTrip(deletedItem, (ArrayList<Note>) notes);
                             cancelTripAdapter.restoreItem(deletedItem, deletedIndex);
                         }
                     });
@@ -92,6 +104,15 @@ public class CancledTripFragment extends Fragment {
                 cancelTripAdapter.setArray(trips);
                 cancelTripAdapter.notifyDataSetChanged();
                 canceltripList=trips;
+                if(canceltripList.size()==0)
+                {
+                    binding.emptyStateId.setVisibility(View.VISIBLE);
+                }
+                else
+                {
+                    binding.emptyStateId.setVisibility(View.INVISIBLE);
+
+                }
             }
         });
 

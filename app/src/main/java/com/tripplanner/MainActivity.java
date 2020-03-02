@@ -71,7 +71,8 @@ public class MainActivity extends AppCompatActivity {
 
         navHostFragment.getNavController().addOnDestinationChangedListener((controller, destination, arguments) -> {
             if (destination.getId() == R.id.addTripFragment||destination.getId()==R.id.previousTripDetailsFragment2||
-            destination.getId()==R.id.loginFragment) {
+            destination.getId()==R.id.loginFragment|| destination.getId()==R.id.forgetPasswordFragment
+            ||destination.getId()==R.id.signUpFragment) {
                 navView.setVisibility(View.GONE);
             } else {
                 navView.setVisibility(View.VISIBLE);
