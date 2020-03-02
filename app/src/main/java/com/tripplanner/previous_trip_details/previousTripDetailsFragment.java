@@ -119,6 +119,7 @@ public class previousTripDetailsFragment extends Fragment implements OnMapReadyC
 
         mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(trip.getStartPoint().getLat(), trip.getStartPoint().getLng()))
+
                 .title("Marker"));
         Float zoom = mMap.getCameraPosition().zoom;
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(trip.getStartPoint().getLat(),trip.getStartPoint().getLng()),zoom));

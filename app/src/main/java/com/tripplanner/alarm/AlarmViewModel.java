@@ -27,13 +27,19 @@ public class AlarmViewModel extends AndroidViewModel {
         return repo.getTripById(tripId);
 
     }
-    public List<Note>getNotes(int tripId)
+
+    public List<Note>getNotes(long tripId)
     {
-        return repo.getTodoNotes(tripId).getValue();
+        return repo.getTripNotes(tripId);
 
     }
     public void updateTrip(Trip trip, Map<String, Object> tripData)
     {
         repo.updateTrip(trip,tripData);
+    }
+
+    public void updateNote(Note note, Map<String, Object> notedata)
+    {
+        repo.updateNote(note,notedata);
     }
 }

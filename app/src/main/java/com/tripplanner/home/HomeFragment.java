@@ -130,10 +130,7 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
         model = ViewModelProviders.of(requireActivity()).get(HomeViewModel.class);
         binding.setModel(model);
 
-        model.getTrips().observe(getViewLifecycleOwner(), Trips -> {
-            displayTrips(Trips);
-            binding.noupcomingrips.setVisibility(View.INVISIBLE);
-        });
+        model.getTrips().observe(getViewLifecycleOwner(), this::displayTrips);
 
 
     }
@@ -190,13 +187,14 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
     private void filter(String text) {
 
         List<Trip> filterdtrips = new ArrayList<>();
-        if (text.equals("") || text == null) {
 
-            if (trips != null) {
+        if (!text.equals("")) {
+
+
 
                 mAdapter.setTripList(trips.getValue());
                 binding.noresult.setVisibility(View.INVISIBLE);
-            }
+
         }
 
 
