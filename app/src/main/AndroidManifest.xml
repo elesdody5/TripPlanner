@@ -28,7 +28,7 @@
             android:enabled="true"
             android:exported="false"/>
 
-        <activity android:name=".alarm.NotificationActivity" />
+        <activity android:name=".alarm.NotificationActivity"  android:theme="@style/Theme.Transparent"/>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyC77CT8-aL5JxAIVJJqOVMQD1_lHZ-WMok" />

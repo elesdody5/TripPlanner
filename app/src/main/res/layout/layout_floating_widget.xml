@@ -21,12 +21,12 @@
             android:orientation="vertical">
 
             <!--Icon of floating widget -->
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/collapsed_iv"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:layout_marginTop="8dp"
-                android:src="@drawable/logo"
+                android:src="@drawable/notify"
                 tools:ignore="ContentDescription"/>
 
             <!--Close button-->
@@ -34,7 +34,7 @@
                 android:id="@+id/close_btn"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_marginLeft="40dp"
+                android:layout_marginStart="40dp"
                 android:src="@drawable/ic_close"
                 tools:ignore="ContentDescription"/>
         </RelativeLayout>
@@ -72,6 +72,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
+                />
+            <androidx.recyclerview.widget.RecyclerView
+               android:id="@+id/notesdata"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 />
         </LinearLayout>
     </RelativeLayout>
