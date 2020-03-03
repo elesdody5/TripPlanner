@@ -162,7 +162,7 @@ public class Repository {
                     ArrayList<Note> documentNotes = new ArrayList<>();
                     for (DocumentSnapshot documentReference : queryDocumentSnapshots.getDocuments()) {
                         documentNotes.add(new Note(Integer.parseInt(documentReference.getId()),
-                                documentReference.getString(NAME),
+                                documentReference.getString("noteName"),
                                 tripId,
                                 documentReference.getBoolean("checked")));
                     }

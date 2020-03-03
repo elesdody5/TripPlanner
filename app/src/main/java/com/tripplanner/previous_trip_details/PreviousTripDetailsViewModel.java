@@ -25,9 +25,9 @@ public class PreviousTripDetailsViewModel extends AndroidViewModel {
         repository = new Repository(application);
     }
 
-    public List<Note> getTripNotes(long id)
+    public LiveData<List<Note>> getTripNotes(int id)
     {
-        return repository.getTripNotes(id);
+        return  repository.getTodoNotes(id);
     }
 
 
