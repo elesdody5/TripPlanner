@@ -14,20 +14,20 @@
         tools:context=".registration.signup.SignUpFragment">
 
 
-        <TextView
-            android:id="@+id/materialTextView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:layout_width="160dp"
+            android:layout_height="160dp"
             android:layout_marginStart="188dp"
-            android:layout_marginTop="132dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="188dp"
             android:textColor="#000000"
             android:textSize="30sp"
-
+            android:id="@+id/materialTextView2"
+            android:src="@drawable/logo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="SignUp" />
+            />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout3"
