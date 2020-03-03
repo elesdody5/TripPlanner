@@ -28,8 +28,9 @@ public class HomeViewModel extends AndroidViewModel {
 
             return repo.getUpComingTrips();
         }
-    public void getTripNotes(Trip trip) throws Exception {
-        repo.getTodoNotes((int)trip.getId());
+    public List<Note> getTripNotes(Trip trip)  {
+
+        return repo.getTripNotes((int)trip.getId());
 
     }
 

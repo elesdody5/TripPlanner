@@ -89,8 +89,7 @@ public class previousTripDetailsFragment extends Fragment implements OnMapReadyC
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         mViewModel = ViewModelProviders.of(this).get(PreviousTripDetailsViewModel.class);
         // TODO: Use the ViewModel
-
-        noteAdapter =new NoteAdapter(mViewModel.getTripNotes((int)trip.getId()));
+        noteAdapter =new NoteAdapter(mViewModel.getTripNotes(trip.getId()));
         noteRecycler.setAdapter(noteAdapter);
         noteRecycler.setLayoutManager(mLayoutManager);
         return view;
@@ -116,6 +115,7 @@ public class previousTripDetailsFragment extends Fragment implements OnMapReadyC
 
         mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(trip.getStartPoint().getLat(), trip.getStartPoint().getLng()))
+
                 .title("Marker"));
         Float zoom = mMap.getCameraPosition().zoom;
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(trip.getStartPoint().getLat(),trip.getStartPoint().getLng()),zoom));

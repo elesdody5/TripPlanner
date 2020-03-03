@@ -6,6 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
+
+import android.util.Log;
+
+
 import androidx.core.app.NotificationCompat;
 import com.tripplanner.Constants;
 import com.tripplanner.R;
@@ -49,7 +53,9 @@ public class TripNotification {
 
     private NotificationCompat.Builder getNotificationBuilder() {
         Intent intent = new Intent(context, NotificationActivity.class);
-        intent.putExtra(Constants.RIP_OB_KEY, trip);
+
+        intent.putExtra(Constants.RIP_OB_KEY,trip);
+        intent.putExtra(Constants.TRIPS,(int)trip.getId());
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context,Constants.NOTIFICATION_ID,
                 intent, PendingIntent.FLAG_ONE_SHOT);

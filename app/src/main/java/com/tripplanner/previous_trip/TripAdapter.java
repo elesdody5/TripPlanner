@@ -1,6 +1,5 @@
 package com.tripplanner.previous_trip;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,12 +20,7 @@ import com.tripplanner.data_layer.local_data.entity.Trip;
 import com.tripplanner.databinding.PreviousTripContentBinding;
 import com.tripplanner.previous_trip_details.GsonUtils;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.SimpleTimeZone;
 
 public class TripAdapter  extends RecyclerView.Adapter<TripAdapter.PreviousTripViewHandler> {
     private List<Trip> tripList;
@@ -54,32 +48,21 @@ public class TripAdapter  extends RecyclerView.Adapter<TripAdapter.PreviousTripV
             bundle.putString(Constants.KEY_TRIP, personJsonString);
             Navigation.findNavController(view).navigate(R.id.action_previousFragment_to_tripDetailFragment,bundle);
         });
-        String date =getDate(trip.getTripDate());
-        String time=getTime(trip.getTripDate());
-       holder.tripDate.setText("Date: "+date);
-       holder.tripTime.setText("Time: "+time);
-        holder.tripFrom.setText(trip.getStartPoint().getName());
+    /*    holder.tripDate.setText(trip.getTripDate().toString());
+        //  holder.tripTime.setText();
+        holder.tripTo.setText(trip.getStartPoint().getName());
         holder.tripTo.setText(trip.getEndPoint().getName());
         if (trip.getTripStatus()== Constants.STATUS_DONE)
         {
-            holder.tripTaskProgress.setTextColor(Color.parseColor("#EC3BF8"));
+            holder.tripTaskProgress.setTextColor(Integer.parseInt("#EC3BF8"));
         }
         else
         {
-            holder.tripTaskProgress.setTextColor(Color.parseColor("#E68516"));
-        }
+            holder.tripTaskProgress.setTextColor(Integer.parseInt("#E68516"));
+
+        }*/
     }
 
-    public String getDate(Date date) {
-        String myFormat = "dd/MM/yyyy"; //In which you need put here
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-        return sdf.format(date).toString();
-    }
-
-    public String getTime(Date date) {
-        String time = new SimpleDateFormat("hh:mm", Locale.getDefault()).format(date);
-        return time;
-    }
     @Override
     public int getItemCount() {
         return tripList.size();
@@ -88,10 +71,6 @@ public class TripAdapter  extends RecyclerView.Adapter<TripAdapter.PreviousTripV
     public void setArray(List<Trip> trips) {
         this.tripList=trips;
         notifyDataSetChanged();
-    }
-    public List<Trip> tripArray()
-    {
-        return tripList;
     }
 
     public class PreviousTripViewHandler extends RecyclerView.ViewHolder {

@@ -12,6 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tripplanner.Constants;
@@ -22,7 +23,7 @@ import com.tripplanner.databinding.PreviousTripContentBinding;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PreviousTripAdapter extends FragmentPagerAdapter {
+public class PreviousTripAdapter extends FragmentStatePagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
 

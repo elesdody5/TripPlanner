@@ -131,6 +131,7 @@ public class MapContinerFragment extends Fragment implements OnMapReadyCallback,
             currentPolyline = mMap.addPolyline( valuesLine .get(i).color(color));
                   }
 
+
     }
 
     @Override
