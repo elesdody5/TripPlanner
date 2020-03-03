@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "649679824368-43ecr8jurs1d3cap40drvdkqrj44nmvq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tripplanner",
+            "certificate_hash": "db68ddafb13164e47fa7e26f95c6db74fe293222"
+          }
+        },
+        {
           "client_id": "649679824368-rpms0cutq5drvcc7tk3omakjiltf8frc.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
