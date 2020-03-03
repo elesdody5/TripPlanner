@@ -14,7 +14,7 @@
         android:id="@+id/nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
-        android:layout_height="648dp"
+        android:layout_height="match_parent"
         android:layout_marginBottom="2dp"
         app:defaultNavHost="true"
         app:layout_constraintBottom_toTopOf="@+id/nav_view"
@@ -36,7 +36,6 @@
         android:clipToPadding="false"
         android:focusableInTouchMode="false"
         android:paddingLeft="20dp"
-
         android:paddingRight="20dp"
         app:elevation="4dp"
         app:itemRippleColor="@color/colorPrimary"

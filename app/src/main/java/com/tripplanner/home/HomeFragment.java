@@ -1,13 +1,16 @@
 package com.tripplanner.home;
 
 
+import android.app.AlarmManager;
 import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -24,6 +27,8 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Parcelable;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -38,14 +43,21 @@ import android.widget.Toast;
 import com.google.android.material.snackbar.Snackbar;
 import com.tripplanner.Constants;
 import com.tripplanner.R;
+import com.tripplanner.alarm.FloatingViewService;
 import com.tripplanner.alarm.NotificationActivity;
+import com.tripplanner.data_layer.local_data.entity.Note;
 import com.tripplanner.data_layer.local_data.entity.Place;
 import com.tripplanner.data_layer.local_data.entity.Trip;
 import com.tripplanner.databinding.FragmentHomeBinding;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static android.content.Context.ALARM_SERVICE;
+import static com.tripplanner.alarm.NotificationActivity.CODE_DRAW_OVER_OTHER_APP_PERMISSION;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -83,6 +95,7 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
         binding.TripList.setAdapter(mAdapter);
         binding.TripList.setItemAnimator(new DefaultItemAnimator());
         binding.TripList.setLayoutManager(layoutManager);
+
         this.getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         binding.searchView.addTextChangedListener(new TextWatcher() {
             @Override
@@ -173,9 +186,10 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
     }
 
     void displayTrips(List<Trip> trips) {
-        if (!trips.isEmpty())
+        if (!trips.isEmpty()) {
+            Log.d(TAG, "displayTrips: "+trips.size());
             mAdapter.setTripList(trips);
-        else {
+        }else {
             binding.noupcomingrips.setVisibility(View.VISIBLE);
         }
     }
@@ -198,7 +212,8 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
             // backup of removed item for undo purpose
             final Trip deletedTrip = mAdapter.trips.get(viewHolder.getAdapterPosition());
             final int deletedIndex = viewHolder.getAdapterPosition();
-
+            List<Note> notes  = model.getTripNotes(deletedTrip);
+            model.deleteTrip(deletedTrip);
             // remove the item from recycler view
             mAdapter.removeItem(viewHolder.getAdapterPosition());
 //            model.deleteTrip(deletedTrip);
@@ -211,6 +226,7 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
 
                     // undo is selected, restore the deleted item
                     mAdapter.restoreItem(deletedTrip, deletedIndex);
+                    model.insertTrip(deletedTrip, (ArrayList<Note>) notes);
                     //                model.addTrip(deletedTrip);
                 }
             });
@@ -253,10 +269,50 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
     }
 */
     @Override
-    public void startTrip(long tripId) {
-        Intent intent = new Intent(getContext(),NotificationActivity.class);
-        intent.putExtra(Constants.TRIPS,(int)tripId);
+    public void startTrip(Trip trip) {
+       Map<String,Object> hm = new HashMap<>();
+
+        hm.put("tripStatus", Constants.STATUS_DONE);
+        model.updateTrip(trip, hm);
+        setPermation(trip);
+        cancleAlarm((int)trip.getId());
+        mAdapter.removeItem(trip.getId());
+    }
+
+    public void setPermation(Trip trip) {
+        Log.d("ddd", "setPermation: dddd");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(getActivity())) {
+
+            //If the draw over permission is not available open the settings screen
+            //to grant the permission.
+            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                    Uri.parse("package:" + getContext().getPackageName()));
+            startActivityForResult(intent, CODE_DRAW_OVER_OTHER_APP_PERMISSION);
+        } else {
+            Log.d("ffff", "setPermation: fffff");
+            Intent intent = new Intent(getActivity(), FloatingViewService.class);
+            List<Note> notes  = model.getTripNotes(trip);
+            intent.putParcelableArrayListExtra("notes", (ArrayList<? extends Parcelable>) notes);
+            getContext().startService(intent);
+            openGoogleMapDierction(trip.getEndPoint().getLat(), trip.getEndPoint().getLng());
+
+
+        }
+    }
+    private void openGoogleMapDierction(double latatute, double longatute) {
+        Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                Uri.parse("http://maps.google.com/maps?daddr=" + latatute + "," + longatute + ""));
         startActivity(intent);
+    }
+    public  void cancleAlarm(int tripId)
+    {
+        Intent notifyIntent = new Intent(getContext(), NotificationActivity.TripAlarmReciver.class);
+        notifyIntent.putExtra(Constants.TRIPS, tripId);
+        final PendingIntent notifyPendingIntent = PendingIntent.getBroadcast
+                (getContext(), tripId, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        final AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(ALARM_SERVICE);
+        alarmManager.cancel(notifyPendingIntent);
+
     }
 
     /*omnia*/

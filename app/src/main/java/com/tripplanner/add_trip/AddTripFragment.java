@@ -53,6 +53,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import static android.content.Context.ALARM_SERVICE;
+import static com.tripplanner.Constants.STATUS_UPCOMING;
 
 
 public class AddTripFragment extends Fragment {
@@ -69,6 +70,7 @@ public class AddTripFragment extends Fragment {
     private Calendar myCalendar;
 
     private Calendar calendar2;
+
     public AddTripFragment() {
     }
 
@@ -151,15 +153,18 @@ public class AddTripFragment extends Fragment {
         fragmentAddTripBinding.dateView.datePicker.setOnClickListener(view ->
         {
             myCalendar.get(Calendar.YEAR);
-            new DatePickerDialog(getActivity(), date, myCalendar
+
+            DatePickerDialog datePicker =  new DatePickerDialog(getActivity(), date, myCalendar
                     .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                    myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                    myCalendar.get(Calendar.DAY_OF_MONTH));
+            datePicker.getDatePicker().setMinDate(myCalendar.getTimeInMillis());
+            datePicker.show();
         });
         fragmentAddTripBinding.dateView.timePicker.setOnClickListener(view -> openTimePicker());
     }
 
     private void setupTimeDatePickerRound() {
-         calendar2 = Calendar.getInstance();
+        calendar2 = Calendar.getInstance();
 
         dateRound = (view, year, monthOfYear, dayOfMonth) -> {
             // TODO Auto-generated method stub
@@ -172,9 +177,11 @@ public class AddTripFragment extends Fragment {
         fragmentAddTripBinding.roundDateView.datePicker.setOnClickListener(view ->
         {
             calendar2.get(Calendar.YEAR);
-            new DatePickerDialog(getActivity(), dateRound, calendar2
+           DatePickerDialog datePickerDialog= new DatePickerDialog(getActivity(), dateRound, calendar2
                     .get(Calendar.YEAR), calendar2.get(Calendar.MONTH),
-                    calendar2.get(Calendar.DAY_OF_MONTH)).show();
+                    calendar2.get(Calendar.DAY_OF_MONTH));
+            datePickerDialog.getDatePicker().setMinDate(myCalendar.getTimeInMillis());
+            datePickerDialog.show();
         });
         fragmentAddTripBinding.roundDateView.timePicker.setOnClickListener(view -> openTimePickerRound());
 
@@ -236,6 +243,7 @@ public class AddTripFragment extends Fragment {
                 Note note = new Note();
                 note.setNoteName(input.getText().toString());
                 noteAdapter.addNote(note);
+
             }
         });
 
@@ -250,57 +258,57 @@ public class AddTripFragment extends Fragment {
 
 
         if (tripViewModel.validate(fragmentAddTripBinding)) {
-            view.setEnabled(false);
-            if (fragmentAddTripBinding.placeView.roundTrip.isChecked()) {
-                Trip roundTrip = setRounTrip();
-                ArrayList<Note> notes = new ArrayList<>(noteAdapter.getNotes());
-                tripViewModel.insertTrip(roundTrip, notes).observe(getViewLifecycleOwner(), aLong -> setAlarmManger(aLong.intValue()));
-            }
             if (trip.getStartPoint() != null && trip.getEndPoint() != null) {
+                view.setEnabled(false);
                 trip.setTripDate(myCalendar.getTime());
+                trip.setTripStatus(STATUS_UPCOMING);
                 tripViewModel.insertTrip(trip, noteAdapter.getNotes()).observe(getActivity(), aLong -> {
-                    Log.d(TAG, "insertTip: " + trip);
                     Toast.makeText(getContext(), "Inserted Successfully", Toast.LENGTH_SHORT).show();
                     setAlarmManger(aLong.intValue());
+                    if (fragmentAddTripBinding.placeView.roundTrip.isChecked()) {
+                        Trip roundTrip = setRounTrip();
+                        ArrayList<Note> notes = noteAdapter.getNotes();
+                        tripViewModel.insertTrip(roundTrip, notes).observe(getViewLifecycleOwner(), bLong -> setAlarmManger(bLong.intValue()));
+                    }
                     goback(view);
                     view.setEnabled(true);
                 });
             }
-        }
-        else
-            Toast.makeText(getContext(),"Please select places from list",Toast.LENGTH_LONG).show();
-        }
+        } else
+            Toast.makeText(getContext(), "Please select places from list", Toast.LENGTH_LONG).show();
+    }
 
-        private Trip setRounTrip () {
-            Trip trip = new Trip();
-            trip.setName(fragmentAddTripBinding.tripToolBar.tripName.getText().toString());
-            trip.setStartPoint(this.trip.getEndPoint());
-            trip.setEndPoint(this.trip.getStartPoint());
-            trip.setTripDate(calendar2.getTime());
-            return trip;
-        }
+    private Trip setRounTrip() {
+        Trip trip = new Trip();
+        trip.setName(fragmentAddTripBinding.tripToolBar.tripName.getText().toString());
+        trip.setStartPoint(this.trip.getEndPoint());
+        trip.setEndPoint(this.trip.getStartPoint());
+        trip.setTripDate(calendar2.getTime());
+        trip.setTripStatus(STATUS_UPCOMING);
+        return trip;
+    }
 
-        private void setAlarmManger ( int tripId){
+    private void setAlarmManger(int tripId) {
 
-            // Set the alarm to start at 8:30 a.m.
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(System.currentTimeMillis());
-            calendar.setTime(trip.getTripDate());
-            Intent notifyIntent = new Intent(getContext(), NotificationActivity.TripAlarmReciver.class);
-            notifyIntent.putExtra(Constants.TRIPS, tripId);
-            final PendingIntent notifyPendingIntent = PendingIntent.getBroadcast
-                    (getContext(), tripId, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            final AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(ALARM_SERVICE);
+        // Set the alarm to start at 8:30 a.m.
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.setTime(trip.getTripDate());
+        Intent notifyIntent = new Intent(getContext(), NotificationActivity.TripAlarmReciver.class);
+        notifyIntent.putExtra(Constants.TRIPS, tripId);
+        final PendingIntent notifyPendingIntent = PendingIntent.getBroadcast
+                (getContext(), tripId, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        final AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(ALARM_SERVICE);
 
-            if (alarmManager != null) {
-                Log.d(TAG, "setAlarmManger: " + alarmManager);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                        notifyPendingIntent);
+        if (alarmManager != null) {
+            Log.d(TAG, "setAlarmManger: " + alarmManager);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                    notifyPendingIntent);
 
-            }
-        }
-
-        public void goback (View v){
-            Navigation.findNavController(v).popBackStack();
         }
     }
+
+    public void goback(View v) {
+        Navigation.findNavController(v).popBackStack();
+    }
+}

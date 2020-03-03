@@ -27,10 +27,14 @@
     android:id="@+id/previousTripFragment"
     android:name="com.tripplanner.previous_trip.PreviousTripFragment"
     android:label="previous_trip_fragment"
-    tools:layout="@layout/previous_trip_fragment" >
+    tools:layout="@layout/previous_trip_fragment"
+        >
         <action
             android:id="@+id/action_previousFragment_to_tripDetailFragment"
-            app:destination="@id/previousTripDetailsFragment2" />
+            app:destination="@id/previousTripDetailsFragment2"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/previousTripFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/previousTripDetailsFragment2"

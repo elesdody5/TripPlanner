@@ -1,7 +1,6 @@
 package com.tripplanner.home;
 
 
-
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,10 +32,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
         return trips;
     }
 
-    interface  StartTrip{
-        void startTrip(long tripId);
+    interface StartTrip {
+        void startTrip(Trip trip);
     }
-    StartTrip startTrip ;
+
+    StartTrip startTrip;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -59,7 +59,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public HomeAdapter(StartTrip startTrip) {
-    this.startTrip = startTrip;
+        this.startTrip = startTrip;
 
     }
 
@@ -78,7 +78,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 
 
     // Create new views (invoked by the layout manager)
-
 
 
     @Override
@@ -102,18 +101,20 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
                 }
         );
         holder.binding.startTrip.setOnClickListener(view -> {
-            startTrip.startTrip(trips.get(position).getId());
+            startTrip.startTrip(trips.get(position));
         });
         holder.binding.Date.setText(updateLabel(tripData.getTripDate()));
         holder.binding.Time.setText(roundtimeFormat(tripData.getTripDate()));
 
 
-}
+    }
+
     private String roundtimeFormat(Date date) {
         SimpleDateFormat sdf = new SimpleDateFormat("K:mm a");
         String formattedTime = sdf.format(date);
         return formattedTime;
     }
+
     private String updateLabel(Date date) {
         String myFormat = "dd/MM/yyyy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
@@ -136,6 +137,15 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
         // to perform recycler view delete animations
         notifyItemRemoved(position);
 
+    }
+
+    public void removeItem(long tripId) {
+        for (int i = 0; i < trips.size(); i++) {
+            if (tripId == trips.get(i).getId()) {
+                removeItem(i);
+                return;
+            }
+        }
     }
 
 

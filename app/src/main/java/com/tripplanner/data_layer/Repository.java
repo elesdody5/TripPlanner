@@ -176,7 +176,7 @@ public class Repository {
         MutableLiveData<Long> inserted = new MutableLiveData<>();
         Room.databaseWriteExecutor.execute(() -> {
             trip.setUserId(user.getId());
-            trip.setTripStatus(STATUS_UPCOMING);
+
             long id = tripDao.insertTrip(trip);
 
             if (id != -1) {

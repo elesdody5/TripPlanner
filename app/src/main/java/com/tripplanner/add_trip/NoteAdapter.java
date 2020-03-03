@@ -61,7 +61,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
    }
 
     ArrayList<Note> getNotes() {
-        return noteList;
+        return new ArrayList<>(noteList);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

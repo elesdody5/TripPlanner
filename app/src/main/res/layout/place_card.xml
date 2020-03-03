@@ -66,10 +66,8 @@
                 <AutoCompleteTextView
                     android:id="@+id/to_et"
                     android:layout_width="match_parent"
-                    android:layout_height="38dp"
+                    android:layout_height="wrap_content"
                     android:background="@color/fui_transparent"
-
-                    android:padding="10dp"
                     android:text='@{trip.endPoint.name}'
                     android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -78,9 +76,9 @@
                 android:id="@+id/textInputLayout"
                 style="@style/searchInput"
                 android:layout_width="0dp"
-                android:hint="@string/from"
                 android:layout_height="wrap_content"
                 android:background="@drawable/from_to_background"
+                android:hint="@string/from"
                 app:layout_constraintBottom_toTopOf="@+id/textInputLayout2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -90,10 +88,8 @@
                 <AutoCompleteTextView
                     android:id="@+id/from_et"
                     android:layout_width="match_parent"
-                    android:layout_height="37dp"
+                    android:layout_height="wrap_content"
                     android:background="@color/fui_transparent"
-
-                    android:padding="10dp"
                     android:text='@{trip.startPoint.name }'
                     android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>

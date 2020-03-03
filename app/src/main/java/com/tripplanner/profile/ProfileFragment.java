@@ -36,7 +36,7 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false);
         View view = binding.getRoot();
-
+        setModel();
         binding.saveemail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
