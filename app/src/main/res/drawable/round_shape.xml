@@ -18,6 +18,7 @@
 
             <solid android:color="#FFFFFF" />
             <corners
+
                 android:bottomLeftRadius="30dp"
                 android:bottomRightRadius="30dp"
                 />

@@ -1,6 +1,7 @@
 package com.tripplanner.home;
 
 
+import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -15,6 +16,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.NavHostController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -22,6 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,6 +36,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.tripplanner.Constants;
 import com.tripplanner.R;
 import com.tripplanner.alarm.NotificationActivity;
 import com.tripplanner.data_layer.local_data.entity.Place;
@@ -49,10 +54,10 @@ import java.util.List;
 // TODO create recyclerview done
 // TODO create home layout done
 
-public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
+public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.RecyclerItemTouchHelperListener ,HomeAdapter.StartTrip {
 
     HomeViewModel model;
-    LiveData<List<Trip>> trips;
+   // LiveData<List<Trip>> trips;
     private HomeAdapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private FragmentHomeBinding binding;
@@ -62,6 +67,7 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
 
     }
 
+    private static final String TAG = "HomeFragment";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,8 +76,9 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
 
         View view = binding.getRoot();
+
         layoutManager = new LinearLayoutManager(this.getContext());
-        mAdapter = new HomeAdapter();
+        mAdapter = new HomeAdapter(this);
         binding.TripList.setHasFixedSize(true);
         binding.TripList.setAdapter(mAdapter);
         binding.TripList.setItemAnimator(new DefaultItemAnimator());
@@ -84,12 +91,20 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                Log.d(TAG, "onTextChanged: ");
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-
-                filter(editable.toString());
+                Log.d(TAG, "afterTextChanged: ");
+                if(!TextUtils.isEmpty(editable)) {
+                    search(editable.toString());
+                }
+                else {
+                    binding.TripList.setVisibility(View.VISIBLE);
+                    binding.noresult.setVisibility(View.INVISIBLE);
+                    setViewModel();
+                }
             }
         });
 
@@ -113,6 +128,28 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
 
     }
 
+    private void search(String tripName) {
+        ArrayList<Trip> foundTrips = new ArrayList<>();
+        for (Trip trip : mAdapter.getTrips())
+        {
+            if(trip.getName().contains(tripName))
+            {
+                foundTrips.add(trip);
+            }
+        }
+        if(foundTrips.isEmpty())
+        {
+            binding.noresult.setVisibility(View.VISIBLE);
+            binding.TripList.setVisibility(View.INVISIBLE);
+        }
+        else
+        {
+            binding.noresult.setVisibility(View.INVISIBLE);
+            binding.TripList.setVisibility(View.VISIBLE);
+            mAdapter.setTripList(foundTrips);
+        }
+    }
+
 
     public  boolean isOnline() {
 
@@ -130,10 +167,7 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
         model = ViewModelProviders.of(requireActivity()).get(HomeViewModel.class);
         binding.setModel(model);
 
-        model.getTrips().observe(getViewLifecycleOwner(), Trips -> {
-            displayTrips(Trips);
-            binding.noupcomingrips.setVisibility(View.INVISIBLE);
-        });
+        model.getTrips().observe(getViewLifecycleOwner(), this::displayTrips);
 
 
     }
@@ -187,38 +221,43 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
     }
 
 
-    private void filter(String text) {
+  /*  private void filter(String text) {
 
         List<Trip> filterdtrips = new ArrayList<>();
-        if (text.equals("") || text == null) {
 
-            if (trips != null) {
-
-                mAdapter.setTripList(trips.getValue());
-                binding.noresult.setVisibility(View.INVISIBLE);
-            }
-        }
+        if (!text.equals("")) {
 
 
-        for (Trip t : mAdapter.trips) {
-            if (t.getName().toLowerCase().contains(text.toLowerCase())) {
-
-                filterdtrips.add(t);
-            }
-
-        }
-        if (filterdtrips.size() <= 0) {
-            binding.noresult.setVisibility(View.VISIBLE);
-            binding.TripList.setVisibility(View.INVISIBLE);
-            binding.noupcomingrips.setVisibility(View.INVISIBLE);
-        } else {
-            mAdapter.filterList(filterdtrips);
+            mAdapter.setTripList(trips.getValue());
             binding.noresult.setVisibility(View.INVISIBLE);
-            binding.TripList.setVisibility(View.VISIBLE);
-            binding.noupcomingrips.setVisibility(View.INVISIBLE);
+
+        } else {
+            for (Trip t : mAdapter.trips) {
+                if (t.getName().toLowerCase().contains(text.toLowerCase())) {
+
+                    filterdtrips.add(t);
+                }
+
+            }
+            if (filterdtrips.size() <= 0) {
+                binding.noresult.setVisibility(View.VISIBLE);
+                binding.TripList.setVisibility(View.INVISIBLE);
+                binding.noupcomingrips.setVisibility(View.INVISIBLE);
+            } else {
+                mAdapter.filterList(filterdtrips);
+                binding.noresult.setVisibility(View.INVISIBLE);
+                binding.TripList.setVisibility(View.VISIBLE);
+                binding.noupcomingrips.setVisibility(View.INVISIBLE);
+            }
         }
     }
-
+*/
+    @Override
+    public void startTrip(long tripId) {
+        Intent intent = new Intent(getContext(),NotificationActivity.class);
+        intent.putExtra(Constants.TRIPS,(int)tripId);
+        startActivity(intent);
+    }
 
     /*omnia*/
 }

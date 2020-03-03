@@ -70,6 +70,7 @@ public class TripAdapter  extends RecyclerView.Adapter<TripAdapter.PreviousTripV
 
     public void setArray(List<Trip> trips) {
         this.tripList=trips;
+        notifyDataSetChanged();
     }
 
     public class PreviousTripViewHandler extends RecyclerView.ViewHolder {

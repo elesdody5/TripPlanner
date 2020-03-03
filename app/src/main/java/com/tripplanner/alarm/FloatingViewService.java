@@ -16,12 +16,19 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.tripplanner.MainActivity;
 import com.tripplanner.R;
+import com.tripplanner.data_layer.Repository;
 import com.tripplanner.data_layer.local_data.entity.Note;
+import com.tripplanner.previous_trip_details.NoteAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 public class FloatingViewService extends Service {
@@ -29,6 +36,11 @@ public class FloatingViewService extends Service {
     private View mFloatingView;
     LinearLayout linearLayout;
     ArrayList<Note> noteList;
+
+    RecyclerView notesRecycler;
+    NotesAdapter noteAdapter;
+    RecyclerView.LayoutManager mLayoutManager;
+    Repository repository;
 
     public FloatingViewService() {
     }
@@ -42,13 +54,16 @@ public class FloatingViewService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         noteList = intent.getParcelableArrayListExtra("notes");
-        for (int i = 0; i < noteList.size(); i++) {
-            CheckBox checkBox = new CheckBox(getApplicationContext());
-            checkBox.setText(noteList.get(i).getNoteName());
-            linearLayout.addView(checkBox);
 
+        noteAdapter =new NotesAdapter(noteList,this);
+        notesRecycler.setAdapter(noteAdapter);
 
-        }
+//        for (int i = 0; i < noteList.size(); i++) {
+//            CheckBox checkBox = new CheckBox(getApplicationContext());
+//            checkBox.setText(noteList.get(i).getNoteName());
+//            linearLayout.addView(checkBox);
+//        }
+
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -58,8 +73,14 @@ public class FloatingViewService extends Service {
 
 
         //Inflate the floating view layout we created
+
+        repository=new Repository(getApplication());
         mFloatingView = LayoutInflater.from(this).inflate(R.layout.layout_floating_widget, null);
         linearLayout = mFloatingView.findViewById(R.id.data);
+        notesRecycler=mFloatingView.findViewById(R.id.notesdata);
+         mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        notesRecycler.setLayoutManager(mLayoutManager);
+
 
         //Add the view to the window.
         final WindowManager.LayoutParams params = new WindowManager.LayoutParams(
@@ -172,7 +193,6 @@ public class FloatingViewService extends Service {
             }
         });
     }
-
     private boolean isViewCollapsed() {
         return mFloatingView == null || mFloatingView.findViewById(R.id.collapse_view).getVisibility() == View.VISIBLE;
     }
@@ -181,6 +201,11 @@ public class FloatingViewService extends Service {
     public void onDestroy() {
         super.onDestroy();
         if (mFloatingView != null) mWindowManager.removeView(mFloatingView);
+    }
+
+    public  void updateNote(Note note, Map<String,Object> objectMap){
+        repository.updateNote(note,objectMap);
+
     }
 
 }

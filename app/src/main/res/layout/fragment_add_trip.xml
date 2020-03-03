@@ -18,10 +18,11 @@
     </data>
 <ScrollView
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
         android:orientation="vertical">
 
         <include
@@ -29,7 +30,6 @@
             layout="@layout/trip_toolbar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -48,71 +48,60 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/trip_tool_bar"
-            bind:trip="@{trip}" />
+            bind:trip="@{trip}"
+            bind:fragment="@{fragmet}"/>
 
         <include
             android:id="@+id/date_view"
             layout="@layout/date_card"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="98dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="11dp"
+            android:layout_marginTop="12dp"
             android:layout_marginEnd="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/round_date_view"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/place_view"
             bind:fragment="@{fragmet}"
             bind:trip="@{trip}" />
+
         <include
             android:id="@+id/round_date_view"
             layout="@layout/date_card"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="11dp"
             android:layout_marginEnd="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/round_trip"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/date_view"
             bind:fragment="@{fragmet}"
             bind:trip="@{trip}" />
 
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/round_trip"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:onClick="@{(view)->fragmet.roundTrip(view)}"
-            android:text="@string/round_trip"
-            app:layout_constraintBottom_toTopOf="@id/add_note_card"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/round_date_view" />
-
         <include
             android:id="@+id/add_note_card"
             layout="@layout/todo_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="244dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="15dp"
             android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/round_trip"
+            app:layout_constraintTop_toBottomOf="@+id/round_date_view"
             bind:fragment="@{fragmet}" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/save"
             style="@style/saveButton"
-            android:layout_width="wrap_content"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="8dp"
             android:onClick="@{(view)-> fragmet.insertTip(view)}"
             android:text="@string/fui_button_text_save"
             app:layout_constraintBottom_toBottomOf="parent"
