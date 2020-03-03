@@ -6,6 +6,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +35,7 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false);
-
+        View view = binding.getRoot();
 
         binding.saveemail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,23 +104,24 @@ public class ProfileFragment extends Fragment {
             public void onClick(View v) {
               model.logout();
               //navigate
+                Navigation.findNavController(view).navigate(R.id.action_profileFragment_to_loginFragment);
             }
         });
         binding.editClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+              binding.editAccount.setVisibility(View.VISIBLE);
             }
         });
 
         binding.passClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                binding.editPassword.setVisibility(View.VISIBLE);
             }
         });
 
-        View view = binding.getRoot();
+
         return view ;
     }
 
