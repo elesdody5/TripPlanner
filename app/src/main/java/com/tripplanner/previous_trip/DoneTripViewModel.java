@@ -27,9 +27,9 @@ public class DoneTripViewModel extends AndroidViewModel {
     public LiveData<List<Trip>> getDoneTrip() {
         return repository.getDoneTrips();
     }
-    public LiveData<List<Note>> getTripNotes(int id)
+    public List<Note> getTripNotes(long id)
     {
-        return repository.getTodoNotes(id);
+        return repository.getTripNotes(id);
     }
     public void deleteTrip(int id)
     {

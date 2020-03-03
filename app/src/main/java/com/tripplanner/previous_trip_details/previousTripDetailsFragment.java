@@ -92,9 +92,6 @@ public class previousTripDetailsFragment extends Fragment implements OnMapReadyC
         noteAdapter =new NoteAdapter(mViewModel.getTripNotes(trip.getId()));
         noteRecycler.setAdapter(noteAdapter);
         noteRecycler.setLayoutManager(mLayoutManager);
-
-
-
         return view;
     }
     public String getDate(Date date)
@@ -160,7 +157,7 @@ public class previousTripDetailsFragment extends Fragment implements OnMapReadyC
         super.onDestroyView();
 
         android.app.Fragment fragment = getActivity().getFragmentManager()
-                .findFragmentById(R.id.map2);
+                .findFragmentById(R.id.map);
         if (null != fragment) {
             android.app.FragmentTransaction ft = getActivity()
                     .getFragmentManager().beginTransaction();
@@ -168,6 +165,7 @@ public class previousTripDetailsFragment extends Fragment implements OnMapReadyC
             ft.commit();
         }
     }
+
 
 
 }

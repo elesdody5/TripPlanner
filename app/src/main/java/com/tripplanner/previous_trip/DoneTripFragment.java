@@ -94,7 +94,7 @@ public class DoneTripFragment extends Fragment {
                     final Trip deletedItem = finshedtripList.get(viewHolder.getAdapterPosition());
                     final int deletedIndex = viewHolder.getAdapterPosition();
                     mViewModel.deleteTrip((int) deletedItem.getId());
-                    notes=deletedItem.getNotes();
+                    notes=mViewModel.getTripNotes(deletedItem.getId());
                     finishedTripAdapter.removeItem(viewHolder.getAdapterPosition());
                     Snackbar snackbar = Snackbar
                             .make(frameLayout, name + " removed from trip!", Snackbar.LENGTH_LONG);

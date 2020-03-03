@@ -72,7 +72,7 @@ public class CancledTripFragment extends Fragment {
                     final Trip deletedItem = canceltripList.get(viewHolder.getAdapterPosition());
                     final int deletedIndex = viewHolder.getAdapterPosition();
                     mViewModel.deleteTrip((int) deletedItem.getId());
-                    notes=deletedItem.getNotes();
+                    notes=mViewModel.getTripNotes(deletedItem.getId());
                     cancelTripAdapter.removeItem(viewHolder.getAdapterPosition());
                     Snackbar snackbar = Snackbar
                             .make(constraintLayout, name + " removed from trip!", Snackbar.LENGTH_LONG);

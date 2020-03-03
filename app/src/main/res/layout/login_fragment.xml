@@ -17,20 +17,20 @@
         tools:context=".registration.LoginFragment"
         >
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/materialTextView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:layout_width="160dp"
+            android:layout_height="160dp"
             android:layout_marginStart="188dp"
-            android:layout_marginTop="132dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="188dp"
             android:textColor="#000000"
             android:textSize="30sp"
-
+            android:id="@+id/materialTextView2"
+            android:src="@drawable/logo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="@string/login" />
+            />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout3"
@@ -140,7 +140,7 @@
             android:layout_height="40dp"
 
             android:layout_marginStart="142dp"
-            android:layout_marginTop="19dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="142dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -151,7 +151,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="128dp"
-            android:layout_marginTop="22dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="129dp"
             android:text="@string/Dont"
             android:textColor="@color/mdtp_dark_gray"
@@ -165,7 +165,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="160dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="9dp"
             android:layout_marginEnd="161dp"
             android:text="@string/registerNow"
             android:textColor="@color/colorPrimary"
@@ -179,7 +179,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="199dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="15dp"
             android:layout_marginEnd="199dp"
             android:text="@string/or"
             app:layout_constraintEnd_toEndOf="parent"

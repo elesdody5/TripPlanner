@@ -73,18 +73,20 @@ public class MapContinerFragment extends Fragment implements OnMapReadyCallback,
                     new FetchURL(MapContinerFragment.this).execute(getUrl(trips.get(i).getStartPoint(), trips.get(i).getEndPoint(), "driving"), "driving");
 
                 }
-                mMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(trips.get(0).getStartPoint().getLat(), trips.get(0).getStartPoint().getLng()))
-                        .title("Marker"));
-                Float zoom = mMap.getCameraPosition().zoom;
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(trips.get(0).getStartPoint().getLat(),trips.get(0).getStartPoint().getLng()),zoom));
-                CameraUpdate center=
-                        CameraUpdateFactory.newLatLng(new LatLng( trips.get(0).getStartPoint().getLat(),
-                                trips.get(0).getEndPoint().getLat()));
-                CameraUpdate zoom2=CameraUpdateFactory.zoomTo(7);
+                if(trips.size()!=0) {
+                    mMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(trips.get(0).getStartPoint().getLat(), trips.get(0).getStartPoint().getLng()))
+                            .title("Marker"));
+                    Float zoom = mMap.getCameraPosition().zoom;
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(trips.get(0).getStartPoint().getLat(), trips.get(0).getStartPoint().getLng()), zoom));
+                    CameraUpdate center =
+                            CameraUpdateFactory.newLatLng(new LatLng(trips.get(0).getStartPoint().getLat(),
+                                    trips.get(0).getEndPoint().getLat()));
+                    CameraUpdate zoom2 = CameraUpdateFactory.zoomTo(7);
 
-                mMap.moveCamera(center);
-                mMap.animateCamera(zoom2);
+                    mMap.moveCamera(center);
+                    mMap.animateCamera(zoom2);
+                }
 
             }
         });
