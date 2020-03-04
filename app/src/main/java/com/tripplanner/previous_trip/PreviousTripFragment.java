@@ -35,11 +35,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class PreviousTripFragment extends Fragment  {
+public class PreviousTripFragment extends Fragment {
 
     private PreviousTripViewModel previousTripViewModel;
     private TabLayout tabLayout;
-    private ViewPager viewPager;
+
+    // private ViewPager viewPager;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -47,17 +48,53 @@ public class PreviousTripFragment extends Fragment  {
         PreviousTripFragmentBinding binding = DataBindingUtil.inflate(
                 inflater, R.layout.previous_trip_fragment, container, false);
         View view = binding.getRoot();
+        tabLayout = binding.tabs;
+        tabLayout.addTab(tabLayout.newTab().setText("Done Trips"));
+        tabLayout.addTab(tabLayout.newTab().setText("Canceled Trips"));
+        tabLayout.addTab(tabLayout.newTab().setText("Map"));
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, new DoneTripFragment()).commit();
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                int position = tab.getPosition();
+                switch (tab.getPosition()) {
+                    case 0:
+                        getActivity().getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.fragment_container, new DoneTripFragment()).commit();
+                        break;
+                    case 1:
+                        getActivity().getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.fragment_container, new CancledTripFragment()).commit();
+                        break;
+                    case 2:
+                        getActivity().getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.fragment_container, new MapContinerFragment()).commit();
+                        break;
+                }
+            }
 
-    //    Toolbar toolbar =  binding.toolbar;
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+   /* //    Toolbar toolbar =  binding.toolbar;
     //    ((AppCompatActivity)getActivity()).setActionBar(toolbar);
         viewPager =binding.viewpager;
         addTabs(viewPager);
-        tabLayout =  binding.tabs;
+
         tabLayout.setupWithViewPager(viewPager);
-        disableswipe();
+        disableswipe();*/
         return view;
     }
-    private void disableswipe()
+  /*  private void disableswipe()
     {
         int PAGE_0 = 0;
         int PAGE_1 = 1;
@@ -83,23 +120,22 @@ public class PreviousTripFragment extends Fragment  {
                 return false;
             }
         });
-    }
+    }*/
 
-    private void addTabs(ViewPager viewPager) {
+ /*   private void addTabs(ViewPager viewPager) {
         PreviousTripAdapter adapter = new PreviousTripAdapter(getActivity().getSupportFragmentManager());
         adapter.addFrag(new DoneTripFragment(), "Done Trips");
         adapter.addFrag(new CancledTripFragment(), "Canceled Trips");
-          adapter.addFrag(new MapContinerFragment(), "Map");
-        //   adapter.addFrag(new BananaFragment(), "Banana");
+        adapter.addFrag(new MapContinerFragment(), "Map");
         viewPager.setAdapter(adapter);
-    }
+    }*/
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         previousTripViewModel = ViewModelProviders.of(this).get(PreviousTripViewModel.class);
         // TODO: Use the ViewModel
-      //  viewPager.beginFakeDrag();
+        //  viewPager.beginFakeDrag();
 
     }
 

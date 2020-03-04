@@ -17,14 +17,18 @@
         android:layout_height="match_parent"
         android:id="@+id/mainlayout"
         tools:context=".previous_trip.CancledTripFragment">
+
+
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="60dp"
+    android:layout_marginTop="54dp"
     android:id="@+id/recyclerviewId"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
+    app:layout_constraintTop_toTopOf="parent"
+    android:orientation="vertical">
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/delayedTripRecyclerView"
             android:layout_width="match_parent"
@@ -54,7 +58,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="60dp"
                 android:textStyle="bold"
-                android:textSize="30dp"
+                android:textSize="26dp"
                 android:text="@string/NoDoneTrip"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
