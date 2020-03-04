@@ -55,9 +55,8 @@
                 android:id="@+id/textInputLayout2"
                 style="@style/searchInput"
                 android:layout_width="0dp"
-                android:hint="@string/To"
                 android:layout_height="wrap_content"
-                android:background="@drawable/from_to_background"
+                android:hint="@string/To"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
@@ -67,7 +66,7 @@
                     android:id="@+id/to_et"
                     android:layout_width="match_parent"
                     android:layout_height="38dp"
-                    android:background="@color/fui_transparent"
+                    android:background="@drawable/from_to_background"
 
                     android:padding="10dp"
                     android:text='@{trip.endPoint.name}'
@@ -78,9 +77,8 @@
                 android:id="@+id/textInputLayout"
                 style="@style/searchInput"
                 android:layout_width="0dp"
-                android:hint="@string/from"
                 android:layout_height="wrap_content"
-                android:background="@drawable/from_to_background"
+                android:hint="@string/from"
                 app:layout_constraintBottom_toTopOf="@+id/textInputLayout2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -91,7 +89,7 @@
                     android:id="@+id/from_et"
                     android:layout_width="match_parent"
                     android:layout_height="37dp"
-                    android:background="@color/fui_transparent"
+                    android:background="@drawable/from_to_background"
 
                     android:padding="10dp"
                     android:text='@{trip.startPoint.name }'
