@@ -71,21 +71,17 @@ public class MapContinerFragment extends Fragment implements OnMapReadyCallback,
             public void onChanged(List<Trip> trips) {
                 for (int i =0;i< trips.size();i++) {
                     new FetchURL(MapContinerFragment.this).execute(getUrl(trips.get(i).getStartPoint(), trips.get(i).getEndPoint(), "driving"), "driving");
-
+                    mMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(trips.get(i).getStartPoint().getLat(), trips.get(i).getStartPoint().getLng()))
+                            .title(trips.get(i).getStartPoint().getName()));
+                    mMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(trips.get(i).getEndPoint().getLat(), trips.get(i).getEndPoint().getLng()))
+                            .title(trips.get(i).getEndPoint().getName()));
                 }
-                mMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(trips.get(0).getStartPoint().getLat(), trips.get(0).getStartPoint().getLng()))
-                        .title("Marker"));
-                Float zoom = mMap.getCameraPosition().zoom;
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(trips.get(0).getStartPoint().getLat(),trips.get(0).getStartPoint().getLng()),zoom));
-                CameraUpdate center=
-                        CameraUpdateFactory.newLatLng(new LatLng( trips.get(0).getStartPoint().getLat(),
-                                trips.get(0).getEndPoint().getLat()));
-                CameraUpdate zoom2=CameraUpdateFactory.zoomTo(7);
-
-                mMap.moveCamera(center);
-                mMap.animateCamera(zoom2);
-
+                if(trips.size()!=0) {
+                    float zoomLevel = (float) 10.0;
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(trips.get(0).getStartPoint().getLat(),trips.get(0).getStartPoint().getLng()), zoomLevel));
+                }
             }
         });
 
@@ -93,8 +89,6 @@ public class MapContinerFragment extends Fragment implements OnMapReadyCallback,
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        //   mMap.addMarker(place1.getLatitude());
-        //   mMap.addMarker(place2);
 
 
 

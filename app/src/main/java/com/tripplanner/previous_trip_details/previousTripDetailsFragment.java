@@ -87,14 +87,20 @@ public class previousTripDetailsFragment extends Fragment implements OnMapReadyC
         new FetchURL(previousTripDetailsFragment.this).execute(getUrl(trip.getStartPoint(), trip.getEndPoint(), "driving"), "driving");
         noteRecycler=view.findViewById(R.id.prenote_rv);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+        noteAdapter =new NoteAdapter(new ArrayList<>());
         mViewModel = ViewModelProviders.of(this).get(PreviousTripDetailsViewModel.class);
+        mViewModel.getTripNotes((int) trip.getId()).observe(getViewLifecycleOwner(), new Observer<List<Note>>() {
+            @Override
+            public void onChanged(List<Note> notes) {
+                noteAdapter.setNoteList(notes);
+                noteAdapter.notifyDataSetChanged();
+            }
+        });
         // TODO: Use the ViewModel
-        noteAdapter =new NoteAdapter(mViewModel.getTripNotes(trip.getId()));
+      //  Log.i("gg", "onCreateView: "+mViewModel.getTripNotes((int) trip.getId()).get(0).isChecked());
+     //   Log.i("gg", "onCreateView: "+mViewModel.getTripNotes((int) trip.getId()).get(1).isChecked());
         noteRecycler.setAdapter(noteAdapter);
         noteRecycler.setLayoutManager(mLayoutManager);
-
-
-
         return view;
     }
     public String getDate(Date date)
@@ -118,17 +124,13 @@ public class previousTripDetailsFragment extends Fragment implements OnMapReadyC
 
         mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(trip.getStartPoint().getLat(), trip.getStartPoint().getLng()))
+                .title(trip.getStartPoint().getName()));
+        mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(trip.getEndPoint().getLat(), trip.getEndPoint().getLng()))
+                .title(trip.getEndPoint().getName()));
 
-                .title("Marker"));
-        Float zoom = mMap.getCameraPosition().zoom;
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(trip.getStartPoint().getLat(),trip.getStartPoint().getLng()),zoom));
-        CameraUpdate center=
-                CameraUpdateFactory.newLatLng(new LatLng( trip.getStartPoint().getLat(),
-                        trip.getEndPoint().getLat()));
-        CameraUpdate zoom2=CameraUpdateFactory.zoomTo(7);
-
-        mMap.moveCamera(center);
-        mMap.animateCamera(zoom2);
+        float zoomLevel = (float) 10.0;
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(trip.getStartPoint().getLat(),trip.getStartPoint().getLng()), zoomLevel));
     }
     private String getUrl(Place origin, Place dest, String directionMode) {
         // Origin of route
@@ -160,7 +162,7 @@ public class previousTripDetailsFragment extends Fragment implements OnMapReadyC
         super.onDestroyView();
 
         android.app.Fragment fragment = getActivity().getFragmentManager()
-                .findFragmentById(R.id.map2);
+                .findFragmentById(R.id.map);
         if (null != fragment) {
             android.app.FragmentTransaction ft = getActivity()
                     .getFragmentManager().beginTransaction();
@@ -168,6 +170,7 @@ public class previousTripDetailsFragment extends Fragment implements OnMapReadyC
             ft.commit();
         }
     }
+
 
 
 }

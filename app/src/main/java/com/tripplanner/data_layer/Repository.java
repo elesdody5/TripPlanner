@@ -162,7 +162,7 @@ public class Repository {
                     ArrayList<Note> documentNotes = new ArrayList<>();
                     for (DocumentSnapshot documentReference : queryDocumentSnapshots.getDocuments()) {
                         documentNotes.add(new Note(Integer.parseInt(documentReference.getId()),
-                                documentReference.getString(NAME),
+                                documentReference.getString("noteName"),
                                 tripId,
                                 documentReference.getBoolean("checked")));
                     }
@@ -176,7 +176,7 @@ public class Repository {
         MutableLiveData<Long> inserted = new MutableLiveData<>();
         Room.databaseWriteExecutor.execute(() -> {
             trip.setUserId(user.getId());
-            trip.setTripStatus(STATUS_UPCOMING);
+
             long id = tripDao.insertTrip(trip);
 
             if (id != -1) {

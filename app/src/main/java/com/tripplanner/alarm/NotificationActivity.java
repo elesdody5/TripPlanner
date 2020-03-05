@@ -1,5 +1,6 @@
 package com.tripplanner.alarm;
 
+import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -45,7 +46,7 @@ import java.util.List;
 import java.util.Map;
 
 public class NotificationActivity extends AppCompatActivity {
-    private static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
+    public static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
     AlarmViewModel alarmViewModel;
     Trip trip;
     ArrayList<Note> tripNotes;
@@ -82,7 +83,7 @@ public class NotificationActivity extends AppCompatActivity {
                         setPermation();
                         tripNotification.cancelNotification();
                         r.stop();
-
+                        cancleAlarm((int)trip.getId());
                         finish();
                     }
                 }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -93,7 +94,7 @@ public class NotificationActivity extends AppCompatActivity {
                 alarmViewModel.updateTrip(trip, hm);
                 tripNotification.cancelNotification();
                 r.stop();
-
+                cancleAlarm((int)trip.getId());
                 finish();
             }
         }).setNeutralButton("Snoze", new DialogInterface.OnClickListener() {
@@ -178,6 +179,17 @@ public class NotificationActivity extends AppCompatActivity {
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(i);
         }
+    }
+
+    public  void cancleAlarm(int tripId)
+    {
+        Intent notifyIntent = new Intent(getApplicationContext(), NotificationActivity.TripAlarmReciver.class);
+        notifyIntent.putExtra(Constants.TRIPS, tripId);
+        final PendingIntent notifyPendingIntent = PendingIntent.getBroadcast
+                (getApplicationContext(), tripId, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        final AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(ALARM_SERVICE);
+        alarmManager.cancel(notifyPendingIntent);
+
     }
 
 

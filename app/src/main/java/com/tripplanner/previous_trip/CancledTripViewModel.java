@@ -20,6 +20,11 @@ Repository repository;
         repository = new Repository(application);
 
     }
+    public List<Note> getTripNotes(long id)
+    {
+        return repository.getTripNotes(id);
+    }
+
     public LiveData<List<Trip>> getCancelTrip() {
         return repository.getCancelTrips();
     }
