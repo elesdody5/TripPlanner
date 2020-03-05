@@ -1,5 +1,6 @@
 package com.tripplanner;
 
+import androidx.annotation.ContentView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import android.content.Context;
 import android.os.Bundle;
 
 /*sara*/
@@ -25,15 +27,17 @@ import com.tripplanner.data_layer.local_data.entity.Trip;
 import com.tripplanner.home.LoginViewModel;
 
 import android.content.Intent;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewTreeObserver;
 
 import java.util.Arrays;
 import java.util.List;
 
 /*sara*/
-/*omnia*/
-/*omnia*/
+
 public class MainActivity extends AppCompatActivity {
     /*sara*/
     private static final int RC_SIGN_IN = 123;
@@ -44,7 +48,35 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setupNavigation();
+
+        /*omnia*/
+        final View root=findViewById(R.id.activityRoot);
+        BottomNavigationView navView = findViewById(R.id.nav_view);
+
+
+        root.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+
+                if((root.getRootView().getHeight()-root.getHeight())>dpToPx(MainActivity.this,200)){navView.setVisibility(View.GONE);}
+                else{
+                    navView.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        /*omnia*/
+
+
     }
+
+    public static float dpToPx(Context context, float valueDp){
+        DisplayMetrics metrics=context.getResources().getDisplayMetrics();
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,valueDp,metrics);
+    }
+
+
+
 
     private void setupNavigation() {
         BottomNavigationView navView = findViewById(R.id.nav_view);
