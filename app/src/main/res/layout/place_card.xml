@@ -28,36 +28,34 @@
                 android:id="@+id/round_trip"
                 android:layout_width="279dp"
                 android:layout_height="32dp"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="16dp"
                 android:onClick="@{(view)->fragment.roundTrip(view)}"
                 android:text="@string/round_trip"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/textInputLayout2"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/textInputLayout2"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayout2" />
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"
+                app:layout_constraintVertical_bias="1.0" />
 
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="15dp"
                 android:layout_height="78dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="20dp"
                 android:src="@drawable/ic_component_3_2"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.117" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayout2"
                 style="@style/searchInput"
                 android:layout_width="0dp"
-                android:hint="@string/To"
                 android:layout_height="wrap_content"
-                android:background="@drawable/from_to_background"
+                android:hint="@string/To"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
@@ -66,11 +64,11 @@
                 <AutoCompleteTextView
                     android:id="@+id/to_et"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_Content"
-                    android:background="@drawable/from_to_background"
+                    android:layout_height="wrap_content"
 
-                    android:padding="10dp"
+                    android:background="@color/fui_transparent"
                     android:text='@{trip.endPoint.name}'
+                    android:textAlignment="gravity"
                     android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -78,22 +76,21 @@
                 android:id="@+id/textInputLayout"
                 style="@style/searchInput"
                 android:layout_width="0dp"
-                android:hint="@string/from"
                 android:layout_height="wrap_content"
-                android:background="@drawable/from_to_background"
+                android:layout_marginTop="16dp"
+                android:hint="@string/from"
                 app:layout_constraintBottom_toTopOf="@+id/textInputLayout2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
-                app:layout_constraintTop_toTopOf="@+id/imageView">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <AutoCompleteTextView
                     android:id="@+id/from_et"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_Content"
-                    android:background="@drawable/from_to_background"
+                    android:layout_height="wrap_content"
 
-                    android:padding="10dp"
+                    android:background="@color/fui_transparent"
                     android:text='@{trip.startPoint.name }'
                     android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>

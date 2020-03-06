@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     /*sara*/
     private static final int RC_SIGN_IN = 123;
     NavHostFragment navHostFragment;
-
+    public static BottomNavigationView navView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,20 +63,10 @@ public class MainActivity extends AppCompatActivity {
         setupNavigation();
 
         /*omnia*/
-        final View root=findViewById(R.id.activityRoot);
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
 
-        root.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
 
-                if((root.getRootView().getHeight()-root.getHeight())>dpToPx(MainActivity.this,200)){navView.setVisibility(View.GONE);}
-                else{
-                    navView.setVisibility(View.VISIBLE);
-                }
-            }
-        });
 
         /*omnia*/
 
@@ -92,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void setupNavigation() {
-        BottomNavigationView navView = findViewById(R.id.nav_view);
+       navView = findViewById(R.id.nav_view);
          navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.nav_host_fragment);
 
@@ -101,9 +91,12 @@ public class MainActivity extends AppCompatActivity {
         navHostFragment.getNavController().addOnDestinationChangedListener((controller, destination, arguments) -> {
             if (destination.getId() == R.id.addTripFragment||destination.getId()==R.id.previousTripDetailsFragment2||
             destination.getId()==R.id.loginFragment|| destination.getId()==R.id.forgetPasswordFragment
-            ||destination.getId()==R.id.signUpFragment) {
+            ||destination.getId()==R.id.signUpFragment||destination.getId()==R.id.about) {
                 navView.setVisibility(View.GONE);
+
+
             } else {
+
                 navView.setVisibility(View.VISIBLE);
             }
         });

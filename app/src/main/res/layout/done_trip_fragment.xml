@@ -37,21 +37,24 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             >
+
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="match_parent"
-                android:layout_height="220dp"
+                android:layout_height="213dp"
                 android:layout_marginTop="60dp"
-                android:src="@drawable/ic_emptystate"/>
+                android:paddingTop="20dp"
+                android:src="@drawable/ic_emptystate" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="60dp"
-                android:textStyle="bold"
-                android:textSize="30dp"
                 android:text="@string/NoTrip"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textSize="24dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="200dp"
