@@ -5,7 +5,10 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -43,13 +47,19 @@ public class MapContinerFragment extends Fragment implements OnMapReadyCallback,
     private GoogleMap mMap;
     private Polyline currentPolyline;
     List<PolylineOptions>valuesLine=new ArrayList<>();
+    RelativeLayout noconn;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+
         View view= inflater.inflate(R.layout.map_continer_fragment, container, false);
         FragmentManager fm = getChildFragmentManager();
         SupportMapFragment mapFragment = (SupportMapFragment) fm.findFragmentById(R.id.map2);
+        noconn=view.findViewById(R.id.NoConnection1);
+        if(isOnline())
+        {
+            noconn.setVisibility(View.INVISIBLE);
         if (mapFragment == null) {
             mapFragment = new SupportMapFragment();
             FragmentTransaction ft = fm.beginTransaction();
@@ -57,7 +67,11 @@ public class MapContinerFragment extends Fragment implements OnMapReadyCallback,
             ft.commit();
             fm.executePendingTransactions();
         }
-        mapFragment.getMapAsync(this);
+
+        mapFragment.getMapAsync(this); }
+        else {
+            noconn.setVisibility(View.VISIBLE);
+        }
         return view;
     }
 
@@ -66,29 +80,38 @@ public class MapContinerFragment extends Fragment implements OnMapReadyCallback,
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(MapContinerViewModel.class);
         // TODO: Use the ViewModel
-        mViewModel.getDoneTrip().observe(getViewLifecycleOwner(), new Observer<List<Trip>>() {
-            @Override
-            public void onChanged(List<Trip> trips) {
-                for (int i =0;i< trips.size();i++) {
-                    new FetchURL(MapContinerFragment.this).execute(getUrl(trips.get(i).getStartPoint(), trips.get(i).getEndPoint(), "driving"), "driving");
-                    mMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(trips.get(i).getStartPoint().getLat(), trips.get(i).getStartPoint().getLng()))
-                            .title(trips.get(i).getStartPoint().getName()));
-                    mMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(trips.get(i).getEndPoint().getLat(), trips.get(i).getEndPoint().getLng()))
-                            .title(trips.get(i).getEndPoint().getName()));
+        if(isOnline()) {
+            noconn.setVisibility(View.INVISIBLE);
+
+            mViewModel.getDoneTrip().observe(getViewLifecycleOwner(), new Observer<List<Trip>>() {
+                @Override
+                public void onChanged(List<Trip> trips) {
+                    for (int i = 0; i < trips.size(); i++) {
+                        new FetchURL(MapContinerFragment.this).execute(getUrl(trips.get(i).getStartPoint(), trips.get(i).getEndPoint(), "driving"), "driving");
+                        mMap.addMarker(new MarkerOptions()
+                                .position(new LatLng(trips.get(i).getStartPoint().getLat(), trips.get(i).getStartPoint().getLng()))
+                                .title(trips.get(i).getStartPoint().getName()));
+                        mMap.addMarker(new MarkerOptions()
+                                .position(new LatLng(trips.get(i).getEndPoint().getLat(), trips.get(i).getEndPoint().getLng()))
+                                .title(trips.get(i).getEndPoint().getName()));
+                    }
+                    if (trips.size() != 0) {
+                        float zoomLevel = (float) 10.0;
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(trips.get(0).getStartPoint().getLat(), trips.get(0).getStartPoint().getLng()), zoomLevel));
+                    }
                 }
-                if(trips.size()!=0) {
-                    float zoomLevel = (float) 10.0;
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(trips.get(0).getStartPoint().getLat(),trips.get(0).getStartPoint().getLng()), zoomLevel));
-                }
-            }
-        });
+            });
+        }
+        else {
+            noconn.setVisibility(View.VISIBLE);
+        }
 
     }
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
+        if(isOnline()) {
+            mMap = googleMap;
+        }
 
 
 
@@ -112,32 +135,41 @@ public class MapContinerFragment extends Fragment implements OnMapReadyCallback,
 
     @Override
     public void onTaskDone(List<PolylineOptions>values) {
-        //  if (currentPolyline != null)
-        //      currentPolyline.remove();
-        // currentPolyline = mMap.addPolyline( values.get(1));
-        Random rnd = new Random();
-        valuesLine.add(values.get(0));
-        for(int i=0;i<valuesLine.size();i++)
-        {
-            int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-            currentPolyline = mMap.addPolyline( valuesLine .get(i).color(color));
-                  }
+            //  if (currentPolyline != null)
+            //      currentPolyline.remove();
+            // currentPolyline = mMap.addPolyline( values.get(1));
+            Random rnd = new Random();
+            valuesLine.add(values.get(0));
+            for (int i = 0; i < valuesLine.size(); i++) {
+                int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+                currentPolyline = mMap.addPolyline(valuesLine.get(i).color(color));
+            }
 
 
     }
 
     @Override
     public void onDestroyView() {
-        // TODO Auto-generated method stub
-        super.onDestroyView();
+            // TODO Auto-generated method stub
+            super.onDestroyView();
 
-        android.app.Fragment fragment = getActivity().getFragmentManager()
-                .findFragmentById(R.id.map2);
-        if (null != fragment) {
-            android.app.FragmentTransaction ft = getActivity()
-                    .getFragmentManager().beginTransaction();
-            ft.remove(fragment);
-            ft.commit();
+            android.app.Fragment fragment = getActivity().getFragmentManager()
+                    .findFragmentById(R.id.map2);
+            if (null != fragment) {
+                android.app.FragmentTransaction ft = getActivity()
+                        .getFragmentManager().beginTransaction();
+                ft.remove(fragment);
+                ft.commit();
+            }
+
+    }
+    public  boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
         }
+        return false;
     }
 }

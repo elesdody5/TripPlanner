@@ -5,7 +5,20 @@
     android:layout_height="match_parent"
     tools:context=".previous_trip.MapContinerFragment"
     android:id="@+id/mapFragmentContainer">
-
-
-
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/NoConnection1"
+        >
+    <include
+        layout="@layout/no_connection_layout"
+        android:layout_width="match_parent"
+        android:layout_marginTop="50dp"
+        android:layout_height="25dp"
+      />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/mapemp"/>
+    </RelativeLayout>
 </FrameLayout>

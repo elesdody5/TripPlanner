@@ -5,7 +5,10 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,10 +18,12 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.tripplanner.R;
@@ -49,6 +54,8 @@ public class CancledTripFragment extends Fragment {
                 inflater, R.layout.cancled_trip_fragment, container, false);
         cancelTripRecView = binding.delayedTripRecyclerView;
         constraintLayout = binding.mainlayout;
+        View view = binding.getRoot();
+
         if(canceltripList.size()==0)
         {
             binding.emptyStateId.setVisibility(View.VISIBLE);
@@ -58,11 +65,11 @@ public class CancledTripFragment extends Fragment {
             binding.emptyStateId.setVisibility(View.INVISIBLE);
 
         }
+
         cancelTripAdapter = new TripAdapter(canceltripList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         cancelTripRecView.setLayoutManager(mLayoutManager);
         cancelTripRecView.setAdapter(cancelTripAdapter);
-        View view = binding.getRoot();
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback_delayed = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, new RecyclerItemTouchHelper.RecyclerItemTouchHelperListener() {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
@@ -95,6 +102,7 @@ public class CancledTripFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         mViewModel = ViewModelProviders.of(this).get(CancledTripViewModel.class);
         // TODO: Use the ViewModel
        mViewModel.getCancelTrip().observe(getViewLifecycleOwner(), new Observer<List<Trip>>() {
@@ -116,6 +124,17 @@ public class CancledTripFragment extends Fragment {
             }
         });
 
+
+    }
+    public  boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        }
+
+        return false;
     }
 
 }

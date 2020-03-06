@@ -7,6 +7,7 @@
         android:fitsSystemWindows="true"
     tools:context=".previous_trip_details.previousTripDetailsFragment"
     >
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
@@ -36,6 +37,13 @@
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:id="@+id/emptyState"
+                android:visibility="invisible"
+                android:layout_height="match_parent">
+               <include layout="@layout/no_connection_layout"/>
+            </RelativeLayout>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
