@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -64,6 +65,7 @@ public class LoginFragment extends Fragment {
     private static final int RC_SIGN_IN = 234;
     private static final String TAG = "simplifiedcoding";
     GoogleSignInClient mGoogleSignInClient;
+    ProgressBar progressBar;
     FirebaseAuth mAuth;
     View view;
     Bundle args;
@@ -73,9 +75,10 @@ public class LoginFragment extends Fragment {
         loginFragmentBinding = DataBindingUtil.inflate(
                 inflater, R.layout.login_fragment, container, false);
         view = loginFragmentBinding.getRoot();
+        progressBar = view.findViewById(R.id.progress_bar);
+
         auth = FirebaseAuth.getInstance();
          args = getArguments();
-
 
         loginFragmentBinding.loginCardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,6 +136,8 @@ public class LoginFragment extends Fragment {
         } else if (password.isEmpty()) {
             loginFragmentBinding.passwordTextView.setError("Please enter password");
         } else {
+            progressBar.setVisibility(View.VISIBLE);
+            loginFragmentBinding.loginCardView.setVisibility(View.INVISIBLE);
             loginWithFireBase();
         }
     }
@@ -145,6 +150,8 @@ public class LoginFragment extends Fragment {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (!task.isSuccessful()) {
                             if (password.length() < 6) {
+                                progressBar.setVisibility(View.INVISIBLE);
+                                loginFragmentBinding.loginCardView.setVisibility(View.VISIBLE);
                                 Snackbar snackbar = Snackbar
                                         .make(loginFragmentBinding.ConstraintLayout, "Incorrect password!", Snackbar.LENGTH_LONG);
                                 snackbar.setActionTextColor(Color.YELLOW);
@@ -152,6 +159,8 @@ public class LoginFragment extends Fragment {
 
 
                             } else {
+                                progressBar.setVisibility(View.INVISIBLE);
+                                loginFragmentBinding.loginCardView.setVisibility(View.VISIBLE);
                                 Snackbar snackbar = Snackbar
                                         .make(loginFragmentBinding.ConstraintLayout, "Incorrect email or password", Snackbar.LENGTH_LONG);
                                 snackbar.setActionTextColor(Color.YELLOW);
@@ -160,7 +169,8 @@ public class LoginFragment extends Fragment {
                             }
 
                         } else {
-                            //go to home fragment..
+                            progressBar.setVisibility(View.GONE);
+                            FirebaseUser currentUser = auth.getCurrentUser();
                             goHomeScreen();
 
                         }
@@ -268,10 +278,7 @@ public class LoginFragment extends Fragment {
     public void onStart() {
         super.onStart();
         FirebaseUser currentUser;
-
              currentUser = auth.getCurrentUser();
-
-
         //String userJsonString="";
 //        currentUser= GsonUtils.getGsonParser().fromJson(userJsonString, FirebaseUser.class);
         if (currentUser != null) {
@@ -288,6 +295,7 @@ public class LoginFragment extends Fragment {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
+                            Log.i(TAG, "onComplete: "+user.getEmail());
                             Toast.makeText(getActivity(), "User Signed In", Toast.LENGTH_SHORT).show();
                             goHomeScreen();
                         } else {
