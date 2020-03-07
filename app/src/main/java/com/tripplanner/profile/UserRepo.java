@@ -13,6 +13,7 @@ import com.tripplanner.data_layer.remote.Firebase;
 public class UserRepo {
     FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
     Firebase firebase;
+
     LiveData<Boolean> changePassword(String password){
         MutableLiveData<Boolean> updated= new MutableLiveData<>();
         user.updatePassword(password)
@@ -40,8 +41,6 @@ public class UserRepo {
                 });
         return updated;
     }
-
-
 
     void logout(){
         FirebaseAuth.getInstance().signOut();

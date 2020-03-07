@@ -145,6 +145,7 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
         ArrayList<Trip> foundTrips = new ArrayList<>();
         for (Trip trip : mAdapter.getTrips())
         {
+
             if(trip.getName().contains(tripName))
             {
                 foundTrips.add(trip);
