@@ -7,9 +7,14 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.google.firebase.auth.FirebaseUser;
+import com.tripplanner.data_layer.Repository;
+import com.tripplanner.data_layer.local_data.entity.Trip;
+
+import java.util.List;
 
 public class ProfileViewModel extends AndroidViewModel {
     UserRepo repo=new UserRepo();
+    Repository repository=new Repository(getApplication());
 
 
 
@@ -26,6 +31,11 @@ public class ProfileViewModel extends AndroidViewModel {
     }
     void logout(){
         repo.logout();
+    }
+
+    public LiveData<List<Trip>> getTrips() {
+
+        return repository.getUpComingTrips();
     }
 
 }

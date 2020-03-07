@@ -1,8 +1,11 @@
 package com.tripplanner.registration;
 
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -40,15 +43,21 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.tripplanner.Constants;
 import com.tripplanner.R;
+import com.tripplanner.alarm.NotificationActivity;
 import com.tripplanner.data_layer.remote.Firebase;
 
 import com.tripplanner.data_layer.local_data.entity.Trip;
 
 import com.tripplanner.databinding.LoginFragmentBinding;
+import com.tripplanner.home.HomeViewModel;
 import com.tripplanner.previous_trip_details.GsonUtils;
 
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.List;
 import java.util.concurrent.Executor;
+
+import static android.content.Context.ALARM_SERVICE;
 
 
 public class LoginFragment extends Fragment {
@@ -67,6 +76,8 @@ public class LoginFragment extends Fragment {
     FirebaseAuth mAuth;
     View view;
     Bundle args;
+    List<Trip> upcomingTrips;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -288,6 +299,13 @@ public class LoginFragment extends Fragment {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
+                            mViewModel.savetUser(user);
+                            mViewModel.getTrips().observe(getViewLifecycleOwner(), new Observer<List<Trip>>() {
+                                @Override
+                                public void onChanged(List<Trip> trips) {
+                                    Log.d(TAG, "onChanged: "+trips.size());
+                                }
+                            });
                             Toast.makeText(getActivity(), "User Signed In", Toast.LENGTH_SHORT).show();
                             goHomeScreen();
                         } else {
@@ -308,5 +326,6 @@ public class LoginFragment extends Fragment {
     {
         Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_signUpFragment);
     }
+
 
 }

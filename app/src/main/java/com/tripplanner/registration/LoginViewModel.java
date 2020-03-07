@@ -4,11 +4,15 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.tripplanner.data_layer.Repository;
+import com.tripplanner.data_layer.local_data.entity.Trip;
 import com.tripplanner.data_layer.local_data.entity.User;
+
+import java.util.List;
 
 public class LoginViewModel extends AndroidViewModel {
     // TODO: Implement the ViewModel
@@ -37,5 +41,8 @@ public class LoginViewModel extends AndroidViewModel {
 
     private void insertUser(User user) {
         repository.insertUser(user);
+    }
+    public LiveData<List<Trip>> getTrips() {
+        return repository.getUpComingTrips();
     }
 }

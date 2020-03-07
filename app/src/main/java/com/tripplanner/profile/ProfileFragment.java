@@ -1,5 +1,8 @@
 package com.tripplanner.profile;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.databinding.DataBindingUtil;
@@ -8,6 +11,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +20,16 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
+import com.tripplanner.Constants;
 import com.tripplanner.R;
+import com.tripplanner.alarm.NotificationActivity;
+import com.tripplanner.data_layer.local_data.entity.Trip;
 import com.tripplanner.databinding.FragmentProfileBinding;
 import com.tripplanner.home.HomeViewModel;
+
+import java.util.List;
+
+import static android.content.Context.ALARM_SERVICE;
 
 
 public class ProfileFragment extends Fragment {
@@ -104,6 +115,12 @@ public class ProfileFragment extends Fragment {
             public void onClick(View v) {
               model.logout();
               //navigate
+                model.getTrips().observe(getViewLifecycleOwner(), new Observer<List<Trip>>() {
+                    @Override
+                    public void onChanged(List<Trip> trips) {
+                        cancleAlarm(trips);
+                    }
+                });
                 Navigation.findNavController(view).navigate(R.id.action_profileFragment_to_loginFragment);
             }
         });
@@ -132,6 +149,21 @@ public class ProfileFragment extends Fragment {
         binding.setUser(user);
         if(!user.getPhotoUrl().toString().equals("")){
         Picasso.get().load(user.getPhotoUrl()).into(binding.ProfileImage);}
+
+
+    }
+    public  void cancleAlarm(List<Trip> trips)
+    {
+        Log.d("TAG", "cancleAlarm: "+trips.size());
+        for(int i=0;i<trips.size();i++){
+            Intent notifyIntent = new Intent(getContext(), NotificationActivity.TripAlarmReciver.class);
+            notifyIntent.putExtra(Constants.TRIPS, trips.get(i).getId());
+            final PendingIntent notifyPendingIntent = PendingIntent.getBroadcast
+                    (getContext(),(int)trips.get(i).getId(), notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            final AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(ALARM_SERVICE);
+            alarmManager.cancel(notifyPendingIntent);
+
+        }
 
 
     }
