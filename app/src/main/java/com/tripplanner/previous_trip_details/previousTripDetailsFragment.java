@@ -4,7 +4,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,6 +20,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -48,7 +52,6 @@ import java.util.Random;
 public class previousTripDetailsFragment extends Fragment implements OnMapReadyCallback, TaskLoadedCallback {
 
     private PreviousTripDetailsViewModel mViewModel;
-    private Place place1,place2,place3,place4;
     private GoogleMap mMap;
     private Polyline currentPolyline;
     MapFragment mapFragment;
@@ -56,6 +59,7 @@ public class previousTripDetailsFragment extends Fragment implements OnMapReadyC
     NoteAdapter noteAdapter;
     TextView from,to,date,time;
     Trip trip;
+    RelativeLayout emptystate;
    List <Note>note=new ArrayList<>();
     public static previousTripDetailsFragment newInstance() {
         return new previousTripDetailsFragment();
@@ -65,8 +69,7 @@ public class previousTripDetailsFragment extends Fragment implements OnMapReadyC
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view= inflater.inflate(R.layout.previous_trip_details_fragment, container, false);
-        place1=new Place("12",27.658143, 85.3199503);
-        place2=new Place("12",27.667491, 85.3208583);
+        emptystate=view.findViewById(R.id.emptyState);
         Bundle args = getArguments();
         String tripJsonString = (String) args.get(Constants.KEY_TRIP);
          trip= GsonUtils.getGsonParser().fromJson(tripJsonString, Trip.class);
@@ -76,31 +79,37 @@ public class previousTripDetailsFragment extends Fragment implements OnMapReadyC
         to=view.findViewById(R.id.to);
         date=view.findViewById(R.id.date);
         time=view.findViewById(R.id.time);
-
         from.setText("From: "+trip.getStartPoint().getName());
         to.setText("To: "+trip.getEndPoint().getName());
         date.setText("Date: "+getDate(trip.getTripDate()));
         time.setText("Time: "+getTime(trip.getTripDate()));
         mapFragment = (MapFragment) getActivity().getFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-        new FetchURL(previousTripDetailsFragment.this).execute(getUrl(trip.getStartPoint(), trip.getEndPoint(), "driving"), "driving");
-        noteRecycler=view.findViewById(R.id.prenote_rv);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-        noteAdapter =new NoteAdapter(new ArrayList<>());
-        mViewModel = ViewModelProviders.of(this).get(PreviousTripDetailsViewModel.class);
-        mViewModel.getTripNotes((int) trip.getId()).observe(getViewLifecycleOwner(), new Observer<List<Note>>() {
-            @Override
-            public void onChanged(List<Note> notes) {
-                noteAdapter.setNoteList(notes);
-                noteAdapter.notifyDataSetChanged();
-            }
-        });
-        // TODO: Use the ViewModel
-      //  Log.i("gg", "onCreateView: "+mViewModel.getTripNotes((int) trip.getId()).get(0).isChecked());
-     //   Log.i("gg", "onCreateView: "+mViewModel.getTripNotes((int) trip.getId()).get(1).isChecked());
-        noteRecycler.setAdapter(noteAdapter);
-        noteRecycler.setLayoutManager(mLayoutManager);
+        if(isOnline()) {
+            emptystate.setVisibility(View.INVISIBLE);
+            mapFragment.getMapAsync(this);
+            new FetchURL(previousTripDetailsFragment.this).execute(getUrl(trip.getStartPoint(), trip.getEndPoint(), "driving"), "driving");
+            noteRecycler = view.findViewById(R.id.prenote_rv);
+            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+            noteAdapter = new NoteAdapter(new ArrayList<>());
+            mViewModel = ViewModelProviders.of(this).get(PreviousTripDetailsViewModel.class);
+            mViewModel.getTripNotes((int) trip.getId()).observe(getViewLifecycleOwner(), new Observer<List<Note>>() {
+                @Override
+                public void onChanged(List<Note> notes) {
+                    noteAdapter.setNoteList(notes);
+                    noteAdapter.notifyDataSetChanged();
+                }
+            });
+            // TODO: Use the ViewModel
+            //  Log.i("gg", "onCreateView: "+mViewModel.getTripNotes((int) trip.getId()).get(0).isChecked());
+            //   Log.i("gg", "onCreateView: "+mViewModel.getTripNotes((int) trip.getId()).get(1).isChecked());
+            noteRecycler.setAdapter(noteAdapter);
+            noteRecycler.setLayoutManager(mLayoutManager);
+        }
+        else
+        {
+            emptystate.setVisibility(View.VISIBLE);
+        }
         return view;
     }
     public String getDate(Date date)
@@ -170,7 +179,15 @@ public class previousTripDetailsFragment extends Fragment implements OnMapReadyC
             ft.commit();
         }
     }
-
+    public  boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        }
+        return false;
+    }
 
 
 }

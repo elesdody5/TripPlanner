@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 import com.tripplanner.Constants;
+import com.tripplanner.MainActivity;
 import com.tripplanner.R;
 import com.tripplanner.alarm.NotificationActivity;
 import com.tripplanner.data_layer.local_data.entity.Trip;
@@ -38,7 +39,9 @@ public class ProfileFragment extends Fragment {
     FirebaseUser user;
     private FragmentProfileBinding binding;
     public ProfileFragment() {
+
         // Required empty public constructor
+
     }
 
 
@@ -58,6 +61,11 @@ public class ProfileFragment extends Fragment {
                             if(aBoolean==true)
                             {
                                 Toast toast = Toast.makeText(getContext(),"Email Changed !", Toast.LENGTH_SHORT);
+                                binding.editAccount.setVisibility(View.GONE);
+                                binding.editEmail.setText("");
+                                binding.editPassword.setVisibility(View.GONE);
+
+                                MainActivity.navView.setVisibility(View.VISIBLE);
                             }
                         }
                     });}
@@ -80,6 +88,12 @@ public class ProfileFragment extends Fragment {
                         if(aBoolean==true)
                         {
                             Toast toast = Toast.makeText(getContext(),"Password Changed Successfully!", Toast.LENGTH_SHORT);
+                            binding.editAccount.setVisibility(View.GONE);
+                            binding.password1.setText("");
+                            binding.password2.setText("");
+                            binding.editPassword.setVisibility(View.GONE);
+
+                            MainActivity.navView.setVisibility(View.VISIBLE);
                         }
                     }
                 });}
@@ -99,6 +113,8 @@ public class ProfileFragment extends Fragment {
                 binding.editAccount.setVisibility(View.GONE);
                 binding.editEmail.setText("");
                 binding.editPassword.setVisibility(View.GONE);
+
+                MainActivity.navView.setVisibility(View.VISIBLE);
             }
         });
         binding.cancelpass.setOnClickListener(new View.OnClickListener() {
@@ -108,6 +124,8 @@ public class ProfileFragment extends Fragment {
                 binding.password1.setText("");
                 binding.password2.setText("");
               binding.editPassword.setVisibility(View.GONE);
+
+                MainActivity.navView.setVisibility(View.VISIBLE);
             }
         });
         binding.logoutClick.setOnClickListener(new View.OnClickListener() {
@@ -128,6 +146,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
               binding.editAccount.setVisibility(View.VISIBLE);
+                MainActivity.navView.setVisibility(View.GONE);
             }
         });
 
@@ -135,9 +154,17 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 binding.editPassword.setVisibility(View.VISIBLE);
+
+                MainActivity.navView.setVisibility(View.GONE);
             }
         });
 
+        binding.About.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(view).navigate(R.id.action_profileFragment_to_about);
+            }
+        });
 
         return view ;
     }

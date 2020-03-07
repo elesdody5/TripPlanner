@@ -12,14 +12,23 @@
         android:layout_height="match_parent"
         tools:context=".previous_trip.DoneTripFragment"
         android:id="@+id/mainlayout">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:id="@+id/emptyState"
+            android:visibility="invisible"
+            android:layout_height="match_parent">
+            <include layout="@layout/no_connection_layout"/>
+        </RelativeLayout>
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="60dp"
+    android:layout_marginTop="54dp"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
-        <androidx.recyclerview.widget.RecyclerView
+    app:layout_constraintTop_toTopOf="parent"
+    android:orientation="vertical">
+
+    <androidx.recyclerview.widget.RecyclerView
 
             android:id="@+id/finishedTripRecyclerView"
             android:layout_width="match_parent"
@@ -39,8 +48,8 @@
             >
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="match_parent"
-                android:layout_height="220dp"
-                android:layout_marginTop="60dp"
+                android:layout_height="210dp"
+                android:layout_marginTop="80dp"
                 android:src="@drawable/ic_emptystate"/>
 
             <TextView
@@ -49,7 +58,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="60dp"
                 android:textStyle="bold"
-                android:textSize="30dp"
+                android:textSize="24dp"
                 android:text="@string/NoTrip"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 

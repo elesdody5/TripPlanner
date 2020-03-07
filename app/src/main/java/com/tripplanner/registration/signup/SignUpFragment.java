@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -34,6 +35,8 @@ public class SignUpFragment extends Fragment {
     private FirebaseAuth auth;
     SignUpFragmentBinding signUpFragmentBinding;
     View view;
+    ProgressBar progressBar;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -41,6 +44,7 @@ public class SignUpFragment extends Fragment {
                 inflater, R.layout.sign_up_fragment, container, false);
          view=signUpFragmentBinding.getRoot();
         auth=FirebaseAuth.getInstance();
+        progressBar = view.findViewById(R.id.progress_bar);
         signUpFragmentBinding.signUpCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,12 +98,16 @@ public class SignUpFragment extends Fragment {
             signUpFragmentBinding.passwordTextView.setError("password too short!,minimum 6 char");
             return;
         }
+        progressBar.setVisibility(View.VISIBLE);
+        signUpFragmentBinding.signUpCardView.setVisibility(View.INVISIBLE);
         auth.createUserWithEmailAndPassword(email,password)
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(!task.isSuccessful())
                         {
+                            progressBar.setVisibility(View.INVISIBLE);
+                            signUpFragmentBinding.signUpCardView.setVisibility(View.VISIBLE);
                             Snackbar snackbar = Snackbar
                                     .make(signUpFragmentBinding.ConstraintLayout, "Registration Failed", Snackbar.LENGTH_LONG);
                             snackbar.setActionTextColor(Color.YELLOW);
@@ -107,12 +115,16 @@ public class SignUpFragment extends Fragment {
 
                         }
                         else {
+                            Snackbar snackbar = Snackbar
+                                    .make(signUpFragmentBinding.ConstraintLayout, "Registration succeeded", Snackbar.LENGTH_LONG);
+                            snackbar.setActionTextColor(Color.YELLOW);
+                            snackbar.show();
+                            FirebaseAuth.getInstance().signOut();
                             goToSignin();
                         }
 
                     }
                 });
-
     }
 
 }

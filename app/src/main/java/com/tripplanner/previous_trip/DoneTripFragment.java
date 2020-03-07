@@ -6,7 +6,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -22,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.tripplanner.Constants;
@@ -42,6 +46,8 @@ public class DoneTripFragment extends Fragment {
     ConstraintLayout frameLayout;
     DoneTripFragmentBinding binding;
     List<Note> notes=new ArrayList<>();
+    RelativeLayout emptystate;
+
     private static final String TAG = "DoneTripFragment";
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -49,11 +55,20 @@ public class DoneTripFragment extends Fragment {
          binding = DataBindingUtil.inflate(
                 inflater, R.layout.done_trip_fragment, container, false);
         View view = binding.getRoot();
-            return view;
+        emptystate=view.findViewById(R.id.emptyState);
+        if(isOnline()) {
+            emptystate.setVisibility(View.INVISIBLE);
+        }
+        else
+        {
+            emptystate.setVisibility(View.VISIBLE);
+        }
+        return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
         finishedTripRecView = binding.finishedTripRecyclerView;
         frameLayout = binding.mainlayout;
         finishedTripAdapter = new TripAdapter(finshedtripList);
@@ -76,15 +91,6 @@ public class DoneTripFragment extends Fragment {
 
             }
         });
-//        if(finshedtripList.size()==0)
-//        {
-//            binding.emptyStateId.setVisibility(View.VISIBLE);
-//        }
-//        else
-//        {
-//            binding.emptyStateId.setVisibility(View.INVISIBLE);
-//
-//        }
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback_finished = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, new RecyclerItemTouchHelper.RecyclerItemTouchHelperListener() {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
@@ -114,29 +120,15 @@ public class DoneTripFragment extends Fragment {
         new ItemTouchHelper(itemTouchHelperCallback_finished).attachToRecyclerView(finishedTripRecView);
 
     }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d(TAG, "onStart: ");
+    public  boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        }
+        return false;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d(TAG, "onResume: ");
-    }
-    //
 
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-        Log.d(TAG, "onViewStateRestored: ");
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Log.d(TAG, "onDestroyView: ");
-    }
 }

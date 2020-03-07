@@ -10,14 +10,15 @@
     </data>
 
     <androidx.cardview.widget.CardView
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="22dp"
-        android:layout_marginEnd="22dp"
         android:layout_marginTop="31dp"
+        android:layout_marginEnd="22dp"
+        android:orientation="vertical"
+        app:cardCornerRadius="@dimen/padd_10"
         app:cardElevation="3dp"
-        app:cardCornerRadius="@dimen/padd_10">
+        app:cardMaxElevation="3dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -27,7 +28,7 @@
                 android:id="@+id/add_note"
                 android:layout_width="24dp"
                 android:layout_height="30dp"
-                android:layout_marginEnd="35dp"
+                android:layout_marginEnd="30dp"
                 android:onClick="@{()->fragment.showNoteNameDialog()}"
                 android:src="@drawable/ic_add_black_24dp"
                 app:layout_constraintBottom_toBottomOf="@+id/materialTextView"

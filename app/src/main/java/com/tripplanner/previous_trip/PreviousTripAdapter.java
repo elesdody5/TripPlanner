@@ -50,4 +50,5 @@ public class PreviousTripAdapter extends FragmentStatePagerAdapter {
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
         }
+        
     }
