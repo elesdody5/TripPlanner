@@ -174,7 +174,7 @@ public class ProfileFragment extends Fragment {
         model= ViewModelProviders.of(requireActivity()).get(ProfileViewModel.class);
         user= FirebaseAuth.getInstance().getCurrentUser();
         binding.setUser(user);
-        if(!user.getPhotoUrl().toString().equals("")){
+        if(user.getPhotoUrl()!=null&&!user.getPhotoUrl().toString().equals("")){
         Picasso.get().load(user.getPhotoUrl()).into(binding.ProfileImage);}
 
 

@@ -157,6 +157,7 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
         {
             binding.noresult.setVisibility(View.VISIBLE);
             binding.TripList.setVisibility(View.INVISIBLE);
+            binding.noupcomingrips.setVisibility(View.INVISIBLE);
         }
         else
         {
@@ -277,10 +278,12 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
        Map<String,Object> hm = new HashMap<>();
 
         hm.put("tripStatus", Constants.STATUS_DONE);
+        trip.setTripStatus(Constants.STATUS_DONE);
         model.updateTrip(trip, hm);
         setPermation(trip);
         cancleAlarm((int)trip.getId());
         mAdapter.removeItem(trip.getId());
+
     }
 
     public void setPermation(Trip trip) {

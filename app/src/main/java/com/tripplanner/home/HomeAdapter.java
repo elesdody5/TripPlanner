@@ -142,6 +142,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
     public void removeItem(long tripId) {
         for (int i = 0; i < trips.size(); i++) {
             if (tripId == trips.get(i).getId()) {
+                Log.d("adapter", "removeItem: "+i);
                 removeItem(i);
                 return;
             }
