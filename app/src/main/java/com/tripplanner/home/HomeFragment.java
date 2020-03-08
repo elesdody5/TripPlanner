@@ -51,6 +51,7 @@ import com.tripplanner.data_layer.local_data.entity.Trip;
 import com.tripplanner.databinding.FragmentHomeBinding;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -74,6 +75,7 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
     private RecyclerView.LayoutManager layoutManager;
     private FragmentHomeBinding binding;
     boolean isConnected;
+    List<Trip> upcomingTrips;
 
     public HomeFragment() {
 
@@ -190,6 +192,7 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
         if (!trips.isEmpty()) {
             Log.d(TAG, "displayTrips: "+trips.size());
             mAdapter.setTripList(trips);
+            setAlarmManger(trips);
         }else {
             binding.noupcomingrips.setVisibility(View.VISIBLE);
         }
@@ -317,4 +320,27 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
     }
 
     /*omnia*/
+    private void setAlarmManger(List<Trip> trips) {
+        Log.d(TAG, "setAlarmManger: "+trips.size());
+        for(int i=0;i<trips.size();i++){
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(System.currentTimeMillis());
+            calendar.setTime(trips.get(i).getTripDate());
+            Intent notifyIntent = new Intent(getContext(), NotificationActivity.TripAlarmReciver.class);
+            notifyIntent.putExtra(Constants.TRIPS,(int)trips.get(i).getId());
+            final PendingIntent notifyPendingIntent = PendingIntent.getBroadcast
+                    (getContext(), (int)trips.get(i).getId(), notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            final AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(ALARM_SERVICE);
+
+            if (alarmManager != null) {
+                Log.d(TAG, "setAlarmManger: " + alarmManager);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                        notifyPendingIntent);
+
+            }
+
+        }
+
+    }
+
 }
